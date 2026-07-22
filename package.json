@@ -1,0 +1,19 @@
+{
+  "name": "adishakti-platform",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:backend": "npm --prefix apps/backend run dev",
+    "dev:mobile": "npm --prefix apps/mobile run dev",
+    "build:backend": "npm --prefix apps/backend run build",
+    "db:push": "npm --prefix apps/backend run db:push",
+    "db:seed": "npm --prefix apps/backend run db:seed"
+  },
+  "keywords": [],
+  "author": "Quantex Intelligence Systems Pvt Ltd",
+  "license": "ISC"
+}

@@ -1,0 +1,158 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                      String         @id @default(uuid())
+  phone                   String         @unique
+  name                    String
+  language                String         @default("te") // te, en, hi, etc.
+  role                    String         @default("USER") // USER, GUARDIAN, POLICE_ADMIN, CORPORATE_ADMIN
+  companyId               String?
+  consentAudioMonitoring Boolean        @default(false)
+  consentTimestamp        DateTime?
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+
+  guardians               Guardian[]
+  safetyEvents            SafetyEvent[]
+}
+
+model Guardian {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  phone         String
+  verified      Boolean   @default(false)
+  priorityOrder Int       @default(1)
+  createdAt     DateTime  @default(now())
+
+  callLogs      IVRCallLog[]
+}
+
+model SafetyEvent {
+  id                String    @id @default(uuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type              String    // WARNING, RED
+  status            String    @default("ACTIVE") // ACTIVE, RESOLVED, ESCALATED
+  startedAt         DateTime  @default(now())
+  resolvedAt        DateTime?
+  lastLat           Float
+  lastLng           Float
+  lastAddress       String?
+  lastBattery       Int       @default(100)
+  lastNetworkStatus String    @default("4G Online")
+  audioFlag         Boolean   @default(false)
+  audioUrl          String?
+  notes             String?
+
+  ivrCallLogs       IVRCallLog[]
+}
+
+model IVRCallLog {
+  id            String      @id @default(uuid())
+  safetyEventId String
+  safetyEvent   SafetyEvent @relation(fields: [safetyEventId], references: [id], onDelete: Cascade)
+  guardianId    String
+  guardian      Guardian    @relation(fields: [guardianId], references: [id], onDelete: Cascade)
+  calledAt      DateTime    @default(now())
+  outcome       String      @default("PENDING") // PENDING, ANSWERED, UNREACHABLE, ESCALATED
+}
+
+model LegalVideo {
+  id                 String   @id @default(uuid())
+  title              String
+  topic              String
+  durationSec        Int
+  language           String   @default("te")
+  videoUrl           String
+  thumbnailUrl       String?
+  advocateName       String
+  advocateRole       String
+  verified           Boolean  @default(true)
+  createdAt          DateTime @default(now())
+}
+
+model ProtectionOfficer {
+  id          String   @id @default(uuid())
+  district    String
+  officeName  String
+  officerName String
+  phone       String
+  address     String
+  lat         Float?
+  lng         Float?
+}
+
+model Scheme {
+  id             String   @id @default(uuid())
+  title          String
+  code           String   @unique
+  description    String
+  eligibility    String
+  benefit        String
+  category       String   // Loan, Subsidy, Grant, Empowerment
+  targetGroup    String   // SHG, Students, Women Entrepreneurs
+  applicationUrl String?
+  contactInfo    String?
+  isVerified     Boolean  @default(true)
+  createdAt      DateTime @default(now())
+}
+
+model SHGProduct {
+  id           String   @id @default(uuid())
+  title        String
+  description  String
+  price        Float
+  category     String   // Handlooms, Organic Food, Handicrafts, Spices
+  shgGroup     String
+  district     String
+  contactPhone String
+  imageUrl     String
+  createdAt    DateTime @default(now())
+}
+
+model CommunityStory {
+  id         String   @id @default(uuid())
+  title      String
+  content    String
+  authorName String
+  district   String
+  voiceUrl   String?
+  isApproved Boolean  @default(true)
+  likes      Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model CorporateTransportLog {
+  id            String    @id @default(uuid())
+  companyId     String
+  employeeName  String
+  employeePhone String
+  vehicleNo     String
+  driverName    String
+  routeName     String
+  startedAt     DateTime  @default(now())
+  endedAt       DateTime?
+  status        String    @default("IN_TRANSIT") // IN_TRANSIT, COMPLETED, ALERT
+  lastLat       Float
+  lastLng       Float
+}
+
+model ICCComplaint {
+  id           String   @id @default(uuid())
+  companyId    String
+  caseNo       String   @unique
+  category     String   // Harassment, Discrimination, Policy Violation
+  incidentDate DateTime
+  status       String   @default("IN_REVIEW") // IN_REVIEW, INVESTIGATING, CLOSED
+  summary      String
+  createdAt    DateTime @default(now())
+}
