@@ -85,9 +85,14 @@ export async function POST(req: Request) {
               </Response>
             `;
             
+            let targetPhone = g.phone.trim().replace(/\s+/g, '').replace(/-/g, '');
+            if (targetPhone.length === 10 && !targetPhone.startsWith('+')) {
+              targetPhone = `+91${targetPhone}`;
+            }
+
             const twilioCall = await client.calls.create({
               twiml,
-              to: g.phone, // Make sure this matches verified Twilio trial numbers for testing
+              to: targetPhone,
               from: twilioPhoneNumber
             });
             callOutcome = `DIALED_LIVE_${twilioCall.sid}`;

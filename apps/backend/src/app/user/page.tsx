@@ -1107,18 +1107,50 @@ export default function WomenUserApp() {
                 <div className="space-y-3">
                   <div className="flex flex-col items-center py-1">
                     <button
-                      onClick={() => setActiveConfirmType('SAFE')}
-                      className={`w-32 h-32 rounded-full p-1.5 flex items-center justify-center transition-all duration-500 ${
-                        redAlertActive ? 'bg-red-600 shadow-lg animate-pulse' : warningActive ? 'bg-amber-500 shadow-lg' : 'bg-gradient-to-tr from-purple-600 via-fuchsia-600 to-blue-600'
+                      onClick={() => {
+                        if (redAlertActive || warningActive) {
+                          setActiveConfirmType('SAFE');
+                        } else {
+                          alert("Your safety status is green & verified. To test alerts, toggle the warning switch or trigger RED SOS below.");
+                        }
+                      }}
+                      className={`w-32 h-32 rounded-full p-1 flex items-center justify-center transition-all duration-500 ${
+                        redAlertActive 
+                          ? 'bg-red-600 shadow-lg shadow-red-500/40 animate-pulse scale-105' 
+                          : warningActive 
+                          ? 'bg-amber-500 shadow-lg shadow-amber-500/30' 
+                          : 'bg-emerald-500 shadow-lg shadow-emerald-500/20'
                       }`}
                     >
-                      <div className={`w-full h-full rounded-full flex flex-col items-center justify-center p-2 text-center border ${isLight ? 'bg-white border-purple-200' : 'bg-slate-950 border-purple-500/30'}`}>
+                      <div className={`w-full h-full rounded-full flex flex-col items-center justify-center p-2 text-center border transition-colors duration-300 ${
+                        redAlertActive
+                          ? 'bg-red-50/95 dark:bg-red-950/95 border-red-300'
+                          : warningActive
+                          ? 'bg-amber-50/95 dark:bg-amber-950/95 border-amber-300'
+                          : isLight
+                          ? 'bg-emerald-50/95 border-emerald-200'
+                          : 'bg-slate-950 border-emerald-500/30'
+                      }`}>
                         <BrandLogo size={32} />
-                        <span className={`text-[10px] font-black uppercase tracking-wider ${isLight ? 'text-purple-950' : 'text-white'}`}>
-                          {redAlertActive ? 'SOS ACTIVE' : warningActive ? 'MONITORING' : T[language].imSafe}
+                        <span className={`text-[10px] font-black uppercase tracking-wider ${
+                          redAlertActive
+                            ? 'text-red-800 dark:text-red-200'
+                            : warningActive
+                            ? 'text-amber-800 dark:text-amber-200'
+                            : isLight
+                            ? 'text-emerald-800'
+                            : 'text-emerald-400'
+                        }`}>
+                          {redAlertActive ? 'SOS ACTIVE' : warningActive ? 'MONITORING' : 'ALL SAFE'}
                         </span>
-                        <span className="text-[9px] text-fuchsia-600 font-bold mt-0.5">
-                          {warningActive ? formatTime(warningSeconds) : T[language].verifyBtn}
+                        <span className={`text-[9px] font-bold mt-0.5 ${
+                          redAlertActive
+                            ? 'text-red-600'
+                            : warningActive
+                            ? 'text-amber-600 font-mono'
+                            : 'text-emerald-600'
+                        }`}>
+                          {redAlertActive ? 'Emergency Active' : warningActive ? formatTime(warningSeconds) : 'Status: Verified'}
                         </span>
                       </div>
                     </button>
@@ -1159,6 +1191,46 @@ export default function WomenUserApp() {
                         <span>{T[language].redSOS}</span>
                       </span>
                       <button onClick={() => setActiveConfirmType('SOS')} className="px-3 py-1 bg-red-600 text-white text-[10px] font-black rounded-lg">PRESS SOS</button>
+                    </div>
+                  </div>
+
+                  {/* Active Safety Profile & Guardians */}
+                  <div className={`border rounded-2xl p-3.5 space-y-3 shadow-sm ${isLight ? 'bg-white border-purple-200' : 'bg-slate-900 border-slate-800'}`}>
+                    <div className="flex items-center space-x-1.5 text-xs font-black text-purple-700">
+                      <User className="w-4 h-4 text-fuchsia-600" />
+                      <span>Active Safety Profile &amp; Guardians</span>
+                    </div>
+                    
+                    <div className="bg-purple-50/50 p-2.5 rounded-xl border border-purple-100/50 text-[10px] space-y-1">
+                      <div className="flex justify-between">
+                        <span className="text-slate-500 font-bold">USER NAME:</span>
+                        <span className="text-slate-800 dark:text-purple-300 font-black">{fullName}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-500 font-bold">REGISTERED MOBILE:</span>
+                        <span className="text-slate-800 dark:text-purple-300 font-mono font-bold">{phone || loginPhone}</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <p className="text-[9px] font-black uppercase text-slate-500 tracking-wider">Registered Emergency Circle ({guardians.length})</p>
+                      {guardians.length > 0 ? (
+                        <div className="space-y-1 max-h-36 overflow-y-auto">
+                          {guardians.map((g, idx) => (
+                            <div key={g.id} className="p-2 border rounded-lg flex justify-between items-center text-[10px] bg-slate-50/50 border-slate-100 dark:bg-slate-950 dark:border-slate-850">
+                              <div className="flex items-center space-x-1.5">
+                                <span className="font-mono text-[8px] bg-purple-100 text-purple-800 px-1 rounded-full">
+                                  #{idx + 1}
+                                </span>
+                                <span className="font-bold text-slate-800 dark:text-slate-200">{g.name}</span>
+                              </div>
+                              <span className="font-mono text-slate-500 dark:text-slate-400">{g.phone}</span>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-[9px] text-rose-600 font-bold">No guardians registered. Please add contacts to enable IVR phone calls!</p>
+                      )}
                     </div>
                   </div>
 
