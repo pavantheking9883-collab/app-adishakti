@@ -156,3 +156,11 @@ model ICCComplaint {
   summary      String
   createdAt    DateTime @default(now())
 }
+
+model VerificationCode {
+  id        String   @id @default(uuid())
+  phone     String   @unique
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}

@@ -7,24 +7,84 @@ export async function POST(req: Request) {
 
     if (action === 'REQUEST_OTP') {
       if (!phone) return NextResponse.json({ error: 'Phone number required' }, { status: 400 });
-      // In production, Twilio/SMS service sends OTP. In dev, OTP is 123456
-      return NextResponse.json({ success: true, message: 'OTP sent to ' + phone, testOtp: '123456' });
+
+      let targetPhone = phone.trim().replace(/\s+/g, '').replace(/-/g, '');
+      if (targetPhone.length === 10 && !targetPhone.startsWith('+')) {
+        targetPhone = `+91${targetPhone}`;
+      }
+
+      const generatedOtp = String(Math.floor(100000 + Math.random() * 900000));
+      const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+      const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+      const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
+
+      if (twilioAccountSid && twilioAuthToken && twilioPhoneNumber) {
+        try {
+          const twilioClient = require('twilio')(twilioAccountSid, twilioAuthToken);
+          await twilioClient.messages.create({
+            body: `Adishakti Safety Verification Code: ${generatedOtp}. Do not share this OTP with anyone.`,
+            from: twilioPhoneNumber,
+            to: targetPhone
+          });
+        } catch (smsErr: any) {
+          console.error("Twilio SMS send error:", smsErr);
+          return NextResponse.json({ 
+            error: `Twilio SMS failed: ${smsErr.message || 'unknown error'}. Make sure ${targetPhone} is verified in your Twilio Trial console.` 
+          }, { status: 400 });
+        }
+      } else {
+        console.log(`[SMS MOCK] Twilio not configured. OTP for ${targetPhone} is: ${generatedOtp}`);
+      }
+
+      await prisma.verificationCode.upsert({
+        where: { phone: targetPhone },
+        update: {
+          code: generatedOtp,
+          expiresAt: new Date(Date.now() + 10 * 60 * 1000)
+        },
+        create: {
+          phone: targetPhone,
+          code: generatedOtp,
+          expiresAt: new Date(Date.now() + 10 * 60 * 1000)
+        }
+      });
+
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Verification SMS sent successfully!',
+        // Expose test OTP in response ONLY if Twilio environment variables are missing
+        testOtp: (!twilioAccountSid || !twilioAuthToken) ? generatedOtp : undefined
+      });
     }
 
     if (action === 'VERIFY_OTP') {
+      let targetPhone = phone.trim().replace(/\s+/g, '').replace(/-/g, '');
+      if (targetPhone.length === 10 && !targetPhone.startsWith('+')) {
+        targetPhone = `+91${targetPhone}`;
+      }
+
       if (otp !== '123456' && otp !== '999999') {
-        return NextResponse.json({ error: 'Invalid OTP code. Use 123456 for testing.' }, { status: 400 });
+        const record = await prisma.verificationCode.findUnique({
+          where: { phone: targetPhone }
+        });
+
+        if (!record || record.code !== otp || record.expiresAt < new Date()) {
+          return NextResponse.json({ error: 'Invalid or expired OTP code.' }, { status: 400 });
+        }
+
+        // Cleanup used code
+        await prisma.verificationCode.delete({ where: { phone: targetPhone } }).catch(() => {});
       }
 
       let user = await prisma.user.findUnique({
-        where: { phone },
+        where: { phone: targetPhone },
         include: { guardians: { orderBy: { priorityOrder: 'asc' } } }
       });
 
       if (!user) {
         user = await prisma.user.create({
           data: {
-            phone,
+            phone: targetPhone,
             name: name || 'Adishakti User',
             language: language || 'te'
           },
