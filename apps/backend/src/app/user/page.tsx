@@ -1559,6 +1559,49 @@ export default function WomenUserApp() {
                           <button onClick={() => setIncidentDetails('')} className="text-[9px] text-slate-500 hover:text-slate-900 underline">Clear Flow</button>
                         </div>
 
+                        {/* Supportive Message & Counselor Suggestion Card */}
+                        <div className="bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-purple-950/40 dark:to-indigo-950/40 p-3 rounded-xl border border-purple-200/50 dark:border-purple-900/30 space-y-2">
+                          <div className="flex items-start space-x-2 text-[11px] leading-relaxed">
+                            <span className="text-base shrink-0">🤝</span>
+                            <div>
+                              <p className="font-bold text-slate-800 dark:text-purple-100">
+                                {language === 'te' 
+                                  ? 'మీరు ఎదుర్కొన్న సమస్యకు మేము చాలా విచారిస్తున్నాము. చింతించకండి, భారత ప్రభుత్వం ఇలాంటి చర్యలను ఏమాత్రం సహించదు మరియు కఠినంగా నిరోధిస్తుంది. చట్టం మీ వైపే ఉంది.' 
+                                  : 'We are truly sorry to hear about what you went through. Please do not worry, the Indian Government strictly prohibits and does not tolerate these kinds of actions. You are fully protected, and justice is on your side.'}
+                              </p>
+                              <p className="mt-1 text-[10px] text-purple-950 dark:text-purple-300 font-bold bg-white/70 dark:bg-slate-900/70 p-1.5 rounded-lg border border-purple-200/50">
+                                💡 {language === 'te'
+                                  ? 'అధికారిక చట్టపరమైన ఫిర్యాదు చేయడానికి ముందు, మీ మానసిక ధైర్యానికి మరియు సరైన సలహాల కొరకు ఒక ప్రొఫెషనల్ కౌన్సిలర్‌ను సంప్రదించాల్సిందిగా మేము సూచిస్తున్నాము.'
+                                  : 'Before proceeding to file an official complaint, we suggest you speak with a professional counselor for emotional support and guidance.'}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          {/* Counselor Details Panel */}
+                          <div className="bg-purple-700 text-white p-2 rounded-xl text-[10px] space-y-1 shadow-sm">
+                            <div className="flex justify-between items-center">
+                              <span className="font-black uppercase tracking-wider text-[8px] bg-purple-900/50 px-1.5 py-0.5 rounded">👩‍💼 RECOMMENDED COUNSELOR</span>
+                              <span className="font-bold text-[8px] bg-emerald-600 px-1 py-0.2 rounded font-mono">24/7 ACTIVE</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="font-bold">Name:</span>
+                              <span className="font-black">Dr. G. Hemalatha (Sr. Counselor)</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="font-bold">Contact Centre:</span>
+                              <span>Sakhi One Stop Centre &amp; Women Helpline</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="font-bold">Helpline:</span>
+                              <div className="flex space-x-1.5 font-mono font-black text-yellow-300">
+                                <a href="tel:08832441091" className="hover:underline">0883-2441091</a>
+                                <span>/</span>
+                                <a href="tel:181" className="hover:underline">Toll-Free 181</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                         {/* Step 1: Info on Rights Card */}
                         <div className="bg-white p-2.5 rounded-xl border border-purple-100 space-y-1">
                           <p className="text-[9px] text-slate-500 font-extrabold uppercase tracking-widest">1. Legal Info &amp; Act Guidelines</p>
