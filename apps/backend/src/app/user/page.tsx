@@ -1559,57 +1559,25 @@ export default function WomenUserApp() {
                           <button onClick={() => setIncidentDetails('')} className="text-[9px] text-slate-500 hover:text-slate-900 underline">Clear Flow</button>
                         </div>
 
-                        {/* Supportive Message & Counselor Suggestion Card */}
-                        <div className={`p-4 rounded-2xl border text-xs space-y-3.5 shadow-sm transition-all ${
-                          isLight 
-                            ? 'bg-purple-50/60 border-purple-100/80 text-slate-800' 
-                            : 'bg-slate-900/60 border-purple-950/40 text-slate-200'
+                        {/* Supportive Message & Counselor Suggestion */}
+                        <div className={`p-3.5 border-l-4 border-rose-500 rounded-r-2xl space-y-2.5 transition-all shadow-sm ${
+                          isLight ? 'bg-rose-50/40 text-slate-800' : 'bg-slate-900/60 text-slate-200'
                         }`}>
-                          {/* Warm Message */}
-                          <div className="flex items-start space-x-2.5 leading-relaxed">
-                            <span className="text-lg shrink-0">🤝</span>
-                            <div className="space-y-1.5">
-                              <p className="font-bold">
-                                {language === 'te' 
-                                  ? 'మీరు ఎదుర్కొన్న సమస్యకు మేము చాలా విచారిస్తున్నాము. చింతించకండి, భారత ప్రభుత్వం ఇలాంటి చర్యలను ఏమాత్రం సహించదు మరియు కఠినంగా నిరోధిస్తుంది. చట్టం మీ వైపే ఉంది.' 
-                                  : 'We are truly sorry to hear about what you went through. Please do not worry, the Indian Government strictly prohibits and does not tolerate these kinds of actions. You are fully protected, and justice is on your side.'}
-                              </p>
-                              <p className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                                💡 {language === 'te'
-                                  ? 'అధికారిక చట్టపరమైన ఫిర్యాదు చేయడానికి ముందు, మీ మానసిక ధైర్యానికి మరియు సరైన సలహాల కొరకు ఒక ప్రొఫెషనల్ కౌన్సిలర్‌ను సంప్రదించాల్సిందిగా మేము సూచిస్తున్నాము.'
-                                  : 'Before proceeding to file an official complaint, we recommend speaking with a professional counselor for emotional support and guidance.'}
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Counselor Profile Section */}
-                          <div className={`p-3 rounded-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${
-                            isLight ? 'bg-white border border-purple-100/50' : 'bg-slate-950 border border-slate-800'
-                          }`}>
-                            {/* Profile Info */}
-                            <div className="flex items-center space-x-3">
-                              <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-950/50 flex items-center justify-center text-lg shrink-0">
-                                👩‍💼
-                              </div>
-                              <div>
-                                <h4 className={`font-black text-xs ${isLight ? 'text-slate-900' : 'text-white'}`}>Dr. G. Hemalatha</h4>
-                                <p className={`text-[9px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Senior Sakhi Counselor • 24/7 Helpline</p>
-                              </div>
-                            </div>
-
-                            {/* Call Buttons */}
-                            <div className="flex flex-wrap gap-2">
-                              <a 
-                                href="tel:08832441091" 
-                                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-black rounded-lg shadow-sm flex items-center transition-colors"
-                              >
-                                <PhoneCall className="w-3 h-3 mr-1" /> Call 0883-2441091
+                          <p className="text-[10px] font-bold leading-relaxed">
+                            🤝 <span className="font-black text-rose-600 dark:text-rose-400">You are not alone.</span> {language === 'te' 
+                              ? 'మీరు ఎదుర్కొన్న సమస్యకు మేము చాలా విచారిస్తున్నాము. చింతించకండి, భారత ప్రభుత్వం ఇలాంటి చర్యలను కఠినంగా నిరోధిస్తుంది మరియు ప్రోత్సహించదు. చట్టపరమైన రక్షణలు మీ వైపే ఉన్నాయి.' 
+                              : 'We are truly sorry to hear about what you went through. Please don\'t worry, the Indian Government strictly prohibits and does not encourage these kinds of actions. You are fully protected.'}
+                          </p>
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-2 border-t border-rose-100 dark:border-rose-950/40 text-[9px]">
+                            <span className="font-semibold text-slate-500 dark:text-slate-400">
+                              💡 Need to talk? Speak with senior counselor <span className="font-black text-slate-700 dark:text-white">Dr. G. Hemalatha</span> before filing a complaint:
+                            </span>
+                            <div className="flex gap-1.5 font-mono shrink-0">
+                              <a href="tel:08832441091" className="px-2 py-0.5 bg-rose-600 hover:bg-rose-700 text-white font-black rounded transition-colors flex items-center shadow-sm">
+                                📞 0883-2441091
                               </a>
-                              <a 
-                                href="tel:181" 
-                                className="px-3 py-1.5 bg-emerald-650 hover:bg-emerald-700 text-white text-[10px] font-black rounded-lg shadow-sm flex items-center transition-colors"
-                              >
-                                <PhoneCall className="w-3 h-3 mr-1" /> Call 181 (Toll-Free)
+                              <a href="tel:181" className="px-2 py-0.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded transition-colors flex items-center shadow-sm">
+                                📞 Toll-Free 181
                               </a>
                             </div>
                           </div>
