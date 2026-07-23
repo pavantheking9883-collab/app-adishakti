@@ -16,8 +16,8 @@ const LOCATION_PRESETS = [
     lat: 16.9891,
     lng: 81.7835,
     nearbyStations: [
-      { id: 'p1', name: 'Disha Mahila Police Station Rajahmundry', dist: '0.6 km', phone: '0883-2471091', type: 'DISHA', lat: 16.9895, lng: 81.7850, address: 'Subhash Road, Rajahmundry Central' },
-      { id: 'p2', name: 'Three Town Police Station Danavaipeta', dist: '1.2 km', phone: '0883-2472233', type: 'POLICE', lat: 16.9930, lng: 81.7890, address: 'Danavaipeta Main Road, Rajahmundry' },
+      { id: 'p1', name: 'Disha Mahila Police Station Rajahmundry', dist: '0.6 km', phone: '0883-2471091', type: 'DISHA', lat: 17.00906, lng: 81.76968, address: 'Godavari Bund Road, Alcot Gardens, Rajahmundry' },
+      { id: 'p2', name: 'Three Town Police Station Danavaipeta', dist: '1.2 km', phone: '0883-2472233', type: 'POLICE', lat: 17.00915, lng: 81.76976, address: 'Godavari Bund Road, Alcot Gardens, Rajahmundry' },
       { id: 'p3', name: 'Sakhi One Stop Centre GGH Compound', dist: '1.4 km', phone: '0883-2441091', type: 'SAKHI', lat: 16.9910, lng: 81.7840, address: 'District Hospital Compound, Rajahmundry' }
     ]
   },
