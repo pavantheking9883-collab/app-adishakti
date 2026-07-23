@@ -213,6 +213,7 @@ export default function WomenUserApp() {
 
   // Active Tab
   const [activeTab, setActiveTab] = useState<'HOME' | 'SCHEMES' | 'LEGAL' | 'UPSKILL' | 'MARKET'>('HOME');
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   // Safety Engine State
   const [warningActive, setWarningActive] = useState(false);
@@ -1077,6 +1078,124 @@ export default function WomenUserApp() {
               isLight ? 'bg-gradient-to-b from-purple-50 via-white to-purple-50/50' : 'bg-gradient-to-b from-purple-950/30 via-slate-950 to-slate-950'
             }`}
           >
+            {/* App Header with Logo and Profile Icon */}
+            <div className={`px-4 py-2.5 flex items-center justify-between border-b shrink-0 ${isLight ? 'bg-white border-purple-100' : 'bg-slate-900/60 border-slate-800/80'}`}>
+              <div className="flex items-center space-x-2">
+                <BrandLogo size={22} />
+                <span className={`text-xs font-black uppercase tracking-wider ${isLight ? 'text-purple-950' : 'text-white'}`}>
+                  ADISHAKTI
+                </span>
+              </div>
+              <div className="flex items-center space-x-1.5">
+                {/* Theme switch button */}
+                <button
+                  onClick={() => setTheme(isLight ? 'dark' : 'light')}
+                  className={`p-1.5 rounded-xl border transition ${isLight ? 'bg-purple-50 border-purple-200 text-purple-700' : 'bg-slate-800 border-slate-700 text-purple-300'}`}
+                >
+                  {isLight ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
+                </button>
+                {/* Profile Modal toggle */}
+                <button
+                  onClick={() => setProfileModalOpen(true)}
+                  className={`p-1.5 rounded-xl border flex items-center justify-center transition ${
+                    isLight ? 'bg-purple-100 border-purple-200 hover:bg-purple-200 text-purple-700' : 'bg-purple-950/40 border-purple-900/40 hover:bg-purple-900/50 text-purple-300'
+                  }`}
+                  title="View Safety Profile"
+                >
+                  <User className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Profile Drawer Modal overlay */}
+            {profileModalOpen && (
+              <div className="absolute inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-end justify-center p-4">
+                <div className="w-full bg-white dark:bg-slate-900 border border-purple-500/30 rounded-3xl p-5 space-y-4 shadow-2xl animate-in slide-in-from-bottom duration-300 max-h-[85%] overflow-y-auto">
+                  <div className="flex items-center justify-between border-b pb-2.5 border-purple-100 dark:border-slate-800">
+                    <div className="flex items-center space-x-2 text-purple-700 dark:text-purple-300">
+                      <User className="w-5 h-5 text-fuchsia-600" />
+                      <h3 className="text-sm font-black uppercase tracking-wider">Safety Profile &amp; Contacts</h3>
+                    </div>
+                    <button
+                      onClick={() => setProfileModalOpen(false)}
+                      className="px-3 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-white rounded-xl text-[10px] font-black"
+                    >
+                      Close
+                    </button>
+                  </div>
+
+                  <div className="bg-purple-50/50 dark:bg-slate-950 p-2.5 rounded-xl border border-purple-100/50 dark:border-slate-850 text-[10px] space-y-1.5">
+                    <div className="flex justify-between">
+                      <span className="text-slate-500 font-bold">USER NAME:</span>
+                      <span className="text-slate-850 dark:text-purple-300 font-black">{fullName}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500 font-bold">REGISTERED PHONE:</span>
+                      <span className="text-slate-850 dark:text-purple-300 font-mono font-bold">{phone || loginPhone}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="text-[10px] font-black uppercase text-slate-500 tracking-wider">Emergency Contacts Circle ({guardians.length})</p>
+                    
+                    {/* Add guardian direct shortcut */}
+                    <div className="p-2 border rounded-xl bg-slate-50/50 dark:bg-slate-950 dark:border-slate-850 space-y-1.5">
+                      <p className="text-[8px] font-black text-purple-700 dark:text-purple-300">Add New Contact</p>
+                      <div className="flex space-x-1.5">
+                        <input
+                          type="text"
+                          value={gNameInput}
+                          onChange={(e) => setGNameInput(e.target.value)}
+                          placeholder="Name"
+                          className="flex-1 border rounded-lg px-2 py-1 text-[10px] focus:outline-none bg-white dark:bg-slate-900 border-slate-250 dark:border-slate-800 text-slate-900 dark:text-white"
+                        />
+                        <input
+                          type="text"
+                          value={gPhoneInput}
+                          onChange={(e) => setGPhoneInput(e.target.value)}
+                          placeholder="Phone"
+                          className="flex-1 border rounded-lg px-2 py-1 text-[10px] focus:outline-none bg-white dark:bg-slate-900 border-slate-250 dark:border-slate-800 text-slate-900 dark:text-white"
+                        />
+                        <button
+                          onClick={addGuardian}
+                          className="px-3 py-1 bg-purple-700 hover:bg-purple-600 text-white font-bold text-[9px] rounded-lg transition"
+                        >
+                          + Add
+                        </button>
+                      </div>
+                    </div>
+
+                    {guardians.length > 0 ? (
+                      <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                        {guardians.map((g, idx) => (
+                          <div key={g.id} className="p-2 border rounded-lg flex justify-between items-center text-[10px] bg-slate-50/50 border-slate-100 dark:bg-slate-950 dark:border-slate-850">
+                            <div className="flex items-center space-x-1.5">
+                              <span className="font-mono text-[8px] bg-purple-100 text-purple-800 px-1 rounded-full">
+                                #{idx + 1}
+                              </span>
+                              <span className="font-bold text-slate-800 dark:text-slate-200">{g.name}</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <span className="font-mono text-slate-500 dark:text-slate-400">{g.phone}</span>
+                              <button
+                                onClick={() => deleteGuardian(g.id)}
+                                className="text-red-500 hover:text-red-700 transition"
+                                title="Delete Guardian"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-[10px] text-rose-600 font-bold">No emergency contacts registered. Please add at least one guardian to receive IVR alerts.</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Double Verification Modals */}
             {activeConfirmType && (
               <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-end justify-center p-4">
@@ -1194,45 +1313,7 @@ export default function WomenUserApp() {
                     </div>
                   </div>
 
-                  {/* Active Safety Profile & Guardians */}
-                  <div className={`border rounded-2xl p-3.5 space-y-3 shadow-sm ${isLight ? 'bg-white border-purple-200' : 'bg-slate-900 border-slate-800'}`}>
-                    <div className="flex items-center space-x-1.5 text-xs font-black text-purple-700">
-                      <User className="w-4 h-4 text-fuchsia-600" />
-                      <span>Active Safety Profile &amp; Guardians</span>
-                    </div>
-                    
-                    <div className="bg-purple-50/50 p-2.5 rounded-xl border border-purple-100/50 text-[10px] space-y-1">
-                      <div className="flex justify-between">
-                        <span className="text-slate-500 font-bold">USER NAME:</span>
-                        <span className="text-slate-800 dark:text-purple-300 font-black">{fullName}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-500 font-bold">REGISTERED MOBILE:</span>
-                        <span className="text-slate-800 dark:text-purple-300 font-mono font-bold">{phone || loginPhone}</span>
-                      </div>
-                    </div>
 
-                    <div className="space-y-1.5">
-                      <p className="text-[9px] font-black uppercase text-slate-500 tracking-wider">Registered Emergency Circle ({guardians.length})</p>
-                      {guardians.length > 0 ? (
-                        <div className="space-y-1 max-h-36 overflow-y-auto">
-                          {guardians.map((g, idx) => (
-                            <div key={g.id} className="p-2 border rounded-lg flex justify-between items-center text-[10px] bg-slate-50/50 border-slate-100 dark:bg-slate-950 dark:border-slate-850">
-                              <div className="flex items-center space-x-1.5">
-                                <span className="font-mono text-[8px] bg-purple-100 text-purple-800 px-1 rounded-full">
-                                  #{idx + 1}
-                                </span>
-                                <span className="font-bold text-slate-800 dark:text-slate-200">{g.name}</span>
-                              </div>
-                              <span className="font-mono text-slate-500 dark:text-slate-400">{g.phone}</span>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-[9px] text-rose-600 font-bold">No guardians registered. Please add contacts to enable IVR phone calls!</p>
-                      )}
-                    </div>
-                  </div>
 
                   {/* High Accuracy Map Display View */}
                   {showMap && (
