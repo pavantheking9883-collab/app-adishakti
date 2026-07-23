@@ -1342,11 +1342,19 @@ export default function WomenUserApp() {
                     <h3 className={`font-black ${isLight ? 'text-purple-700' : 'text-purple-300'}`}>{T[language].nearByStations}</h3>
                     {selectedLoc.nearbyStations.map((st) => (
                       <div key={st.id} className={`p-2.5 border rounded-xl flex justify-between items-center ${isLight ? 'bg-purple-50/40 border-purple-100 text-slate-900' : 'bg-slate-950 border-purple-950/20 text-white'}`}>
-                        <div>
+                        <div className="flex-1 mr-2">
                           <p className="font-bold">{st.name}</p>
                           <p className={`text-[10px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>{st.dist} away • {st.phone}</p>
+                          <a
+                            href={`https://www.google.com/maps/dir/?api=1&destination=${st.lat},${st.lng}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[9px] text-fuchsia-600 hover:underline font-black flex items-center mt-1"
+                          >
+                            <ExternalLink className="w-2.5 h-2.5 mr-0.5" /> Navigate on Google Maps
+                          </a>
                         </div>
-                        <a href={`tel:${st.phone}`} className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-[9px] shadow">Call</a>
+                        <a href={`tel:${st.phone}`} className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-[9px] shadow text-center">Call</a>
                       </div>
                     ))}
                   </div>
