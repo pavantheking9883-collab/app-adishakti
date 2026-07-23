@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   Shield, AlertTriangle, Radio, MapPin, Battery, Wifi, Volume2, PhoneCall,
   Award, BookOpen, ShoppingBag, User, Sparkles, Scale, CreditCard, ChevronRight,
@@ -53,6 +53,35 @@ const LOCATION_PRESETS = [
     ]
   }
 ];
+
+const MASTER_POLICE_STATIONS = [
+  { id: 'ps-1', name: 'One Town Police Station Rajahmundry', phone: '0883-2423100', type: 'POLICE', lat: 16.9782, lng: 81.7765, address: 'Main Road, Mangalavaripeta, Rajahmundry' },
+  { id: 'ps-2', name: 'Three Town Police Station Rajahmundry', phone: '0883-2472233', type: 'POLICE', lat: 17.00915, lng: 81.76976, address: 'Godavari Bund Road, Alcot Gardens, Rajahmundry' },
+  { id: 'ps-3', name: 'Disha Mahila Police Station Rajahmundry', phone: '0883-2471091', type: 'DISHA', lat: 17.00906, lng: 81.76968, address: 'Godavari Bund Road, Alcot Gardens, Rajahmundry' },
+  { id: 'ps-4', name: 'Bommuru Police Station Morampudi', phone: '0883-2465544', type: 'POLICE', lat: 17.01373, lng: 81.80871, address: 'Padmavathi Nagar, NH-16, Rajahmundry' },
+  { id: 'ps-5', name: 'Disha Emergency Command Unit Hub', phone: '1091', type: 'DISHA', lat: 17.0135, lng: 81.8085, address: 'Padmavathi Nagar, NH-16, Rajahmundry' },
+  { id: 'ps-6', name: 'Kadiyam Police Station', phone: '0883-2498765', type: 'POLICE', lat: 16.9135, lng: 81.8174, address: 'Kakinada-Rajahmundry Road, Kadiyam' },
+  { id: 'ps-7', name: 'Grama Sachivalayam Women Cell Kadiyam', phone: '0883-2498800', type: 'DISHA', lat: 16.9150, lng: 81.8200, address: 'Village Secretariat Office, Kadiyam' },
+  { id: 'ps-8', name: 'Kakinada Two-Town Police Station', phone: '0884-2334455', type: 'POLICE', lat: 16.9626, lng: 82.2361, address: 'Surya Rao Peta, Kakinada' },
+  { id: 'ps-9', name: 'Sakhi One Stop Centre Kakinada', phone: '0884-2330044', type: 'SAKHI', lat: 16.9650, lng: 82.2500, address: 'Collectorate Road, Kakinada' },
+  { id: 'ps-10', name: 'Disha Police Station Kakinada', phone: '0884-2378900', type: 'DISHA', lat: 16.9626, lng: 82.2361, address: 'Surya Rao Peta, Kakinada' }
+];
+
+function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const R = 6371; // Radius of the earth in km
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c; // Distance in km
+}
+
+function deg2rad(deg: number) {
+  return deg * (Math.PI / 180);
+}
 
 // Sakhi/Protection Officers Directory
 const PROTECTION_OFFICERS = [
@@ -229,6 +258,22 @@ export default function WomenUserApp() {
   const [incidentDetails, setIncidentDetails] = useState('');
   const [generatedScript, setGeneratedScript] = useState('');
   const [consultationBooked, setConsultationBooked] = useState(false);
+
+  const dynamicNearbyStations = useMemo(() => {
+    return MASTER_POLICE_STATIONS.map((st) => {
+      const distance = getDistanceFromLatLonInKm(selectedLoc.lat, selectedLoc.lng, st.lat, st.lng);
+      return {
+        ...st,
+        calculatedDist: distance
+      };
+    })
+    .sort((a, b) => a.calculatedDist - b.calculatedDist)
+    .slice(0, 3)
+    .map((st) => ({
+      ...st,
+      dist: `${st.calculatedDist.toFixed(1)} km`
+    }));
+  }, [selectedLoc]);
   const [consultationName, setConsultationName] = useState('');
 
   // Dynamic Telemetry States
@@ -1340,7 +1385,7 @@ export default function WomenUserApp() {
                   {/* Station Responders */}
                   <div className={`border p-3.5 rounded-2xl text-xs space-y-2.5 shadow-sm ${isLight ? 'bg-white border-purple-200' : 'bg-slate-900 border-slate-800'}`}>
                     <h3 className={`font-black ${isLight ? 'text-purple-700' : 'text-purple-300'}`}>{T[language].nearByStations}</h3>
-                    {selectedLoc.nearbyStations.map((st) => (
+                    {dynamicNearbyStations.map((st) => (
                       <div key={st.id} className={`p-2.5 border rounded-xl flex justify-between items-center ${isLight ? 'bg-purple-50/40 border-purple-100 text-slate-900' : 'bg-slate-950 border-purple-950/20 text-white'}`}>
                         <div className="flex-1 mr-2">
                           <p className="font-bold">{st.name}</p>
