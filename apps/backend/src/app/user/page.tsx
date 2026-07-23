@@ -1391,7 +1391,7 @@ export default function WomenUserApp() {
                           <p className="font-bold">{st.name}</p>
                           <p className={`text-[10px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>{st.dist} away • {st.phone}</p>
                           <a
-                            href={`https://www.google.com/maps/dir/?api=1&destination=${st.lat},${st.lng}`}
+                            href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(st.name + ', ' + (st.address || 'Andhra Pradesh'))}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-[9px] text-fuchsia-600 hover:underline font-black flex items-center mt-1"
