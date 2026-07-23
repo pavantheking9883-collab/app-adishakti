@@ -1560,64 +1560,57 @@ export default function WomenUserApp() {
                         </div>
 
                         {/* Supportive Message & Counselor Suggestion Card */}
-                        <div className={`p-3.5 rounded-2xl border space-y-3.5 shadow-sm transition-colors ${
+                        <div className={`p-4 rounded-2xl border text-xs space-y-3.5 shadow-sm transition-all ${
                           isLight 
-                            ? 'bg-amber-50/70 border-amber-200 text-slate-800' 
-                            : 'bg-amber-950/10 border-amber-900/40 text-amber-100'
+                            ? 'bg-purple-50/60 border-purple-100/80 text-slate-800' 
+                            : 'bg-slate-900/60 border-purple-950/40 text-slate-200'
                         }`}>
-                          <div className="flex items-start space-x-2 text-[11px] leading-relaxed">
-                            <span className="text-base shrink-0">🤝</span>
-                            <div className="space-y-2">
-                              <p className={`font-bold ${isLight ? 'text-slate-800' : 'text-amber-100'}`}>
+                          {/* Warm Message */}
+                          <div className="flex items-start space-x-2.5 leading-relaxed">
+                            <span className="text-lg shrink-0">🤝</span>
+                            <div className="space-y-1.5">
+                              <p className="font-bold">
                                 {language === 'te' 
                                   ? 'మీరు ఎదుర్కొన్న సమస్యకు మేము చాలా విచారిస్తున్నాము. చింతించకండి, భారత ప్రభుత్వం ఇలాంటి చర్యలను ఏమాత్రం సహించదు మరియు కఠినంగా నిరోధిస్తుంది. చట్టం మీ వైపే ఉంది.' 
                                   : 'We are truly sorry to hear about what you went through. Please do not worry, the Indian Government strictly prohibits and does not tolerate these kinds of actions. You are fully protected, and justice is on your side.'}
                               </p>
-                              <p className={`text-[10px] font-bold p-2.5 rounded-xl border ${
-                                isLight 
-                                  ? 'bg-white border-amber-200/80 text-amber-955' 
-                                  : 'bg-slate-955/60 border-amber-900/20 text-amber-200'
-                              }`}>
+                              <p className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
                                 💡 {language === 'te'
                                   ? 'అధికారిక చట్టపరమైన ఫిర్యాదు చేయడానికి ముందు, మీ మానసిక ధైర్యానికి మరియు సరైన సలహాల కొరకు ఒక ప్రొఫెషనల్ కౌన్సిలర్‌ను సంప్రదించాల్సిందిగా మేము సూచిస్తున్నాము.'
-                                  : 'Before proceeding to file an official complaint, we suggest you speak with a professional counselor for emotional support and guidance.'}
+                                  : 'Before proceeding to file an official complaint, we recommend speaking with a professional counselor for emotional support and guidance.'}
                               </p>
                             </div>
                           </div>
-                          
-                          {/* Counselor Details Panel */}
-                          <div className={`p-3 rounded-xl border text-[10px] space-y-2 shadow-sm ${
-                            isLight 
-                              ? 'bg-white border-amber-200 text-slate-800' 
-                              : 'bg-slate-950 border-slate-850 text-slate-200'
+
+                          {/* Counselor Profile Section */}
+                          <div className={`p-3 rounded-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${
+                            isLight ? 'bg-white border border-purple-100/50' : 'bg-slate-950 border border-slate-800'
                           }`}>
-                            <div className="flex justify-between items-center border-b pb-1.5 border-slate-100 dark:border-slate-850">
-                              <span className={`font-black uppercase tracking-wider text-[8px] px-1.5 py-0.5 rounded ${
-                                isLight ? 'bg-amber-100 text-amber-900' : 'bg-amber-950/40 text-amber-300'
-                              }`}>
-                                👩‍💼 RECOMMENDED COUNSELOR
-                              </span>
-                              <span className="font-bold text-[8px] bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-900/30 font-mono">
-                                24/7 ACTIVE
-                              </span>
+                            {/* Profile Info */}
+                            <div className="flex items-center space-x-3">
+                              <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-950/50 flex items-center justify-center text-lg shrink-0">
+                                👩‍💼
+                              </div>
+                              <div>
+                                <h4 className={`font-black text-xs ${isLight ? 'text-slate-900' : 'text-white'}`}>Dr. G. Hemalatha</h4>
+                                <p className={`text-[9px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Senior Sakhi Counselor • 24/7 Helpline</p>
+                              </div>
                             </div>
-                            <div className="space-y-1">
-                              <div className="flex justify-between">
-                                <span className="text-slate-400 font-bold">Name:</span>
-                                <span className={`font-black ${isLight ? 'text-slate-800' : 'text-white'}`}>Dr. G. Hemalatha (Sr. Counselor)</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-slate-400 font-bold">Contact Centre:</span>
-                                <span className="font-medium">Sakhi One Stop Centre &amp; Women Helpline</span>
-                              </div>
-                              <div className="flex justify-between items-center pt-0.5">
-                                <span className="text-slate-400 font-bold">Helpline Numbers:</span>
-                                <div className="flex space-x-1.5 font-mono font-black text-fuchsia-600 dark:text-fuchsia-400">
-                                  <a href="tel:08832441091" className="hover:underline bg-purple-50 dark:bg-purple-950/40 px-1.5 py-0.5 rounded border border-purple-100 dark:border-purple-900/30">0883-2441091</a>
-                                  <span className="text-slate-300">|</span>
-                                  <a href="tel:181" className="hover:underline bg-purple-50 dark:bg-purple-950/40 px-1.5 py-0.5 rounded border border-purple-100 dark:border-purple-900/30">Toll-Free 181</a>
-                                </div>
-                              </div>
+
+                            {/* Call Buttons */}
+                            <div className="flex flex-wrap gap-2">
+                              <a 
+                                href="tel:08832441091" 
+                                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-black rounded-lg shadow-sm flex items-center transition-colors"
+                              >
+                                <PhoneCall className="w-3 h-3 mr-1" /> Call 0883-2441091
+                              </a>
+                              <a 
+                                href="tel:181" 
+                                className="px-3 py-1.5 bg-emerald-650 hover:bg-emerald-700 text-white text-[10px] font-black rounded-lg shadow-sm flex items-center transition-colors"
+                              >
+                                <PhoneCall className="w-3 h-3 mr-1" /> Call 181 (Toll-Free)
+                              </a>
                             </div>
                           </div>
                         </div>
