@@ -13,43 +13,43 @@ const LOCATION_PRESETS = [
   {
     id: 'rjy-station',
     name: 'Godavari Station Rd, Rajahmundry',
-    lat: 16.9891,
-    lng: 81.7835,
+    lat: 16.98416,
+    lng: 81.7839,
     nearbyStations: [
-      { id: 'p1', name: 'Disha Mahila Police Station Rajahmundry', dist: '0.6 km', phone: '0883-2471091', type: 'DISHA', lat: 17.00906, lng: 81.76968, address: 'Godavari Bund Road, Alcot Gardens, Rajahmundry' },
-      { id: 'p2', name: 'Three Town Police Station Danavaipeta', dist: '1.2 km', phone: '0883-2472233', type: 'POLICE', lat: 17.00915, lng: 81.76976, address: 'Godavari Bund Road, Alcot Gardens, Rajahmundry' },
-      { id: 'p3', name: 'Sakhi One Stop Centre GGH Compound', dist: '1.4 km', phone: '0883-2441091', type: 'SAKHI', lat: 16.9910, lng: 81.7840, address: 'District Hospital Compound, Rajahmundry' }
+      { id: 'p1', name: 'One Town Police Station Rajahmundry', dist: '0.8 km', phone: '0883-2423100', type: 'POLICE', lat: 16.9782, lng: 81.7765, address: 'Main Road, Mangalavaripeta, Rajahmundry' },
+      { id: 'p2', name: 'Three Town Police Station Rajahmundry', dist: '1.2 km', phone: '0883-2472233', type: 'POLICE', lat: 17.00915, lng: 81.76976, address: 'Godavari Bund Road, Alcot Gardens, Rajahmundry' },
+      { id: 'p3', name: 'Disha Mahila Police Station Rajahmundry', dist: '1.3 km', phone: '0883-2471091', type: 'DISHA', lat: 17.00906, lng: 81.76968, address: 'Godavari Bund Road, Alcot Gardens, Rajahmundry' }
     ]
   },
   {
     id: 'morampudi',
     name: 'Morampudi Junction, Rajahmundry East',
-    lat: 16.9750,
-    lng: 81.8020,
+    lat: 16.9926,
+    lng: 81.8142,
     nearbyStations: [
-      { id: 'p4', name: 'Bommuru Police Station Morampudi', dist: '0.8 km', phone: '0883-2465544', type: 'POLICE', lat: 16.9740, lng: 81.8010, address: 'Morampudi Highway Junction, Rajahmundry' },
-      { id: 'p5', name: 'Disha Emergency Command Unit Hub', dist: '1.1 km', phone: '1091', type: 'DISHA', lat: 16.9760, lng: 81.8030, address: 'NH-16 Morampudi Rapid Response Sector' }
+      { id: 'p4', name: 'Bommuru Police Station Morampudi', dist: '1.1 km', phone: '0883-2465544', type: 'POLICE', lat: 17.01373, lng: 81.80871, address: 'Padmavathi Nagar, NH-16, Rajahmundry' },
+      { id: 'p5', name: 'Disha Emergency Command Unit Hub', dist: '1.1 km', phone: '1091', type: 'DISHA', lat: 17.0135, lng: 81.8085, address: 'Padmavathi Nagar, NH-16, Rajahmundry' }
     ]
   },
   {
     id: 'kadiyam',
     name: 'Kadiyam Highway Junction, East Godavari',
-    lat: 16.9120,
-    lng: 81.8330,
+    lat: 16.9167,
+    lng: 81.8333,
     nearbyStations: [
-      { id: 'p6', name: 'Kadiyam Police Station', dist: '0.9 km', phone: '0883-2498765', type: 'POLICE', lat: 16.9110, lng: 81.8320, address: 'Kadiyam Main Road, East Godavari' },
-      { id: 'p7', name: 'Grama Sachivalayam Women Cell Kadiyam', dist: '1.5 km', phone: '0883-2498800', type: 'DISHA', lat: 16.9130, lng: 81.8350, address: 'Village Secretariat Office, Kadiyam' }
+      { id: 'p6', name: 'Kadiyam Police Station', dist: '0.8 km', phone: '0883-2498765', type: 'POLICE', lat: 16.9135, lng: 81.8174, address: 'Kakinada-Rajahmundry Road, Kadiyam' },
+      { id: 'p7', name: 'Grama Sachivalayam Women Cell Kadiyam', dist: '1.2 km', phone: '0883-2498800', type: 'DISHA', lat: 16.9150, lng: 81.8200, address: 'Village Secretariat Office, Kadiyam' }
     ]
   },
   {
     id: 'kakinada',
     name: 'Collectorate Compound, Kakinada',
-    lat: 16.9800,
-    lng: 82.2400,
+    lat: 16.966,
+    lng: 82.255,
     nearbyStations: [
-      { id: 'p8', name: 'Kakinada Town Police Station', dist: '0.5 km', phone: '0884-2334455', type: 'POLICE', lat: 16.9810, lng: 82.2410, address: 'Cinema Road, Kakinada' },
-      { id: 'p9', name: 'Sakhi One Stop Centre Kakinada', dist: '0.8 km', phone: '0884-2330044', type: 'SAKHI', lat: 16.9780, lng: 82.2380, address: 'Collectorate Compound, Kakinada' },
-      { id: 'p10', name: 'Disha Police Station Kakinada', dist: '1.0 km', phone: '0884-2378900', type: 'DISHA', lat: 16.9790, lng: 82.2390, address: 'Main Road, Kakinada' }
+      { id: 'p8', name: 'Kakinada Two-Town Police Station', dist: '0.7 km', phone: '0884-2334455', type: 'POLICE', lat: 16.9626, lng: 82.2361, address: 'Surya Rao Peta, Kakinada' },
+      { id: 'p9', name: 'Sakhi One Stop Centre Kakinada', dist: '0.5 km', phone: '0884-2330044', type: 'SAKHI', lat: 16.9650, lng: 82.2500, address: 'Collectorate Road, Kakinada' },
+      { id: 'p10', name: 'Disha Police Station Kakinada', dist: '0.7 km', phone: '0884-2378900', type: 'DISHA', lat: 16.9626, lng: 82.2361, address: 'Surya Rao Peta, Kakinada' }
     ]
   }
 ];
