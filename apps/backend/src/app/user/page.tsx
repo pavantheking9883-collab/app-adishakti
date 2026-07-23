@@ -1559,26 +1559,57 @@ export default function WomenUserApp() {
                           <button onClick={() => setIncidentDetails('')} className="text-[9px] text-slate-500 hover:text-slate-900 underline">Clear Flow</button>
                         </div>
 
-                        {/* Supportive Message & Counselor Suggestion */}
-                        <div className={`p-3.5 border-l-4 border-rose-500 rounded-r-2xl space-y-2.5 transition-all shadow-sm ${
-                          isLight ? 'bg-rose-50/40 text-slate-800' : 'bg-slate-900/60 text-slate-200'
+                        {/* Supportive Message & Counselor Suggestion Card */}
+                        <div className={`p-4 rounded-xl border space-y-3 shadow-sm ${
+                          isLight 
+                            ? 'bg-purple-50 border-purple-200 text-slate-800' 
+                            : 'bg-slate-900 border-purple-950 text-slate-100'
                         }`}>
-                          <p className="text-[10px] font-bold leading-relaxed">
-                            🤝 <span className="font-black text-rose-600 dark:text-rose-400">You are not alone.</span> {language === 'te' 
-                              ? 'మీరు ఎదుర్కొన్న సమస్యకు మేము చాలా విచారిస్తున్నాము. చింతించకండి, భారత ప్రభుత్వం ఇలాంటి చర్యలను కఠినంగా నిరోధిస్తుంది మరియు ప్రోత్సహించదు. చట్టపరమైన రక్షణలు మీ వైపే ఉన్నాయి.' 
-                              : 'We are truly sorry to hear about what you went through. Please don\'t worry, the Indian Government strictly prohibits and does not encourage these kinds of actions. You are fully protected.'}
-                          </p>
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-2 border-t border-rose-100 dark:border-rose-950/40 text-[9px]">
-                            <span className="font-semibold text-slate-500 dark:text-slate-400">
-                              💡 Need to talk? Speak with senior counselor <span className="font-black text-slate-700 dark:text-white">Dr. G. Hemalatha</span> before filing a complaint:
-                            </span>
-                            <div className="flex gap-1.5 font-mono shrink-0">
-                              <a href="tel:08832441091" className="px-2 py-0.5 bg-rose-600 hover:bg-rose-700 text-white font-black rounded transition-colors flex items-center shadow-sm">
-                                📞 0883-2441091
-                              </a>
-                              <a href="tel:181" className="px-2 py-0.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded transition-colors flex items-center shadow-sm">
-                                📞 Toll-Free 181
-                              </a>
+                          <div className="flex items-start space-x-2.5 text-[11px] leading-relaxed">
+                            <span className="text-base shrink-0">🤝</span>
+                            <div>
+                              <p className={`font-bold ${isLight ? 'text-slate-800' : 'text-slate-100'}`}>
+                                {language === 'te' 
+                                  ? 'మీరు ఎదుర్కొన్న సమస్యకు మేము చాలా విచారిస్తున్నాము. చింతించకండి, భారత ప్రభుత్వం ఇలాంటి చర్యలను ఏమాత్రం సహించదు మరియు కఠినంగా నిరోధిస్తుంది. చట్టం మీ వైపే ఉంది.' 
+                                  : 'We are truly sorry to hear about what you went through. Please do not worry, the Indian Government strictly prohibits and does not tolerate these kinds of actions. You are fully protected, and justice is on your side.'}
+                              </p>
+                              <p className={`mt-2 text-[10px] font-bold p-2.5 rounded-lg border ${
+                                isLight 
+                                  ? 'bg-white border-purple-100 text-slate-700' 
+                                  : 'bg-slate-950 border-purple-900/30 text-slate-300'
+                              }`}>
+                                💡 {language === 'te'
+                                  ? 'అధికారిక చట్టపరమైన ఫిర్యాదు చేయడానికి ముందు, మీ మానసిక ధైర్యానికి మరియు సరైన సలహాల కొరకు ఒక ప్రొఫెషనల్ కౌన్సిలర్‌ను సంప్రదించాల్సిందిగా మేము సూచిస్తున్నాము.'
+                                  : 'Before proceeding to file an official complaint, we suggest you speak with a professional counselor for emotional support and guidance.'}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          {/* Counselor Details Panel */}
+                          <div className={`p-3 rounded-xl text-[10px] space-y-1.5 shadow-sm ${
+                            isLight 
+                              ? 'bg-purple-900 text-white' 
+                              : 'bg-slate-950 text-slate-100 border border-purple-900/50'
+                          }`}>
+                            <div className="flex justify-between items-center border-b pb-1 border-white/10">
+                              <span className="font-black uppercase tracking-wider text-[8px] opacity-90">👩‍💼 RECOMMENDED COUNSELOR</span>
+                              <span className="font-bold text-[8px] bg-emerald-600 text-white px-1.5 py-0.2 rounded font-mono">24/7 ACTIVE</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="opacity-80">Name:</span>
+                              <span className="font-black">Dr. G. Hemalatha (Sr. Counselor)</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="opacity-80">Contact Centre:</span>
+                              <span className="font-medium">Sakhi One Stop Centre &amp; Women Helpline</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="opacity-80">Helpline:</span>
+                              <div className="flex space-x-1.5 font-mono font-black text-yellow-300">
+                                <a href="tel:08832441091" className="hover:underline">0883-2441091</a>
+                                <span className="opacity-50">/</span>
+                                <a href="tel:181" className="hover:underline">Toll-Free 181</a>
+                              </div>
                             </div>
                           </div>
                         </div>
