@@ -151,6 +151,110 @@ const REAL_AP_SCHEMES = [
   }
 ];
 
+// Vernacular Training Modules Data matching specific personas
+const UPSKILL_COURSES = [
+  {
+    id: 'c1',
+    persona: 'Student',
+    title: 'MNC Job Prep: Python & SQL Coding Bootcamp',
+    teluguTitle: 'సాఫ్ట్‌వేర్ ఉద్యోగ శిక్షణ: పైథాన్ & ఎస్క్యూఎల్',
+    duration: '6 Weeks • Self-Paced',
+    instructor: 'APSSDC & TCS Launchpad',
+    desc: 'Complete software development fundamentals for college graduates aiming to join top IT firms.',
+    curriculum: [
+      { step: 's1-1', title: 'Python Basics & Coding Constructs', desc: 'Variables, loops, arrays, and basic algorithmic problem-solving.' },
+      { step: 's1-2', title: 'SQL & Database Queries', desc: 'Writing SELECT statements, Joins, and aggregations.' },
+      { step: 's1-3', title: 'Resume Writing & Interview Etiquette', desc: 'Mock coding interview rounds and building a GitHub profile.' }
+    ],
+    difficulty: 'Beginner Friendly'
+  },
+  {
+    id: 'c2',
+    persona: 'Business Woman',
+    title: 'Micro-Enterprise Startup Guide: Zero to Hero',
+    teluguTitle: 'మహిళా స్వయం ఉపాధి: వ్యాపార ప్రణాళిక శిక్షణ',
+    duration: '4 Weeks • Live Workshops',
+    instructor: 'NIESBUD & DWCRA Incubation',
+    desc: 'Step-by-step training for launching a cottage business, handloom units, or food processing setup.',
+    curriculum: [
+      { step: 's2-1', title: 'Udyam Registration & Government Subsidies', desc: 'How to register under MSME portal and apply for TDP/NDA Super Six subsidies.' },
+      { step: 's2-2', title: 'GST Registration & Compliance', desc: 'Understanding basic taxation, invoicing, and local trade licenses.' },
+      { step: 's2-3', title: 'UPI Payments & QR Setup', desc: 'Setting up Google Pay Business, PhonePe, and digital accounting apps.' }
+    ],
+    difficulty: 'Essential for Startups'
+  },
+  {
+    id: 'c3',
+    persona: 'Homemaker',
+    title: 'Financial Independence & Household Budgeting',
+    teluguTitle: 'గృహిణుల ఆర్థిక స్వావలంబన & స్మార్ట్ సేవింగ్స్',
+    duration: '3 Weeks • Audio Modules',
+    instructor: 'SEBI Certified Advisors',
+    desc: 'Learn how to invest small monthly savings into secure government instruments and gain financial security.',
+    curriculum: [
+      { step: 's3-1', title: 'Post Office Savings & Sukanya Samriddhi Yojana', desc: 'High-interest secure saving instruments for families and girls.' },
+      { step: 's3-2', title: 'Introduction to Mutual Funds & SIPs', desc: 'How to invest as little as ₹500/month directly from your phone.' },
+      { step: 's3-3', title: 'Gold Loans & Smart Debt Management', desc: 'Utilizing family assets productively without falling into local money lender traps.' }
+    ],
+    difficulty: 'Highly Practical'
+  },
+  {
+    id: 'c4',
+    persona: 'Working Employee',
+    title: 'Corporate Safety, POSH Act & Workplace Rights',
+    teluguTitle: 'కార్పొరేట్ ఉద్యోగినుల భద్రత & పోష్ చట్టం అవగాహన',
+    duration: '1 Week • Video Lectures',
+    instructor: 'National Commission for Women (NCW)',
+    desc: 'Understand the legal protections under the POSH Act, reporting harassment, and negotiating fair wages.',
+    curriculum: [
+      { step: 's4-1', title: 'Understanding POSH Act (Prevention of Sexual Harassment)', desc: 'Defining workplace boundaries and filing claims with Internal Complaints Committees (ICC).' },
+      { step: 's4-2', title: 'Workplace Safety & Night Shift Travel Rights', desc: 'Employer responsibilities for secure night drops and GPS cabs.' },
+      { step: 's4-3', title: 'Workplace Assertiveness & Wage Negotiation', desc: 'Communicating effectively with management and peers.' }
+    ],
+    difficulty: 'Legal & Empowerment'
+  }
+];
+
+// MNC & Local Business Supplier Job Notifications for Women
+const MNC_JOBS = [
+  {
+    id: 'j1',
+    persona: 'Student',
+    company: 'Tata Consultancy Services (TCS)',
+    role: 'Cognitive Business Operations Trainee',
+    location: 'Rajahmundry / Vijayawada (AP)',
+    salary: '₹3.2 Lakhs per annum',
+    deadline: 'Apply by Aug 15, 2026',
+    requirements: 'Any non-tech graduate (BA, B.Com, B.Sc) passouts',
+    link: 'https://nextstep.tcs.com',
+    prepModuleId: 'c1'
+  },
+  {
+    id: 'j2',
+    persona: 'Working Employee',
+    company: 'Cognizant (CTS)',
+    role: 'Process Specialist - Data Operations',
+    location: 'Hyderabad / WFH Hybrid',
+    salary: '₹4.5 Lakhs per annum',
+    deadline: 'Apply by Aug 20, 2026',
+    requirements: '1-3 years corporate or data entry experience',
+    link: 'https://careers.cognizant.com',
+    prepModuleId: 'c4'
+  },
+  {
+    id: 'j3',
+    persona: 'Business Woman',
+    company: 'Meesho India Partnership Drive',
+    role: 'SHG Direct Supplier Program',
+    location: 'Andhra Pradesh (Remote)',
+    salary: '₹1.5 Lakhs to ₹5 Lakhs (Revenue share)',
+    deadline: 'Rolling Registrations',
+    requirements: 'Any registered DWCRA group or woman entrepreneur',
+    link: 'https://supplier.meesho.com',
+    prepModuleId: 'c2'
+  }
+];
+
 function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
   const R = 6371; // Radius of the earth in km
   const dLat = deg2rad(lat2 - lat1);
@@ -347,6 +451,8 @@ export default function WomenUserApp() {
   const [consultationBooked, setConsultationBooked] = useState(false);
   const [selectedSchemeCategory, setSelectedSchemeCategory] = useState('All');
   const [schemeSearchQuery, setSchemeSearchQuery] = useState('');
+  const [upskillPersonaFilter, setUpskillPersonaFilter] = useState<'All' | 'Student' | 'Homemaker' | 'Working Employee' | 'Business Woman'>('All');
+  const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>({});
 
   const [roadDistances, setRoadDistances] = useState<Record<string, string>>({});
 
@@ -2211,150 +2317,294 @@ export default function WomenUserApp() {
               )}
 
               {/* TAB 4: UPSKILL - ADISHAKTI ACADEMY */}
-              {activeTab === 'UPSKILL' && (
-                <div className="space-y-3.5">
-                  <div className="flex items-center space-x-2 border-b pb-2 border-purple-100">
-                    <Sparkles className="w-5 h-5 text-fuchsia-600" />
-                    <h2 className={`text-sm font-black uppercase tracking-wider ${isLight ? 'text-purple-900' : 'text-white'}`}>
-                      Adishakti Vernacular Academy
-                    </h2>
-                  </div>
+              {activeTab === 'UPSKILL' && (() => {
+                const personas = ['All', 'Student', 'Homemaker', 'Working Employee', 'Business Woman'];
+                const filteredCourses = UPSKILL_COURSES.filter(
+                  (c) => upskillPersonaFilter === 'All' || c.persona === upskillPersonaFilter
+                );
+                const filteredJobs = MNC_JOBS.filter(
+                  (j) => upskillPersonaFilter === 'All' || j.persona === upskillPersonaFilter
+                );
 
-                  {/* 1. Interactive Safe UPI simulator card */}
-                  <div className={`border p-3.5 rounded-2xl space-y-3 shadow-sm ${isLight ? 'bg-white border-purple-200' : 'bg-slate-900 border-slate-800'}`}>
-                    <div className="flex items-center space-x-1.5 text-xs font-black text-purple-700">
-                      <AlertTriangle className="w-4.5 h-4.5 text-rose-600 animate-pulse" />
-                      <span>Safe UPI Payment Training Simulator</span>
+                return (
+                  <div className="space-y-3.5 flex-1 overflow-y-auto pr-1">
+                    {/* Top Academy Title */}
+                    <div className="flex items-center space-x-1.5 border-b pb-2 border-purple-100 dark:border-slate-800">
+                      <Sparkles className="w-5 h-5 text-fuchsia-600 animate-pulse" />
+                      <h2 className={`text-xs font-black uppercase tracking-wider ${isLight ? 'text-purple-900' : 'text-white'}`}>
+                        {language === 'te' ? 'ఆడిశక్తి అకాడమీ & కెరీర్ పోర్టల్' : 'Adishakti Academy & Career'}
+                      </h2>
                     </div>
-                    <p className="text-[10px] text-slate-500 leading-relaxed">
-                      Practice how to verify business details before typing your UPI PIN. Avoid cyber fraud scams.
-                    </p>
 
-                    {upiStep === 1 ? (
-                      <div className="bg-purple-50/50 p-3 rounded-xl border border-purple-100 space-y-2">
-                        <div className="flex justify-between items-center bg-white p-2 rounded-lg border text-[10px] font-bold">
-                          <span>Pay To: Fake Winner Lottery Desk</span>
-                          <span className="text-red-600 font-extrabold">₹5,000</span>
-                        </div>
-                        <p className="text-[9px] text-rose-700 font-bold bg-rose-50 p-1.5 rounded border border-rose-200">
-                          ⚠️ warning: True merchants never ask you to enter your UPI PIN to RECEIVE money.
-                        </p>
-                        <div className="flex space-x-2">
+                    {/* Persona Selector */}
+                    <div className="space-y-1">
+                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-wider block">
+                        {language === 'te' ? 'మీ ప్రొఫైల్ ఎంచుకోండి:' : 'Select Your Profile Persona:'}
+                      </label>
+                      <div className="flex space-x-1.5 overflow-x-auto pb-1 text-[9px] scrollbar-thin">
+                        {personas.map((per) => (
                           <button
-                            onClick={() => {
-                              alert('Excellent Choice! You successfully rejected a lottery payment scam.');
-                              setUpiStep(1);
-                              setSimPin('');
-                            }}
-                            className="flex-1 py-1.5 bg-emerald-600 text-white font-bold text-[10px] rounded-lg shadow"
+                            key={per}
+                            onClick={() => setUpskillPersonaFilter(per as any)}
+                            className={`px-3 py-1 rounded-full border shrink-0 font-bold transition ${
+                              upskillPersonaFilter === per
+                                ? 'bg-fuchsia-600 border-fuchsia-700 text-white shadow-sm'
+                                : isLight
+                                ? 'bg-purple-50 border-purple-100 text-purple-700 hover:bg-purple-100'
+                                : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800'
+                            }`}
                           >
-                            Decline &amp; Report Scam
+                            {per}
                           </button>
-                          <button
-                            onClick={() => setUpiStep(2)}
-                            className="flex-1 py-1.5 bg-slate-200 text-slate-700 font-bold text-[10px] rounded-lg"
-                          >
-                            Proceed to Practice PIN
-                          </button>
-                        </div>
+                        ))}
                       </div>
-                    ) : (
-                      <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2.5 text-white">
-                        <div className="flex justify-between items-center text-[10px] border-b border-slate-800 pb-1">
-                          <span className="text-slate-400">NPCI Simulator screen</span>
-                          <span className="text-amber-400 font-bold">Secure Keyboard</span>
-                        </div>
-                        
-                        <div className="text-center py-1">
-                          <p className="text-[9px] text-slate-400">ENTER 4-DIGIT UPI PIN</p>
-                          <div className="flex justify-center space-x-2.5 mt-1.5">
-                            {[0, 1, 2, 3].map((idx) => (
-                              <div key={idx} className="w-3.5 h-3.5 rounded-full border border-slate-700 flex items-center justify-center bg-slate-900">
-                                {simPin.length > idx && <span className="w-1.5 h-1.5 rounded-full bg-purple-400"></span>}
+                    </div>
+
+                    {/* Section 1: MNC & Local Jobs Board */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <h3 className={`text-[10px] font-black uppercase tracking-wide ${isLight ? 'text-slate-900' : 'text-white'}`}>
+                          💼 {language === 'te' ? 'జాబ్ నోటిఫికేషన్స్' : 'MNC Job Notifications'}
+                        </h3>
+                        <span className="text-[8px] bg-purple-100 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-1.5 py-0.2 rounded font-mono font-bold">Real Opportunities</span>
+                      </div>
+
+                      <div className="space-y-2.5">
+                        {filteredJobs.length > 0 ? (
+                          filteredJobs.map((job) => (
+                            <div
+                              key={job.id}
+                              className={`p-3 border rounded-2xl space-y-2 shadow-sm transition ${
+                                isLight ? 'bg-white border-purple-100' : 'bg-slate-900/60 border-slate-800'
+                              }`}
+                            >
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <h4 className={`text-xs font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>{job.role}</h4>
+                                  <p className="text-[9px] text-fuchsia-600 font-bold">{job.company}</p>
+                                </div>
+                                <span className="text-[8px] bg-slate-100 dark:bg-slate-950 text-slate-500 border border-slate-200 dark:border-slate-850 px-1.5 py-0.5 rounded font-bold font-mono">
+                                  {job.persona}
+                                </span>
                               </div>
+
+                              <div className="text-[9px] grid grid-cols-2 gap-1 text-slate-500 font-medium">
+                                <p>📍 {job.location}</p>
+                                <p>💰 {job.salary}</p>
+                                <p className="col-span-2 text-rose-600 font-bold">⏳ {job.deadline}</p>
+                                <p className="col-span-2 text-[8px] italic leading-tight text-slate-400 mt-0.5">Req: {job.requirements}</p>
+                              </div>
+
+                              <div className="flex space-x-2 pt-1">
+                                <a
+                                  href={job.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex-1 text-center py-1.5 bg-purple-700 hover:bg-purple-800 text-white font-bold text-[9px] rounded-lg shadow-sm"
+                                >
+                                  {language === 'te' ? 'అప్లై చేసుకోండి ↗' : 'Apply Online ↗'}
+                                </a>
+                                <button
+                                  onClick={() => {
+                                    const el = document.getElementById(job.prepModuleId);
+                                    if (el) {
+                                      el.scrollIntoView({ behavior: 'smooth' });
+                                      el.classList.add('animate-pulse');
+                                      setTimeout(() => el.classList.remove('animate-pulse'), 2000);
+                                    }
+                                  }}
+                                  className="flex-1 py-1.5 bg-slate-200 hover:bg-slate-250 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-850 dark:text-slate-200 font-bold text-[9px] rounded-lg"
+                                >
+                                  {language === 'te' ? 'ట్రైనింగ్ ప్రారంభించండి' : 'Start Prep Course'}
+                                </button>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="text-center py-4 text-slate-500 text-[9px]">
+                            No jobs matching active filters.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Section 2: Structured Training Modules */}
+                    <div className="space-y-2.5">
+                      <h3 className={`text-[10px] font-black uppercase tracking-wide ${isLight ? 'text-slate-900' : 'text-white'}`}>
+                        🎓 {language === 'te' ? 'వ్యక్తిగత శిక్షణ మోడ్యూల్స్' : 'Targeted Training Modules'}
+                      </h3>
+
+                      <div className="space-y-3.5">
+                        {filteredCourses.map((c) => {
+                          // Calculate progress percentage
+                          const courseSteps = c.curriculum.map(s => s.step);
+                          const completedCount = courseSteps.filter(stepId => !!completedSteps[stepId]).length;
+                          const progressPercent = Math.round((completedCount / courseSteps.length) * 100) || 0;
+
+                          return (
+                            <div
+                              id={c.id}
+                              key={c.id}
+                              className={`p-3.5 border rounded-2xl space-y-2.5 shadow-sm transition ${
+                                isLight ? 'bg-white border-purple-100' : 'bg-slate-900/60 border-slate-800'
+                              }`}
+                            >
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <h4 className={`text-xs font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>{c.title}</h4>
+                                  <p className="text-[9px] font-bold text-purple-600 dark:text-purple-400">{c.teluguTitle}</p>
+                                </div>
+                                <span className="text-[8px] bg-fuchsia-50 dark:bg-fuchsia-950/40 text-fuchsia-700 dark:text-fuchsia-400 border border-fuchsia-100 dark:border-fuchsia-900/40 px-1.5 py-0.5 rounded font-bold font-mono shrink-0">
+                                  {c.persona}
+                                </span>
+                              </div>
+
+                              <p className={`text-[9.5px] leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>{c.desc}</p>
+
+                              <div className="text-[8px] flex justify-between text-slate-500 font-mono">
+                                <span>⏳ {c.duration}</span>
+                                <span>🏢 {c.instructor}</span>
+                              </div>
+
+                              {/* Progress bar */}
+                              <div className="space-y-1">
+                                <div className="flex justify-between text-[8px] font-bold font-mono">
+                                  <span className="text-slate-500">Course Progress</span>
+                                  <span className="text-fuchsia-600">{progressPercent}%</span>
+                                </div>
+                                <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden">
+                                  <div
+                                    className="h-full bg-gradient-to-r from-purple-600 to-fuchsia-500 rounded-full transition-all duration-300"
+                                    style={{ width: `${progressPercent}%` }}
+                                  ></div>
+                                </div>
+                              </div>
+
+                              {/* Curriculum list */}
+                              <div className="space-y-2 pt-1 border-t border-slate-100 dark:border-slate-850">
+                                <p className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Curriculum Roadmap:</p>
+                                {c.curriculum.map((cur) => {
+                                  const isChecked = !!completedSteps[cur.step];
+                                  return (
+                                    <label
+                                      key={cur.step}
+                                      className={`flex items-start space-x-2.5 p-2 rounded-xl border transition cursor-pointer select-none ${
+                                        isChecked
+                                          ? isLight ? 'bg-emerald-50/50 border-emerald-100' : 'bg-emerald-950/20 border-emerald-900/30'
+                                          : isLight ? 'bg-slate-50/30 border-slate-100 hover:bg-slate-50' : 'bg-slate-950/20 border-slate-900 hover:bg-slate-900'
+                                      }`}
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        checked={isChecked}
+                                        onChange={() => {
+                                          setCompletedSteps((prev) => ({
+                                            ...prev,
+                                            [cur.step]: !prev[cur.step]
+                                          }));
+                                        }}
+                                        className="mt-0.5 rounded border-slate-300 text-fuchsia-600 focus:ring-fuchsia-500 h-3 w-3"
+                                      />
+                                      <div className="text-[9.5px]">
+                                        <p className={`font-bold leading-tight ${isChecked ? 'text-emerald-700 dark:text-emerald-400 line-through' : isLight ? 'text-slate-800' : 'text-slate-200'}`}>
+                                          {cur.title}
+                                        </p>
+                                        <p className="text-[8.5px] text-slate-500 leading-tight mt-0.5">{cur.desc}</p>
+                                      </div>
+                                    </label>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Section 3: Safe UPI Simulator (Safety Training Module) */}
+                    <div className={`border p-3.5 rounded-2xl space-y-3 shadow-sm ${isLight ? 'bg-white border-purple-200' : 'bg-slate-900 border-slate-800'}`}>
+                      <div className="flex items-center space-x-1.5 text-xs font-black text-purple-700">
+                        <AlertTriangle className="w-4.5 h-4.5 text-rose-600 animate-pulse" />
+                        <span>Safe UPI Payment Training Simulator</span>
+                      </div>
+                      <p className="text-[10px] text-slate-500 leading-relaxed">
+                        Practice how to verify business details before typing your UPI PIN. Avoid cyber fraud scams.
+                      </p>
+
+                      {upiStep === 1 ? (
+                        <div className="bg-purple-50/50 p-3 rounded-xl border border-purple-100 space-y-2">
+                          <div className="flex justify-between items-center bg-white p-2 rounded-lg border text-[10px] font-bold">
+                            <span>Pay To: Fake Winner Lottery Desk</span>
+                            <span className="text-red-600 font-extrabold">₹5,000</span>
+                          </div>
+                          <p className="text-[9px] text-rose-700 font-bold bg-rose-50 p-1.5 rounded border border-rose-200">
+                            ⚠️ warning: True merchants never ask you to enter your UPI PIN to RECEIVE money.
+                          </p>
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => {
+                                alert('Excellent Choice! You successfully rejected a lottery payment scam.');
+                                setUpiStep(1);
+                                setSimPin('');
+                              }}
+                              className="flex-1 py-1.5 bg-emerald-600 text-white font-bold text-[10px] rounded-lg shadow"
+                            >
+                              Decline &amp; Report Scam
+                            </button>
+                            <button
+                              onClick={() => setUpiStep(2)}
+                              className="flex-1 py-1.5 bg-slate-200 text-slate-700 font-bold text-[10px] rounded-lg"
+                            >
+                              Proceed to Practice PIN
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2.5 text-white">
+                          <div className="flex justify-between items-center text-[10px] border-b border-slate-800 pb-1">
+                            <span className="text-slate-400">NPCI Simulator screen</span>
+                            <span className="text-amber-400 font-bold">Secure Keyboard</span>
+                          </div>
+                          
+                          <div className="text-center py-1">
+                            <p className="text-[9px] text-slate-400">ENTER 4-DIGIT UPI PIN</p>
+                            <div className="flex justify-center space-x-2.5 mt-1.5">
+                              {[0, 1, 2, 3].map((idx) => (
+                                <div key={idx} className="w-3.5 h-3.5 rounded-full border border-slate-700 flex items-center justify-center bg-slate-900">
+                                  {simPin.length > idx && <span className="w-1.5 h-1.5 rounded-full bg-purple-400"></span>}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Custom security Keypad click simulator */}
+                          <div className="grid grid-cols-3 gap-1 max-w-[150px] mx-auto">
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
+                              <button
+                                key={num}
+                                onClick={() => {
+                                  if (simPin.length < 4) {
+                                    const nextPin = simPin + num;
+                                    setSimPin(nextPin);
+                                    if (nextPin.length === 4) {
+                                      alert('Simulator verified: Practice session completed successfully! Never share this PIN with anyone.');
+                                      setUpiStep(1);
+                                      setSimPin('');
+                                    }
+                                  }
+                                }}
+                                className="py-1 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded font-bold text-[10px]"
+                              >
+                                {num}
+                              </button>
                             ))}
                           </div>
                         </div>
-
-                        {/* Custom security Keypad click simulator */}
-                        <div className="grid grid-cols-3 gap-1 max-w-[150px] mx-auto">
-                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
-                            <button
-                              key={num}
-                              onClick={() => {
-                                if (simPin.length < 4) {
-                                  const nextPin = simPin + num;
-                                  setSimPin(nextPin);
-                                  if (nextPin.length === 4) {
-                                    alert('Simulator verified: Practice session completed successfully! Never share this PIN with anyone.');
-                                    setUpiStep(1);
-                                    setSimPin('');
-                                  }
-                                }
-                              }}
-                              className="py-1 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded font-bold text-[10px]"
-                            >
-                              {num}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* 2. Self Help Group (SHG) Enterprise Incubation Cards */}
-                  <div className={`border p-3.5 rounded-2xl space-y-3 shadow-sm ${isLight ? 'bg-white border-purple-200' : 'bg-slate-900 border-slate-800'}`}>
-                    <div className="flex items-center space-x-1.5 text-xs font-black text-purple-700">
-                      <Award className="w-4.5 h-4.5 text-indigo-600" />
-                      <span>SHG Enterprise Incubation Center</span>
-                    </div>
-
-                    <div className="space-y-2">
-                      {[
-                        { title: 'Organic Food & Pickle Units', steps: 'Get FSSAI license, design packaging, enroll in DWCRA bazaar distribution.', icon: '🥗' },
-                        { title: 'Uppada Handloom Marketing', steps: 'Create digital posters, sell directly on SHG Market tab to eliminate middlemen.', icon: '🧵' },
-                        { title: 'Rural Tailoring & Garments', steps: 'Register for AP Government tailoring machines subsidy scheme under DWCRA.', icon: '✂️' }
-                      ].map((item, idx) => (
-                        <div key={idx} className="p-2.5 rounded-xl border border-purple-100 bg-purple-50/20 flex space-x-2.5 items-start">
-                          <span className="text-lg">{item.icon}</span>
-                          <div>
-                            <h4 className="text-[10px] font-black text-purple-950">{item.title}</h4>
-                            <p className="text-[9px] text-slate-600 mt-0.5 leading-relaxed">{item.steps}</p>
-                          </div>
-                        </div>
-                      ))}
+                      )}
                     </div>
                   </div>
-
-                  {/* 3. AP Government Skill Development (APSSDC) integration */}
-                  <div className={`border p-3.5 rounded-2xl space-y-3 shadow-sm ${isLight ? 'bg-white border-purple-200' : 'bg-slate-900 border-slate-800'}`}>
-                    <div className="flex items-center space-x-1.5 text-xs font-black text-purple-700">
-                      <BookOpen className="w-4 h-4 text-emerald-600" />
-                      <span>AP Government Free Certificate Programs</span>
-                    </div>
-
-                    <div className="space-y-2">
-                      {[
-                        { course: 'Digital Marketing & Social Media for Artisans', duration: '4 weeks • Hindi/Telugu', status: 'APSSDC Verified' },
-                        { course: 'Basic Computers, Excel & Online Banking', duration: '2 weeks • Telugu', status: 'DWCRA Approved' }
-                      ].map((c, idx) => (
-                        <div key={idx} className="p-2.5 rounded-xl border border-slate-100 bg-slate-50/50 flex justify-between items-center text-[10px]">
-                          <div>
-                            <p className="font-bold text-slate-900">{c.course}</p>
-                            <p className="text-[9px] text-slate-500 font-mono mt-0.5">{c.duration} • {c.status}</p>
-                          </div>
-                          <button
-                            onClick={() => alert(`Registration request submitted for: ${c.course}`)}
-                            className="px-2.5 py-1 bg-purple-700 text-white font-bold rounded-lg text-[9px] shadow"
-                          >
-                            Register
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* TAB 5: MARKET */}
               {activeTab === 'MARKET' && (
