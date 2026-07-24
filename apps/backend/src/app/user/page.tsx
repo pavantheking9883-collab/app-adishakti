@@ -252,7 +252,6 @@ export default function WomenUserApp() {
 
   // Double verification action modal triggers
   const [activeConfirmType, setActiveConfirmType] = useState<'WARNING' | 'SOS' | 'SAFE' | null>(null);
-  const [leafletLoaded, setLeafletLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -263,8 +262,6 @@ export default function WomenUserApp() {
   const [generatedScript, setGeneratedScript] = useState('');
   const [consultationBooked, setConsultationBooked] = useState(false);
 
-  const leafletMapRef = useRef<any>(null);
-  const leafletMarkerRef = useRef<any>(null);
   const [roadDistances, setRoadDistances] = useState<Record<string, string>>({});
 
   // Asynchronously fetch real driving distances using free OSRM API
@@ -531,99 +528,7 @@ export default function WomenUserApp() {
     };
   }, []);
 
-  // Load and inject MapLibre GL dynamically
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
 
-    if ((window as any).maplibregl) {
-      setLeafletLoaded(true);
-      return;
-    }
-
-    // Append MapLibre GL script dynamically
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/maplibre-gl@4.5.0/dist/maplibre-gl.js';
-    script.async = true;
-    script.onload = () => {
-      setLeafletLoaded(true);
-    };
-    document.body.appendChild(script);
-  }, []);
-
-  // Initialize and synchronize MapLibre map view
-  useEffect(() => {
-    if (!leafletLoaded || typeof window === 'undefined') return;
-    const maplibregl = (window as any).maplibregl;
-    if (!maplibregl) return;
-
-    const mapElement = document.getElementById('leaflet-map');
-    if (!mapElement) return;
-
-    // Check if map is initialized and container is still valid in current DOM
-    if (leafletMapRef.current) {
-      const container = leafletMapRef.current.getContainer();
-      if (container === mapElement) {
-        const currentLatLng = leafletMarkerRef.current?.getLngLat();
-        if (currentLatLng && (currentLatLng.lat !== selectedLoc.lat || currentLatLng.lng !== selectedLoc.lng)) {
-          leafletMapRef.current.setCenter([selectedLoc.lng, selectedLoc.lat]);
-          leafletMarkerRef.current.setLngLat([selectedLoc.lng, selectedLoc.lat]);
-          setTimeout(() => {
-            leafletMapRef.current?.resize();
-          }, 100);
-        }
-        return;
-      } else {
-        // Clean up unmounted instance before re-initializing
-        try {
-          leafletMapRef.current.remove();
-        } catch (e) {
-          console.warn('MapLibre cleanup warning:', e);
-        }
-        leafletMapRef.current = null;
-        leafletMarkerRef.current = null;
-      }
-    }
-
-    // Initialize MapLibre GL map container on the DOM element
-    try {
-      const map = new maplibregl.Map({
-        container: 'leaflet-map',
-        style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
-        center: [selectedLoc.lng, selectedLoc.lat],
-        zoom: 14,
-        attributionControl: false
-      });
-
-      // Add navigation controls
-      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
-
-      // Add a draggable marker
-      const marker = new maplibregl.Marker({ draggable: true })
-        .setLngLat([selectedLoc.lng, selectedLoc.lat])
-        .addTo(map);
-
-      marker.on('dragend', () => {
-        const lngLat = marker.getLngLat();
-        setSelectedLoc((prev: any) => ({
-          ...prev,
-          id: 'live-gps',
-          name: 'Selected Pin Location',
-          lat: lngLat.lat,
-          lng: lngLat.lng
-        }));
-      });
-
-      leafletMapRef.current = map;
-      leafletMarkerRef.current = marker;
-
-      // Crucial: resize after map renders in DOM
-      setTimeout(() => {
-        map.resize();
-      }, 150);
-    } catch (err) {
-      console.error('MapLibre GL Map Init Error:', err);
-    }
-  }, [leafletLoaded, selectedLoc.lat, selectedLoc.lng, activeTab]);
 
   // Free public Geocoding search handler (using Nominatim OpenStreetMap API)
   const handleAddressSearch = async () => {
@@ -1577,13 +1482,17 @@ export default function WomenUserApp() {
                         )}
                       </div>
 
-                      <div 
-                        id="leaflet-map" 
-                        className="border border-purple-300 rounded-2xl overflow-hidden shadow-md h-[180px] w-full"
-                        style={{ zIndex: 1 }}
-                      ></div>
+                      <div className="border border-purple-300 rounded-2xl overflow-hidden shadow-md">
+                        <iframe
+                          title="Live Accurate Location Map"
+                          width="100%"
+                          height="180"
+                          src={osmEmbedUrl}
+                          style={{ border: 0 }}
+                        ></iframe>
+                      </div>
                       <span className="text-[8px] font-black text-slate-500 block text-center animate-pulse">
-                        🎯 Drag map pin or search address to locate yourself!
+                        🎯 Map updates automatically using high-accuracy GPS or address searches!
                       </span>
                     </div>
                   )}
