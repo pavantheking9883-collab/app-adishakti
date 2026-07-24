@@ -268,7 +268,8 @@ const INITIAL_MARKET_PRODUCTS = [
     phone: '+91 94401 88234',
     location: 'Uppada, Kakinada District',
     desc: 'Lightweight authentic Uppada Jamdani silk saree with zari border. Direct weaver price.',
-    badge: 'DWCRA Certified'
+    badge: 'DWCRA Certified',
+    image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&auto=format&fit=crop'
   },
   {
     id: 'mp2',
@@ -281,7 +282,8 @@ const INITIAL_MARKET_PRODUCTS = [
     phone: '+91 98765 43210',
     location: 'Danavaipeta, Rajahmundry',
     desc: 'Made with organic Kothapalli mangoes and cold-pressed sesame oil. No artificial preservatives.',
-    badge: 'FSSAI Approved'
+    badge: 'FSSAI Approved',
+    image: 'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?w=600&auto=format&fit=crop'
   },
   {
     id: 'mp3',
@@ -294,7 +296,8 @@ const INITIAL_MARKET_PRODUCTS = [
     phone: '+91 91234 56789',
     location: 'Surya Rao Peta, Kakinada',
     desc: 'Durable eco-friendly jute bags with zip closure for daily shopping and office use.',
-    badge: 'Eco Friendly'
+    badge: 'Eco Friendly',
+    image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&auto=format&fit=crop'
   },
   {
     id: 'mp4',
@@ -307,7 +310,8 @@ const INITIAL_MARKET_PRODUCTS = [
     phone: '+91 94901 12233',
     location: 'Rampachodavaram Agency Area',
     desc: 'Naturally collected forest honey and traditional bilona method cow ghee.',
-    badge: '100% Organic'
+    badge: '100% Organic',
+    image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&auto=format&fit=crop'
   },
   {
     id: 'mp5',
@@ -320,7 +324,8 @@ const INITIAL_MARKET_PRODUCTS = [
     phone: '+91 98480 99887',
     location: 'Kondapalli, NTR District',
     desc: 'Authentic Poniki wood hand-carved dancing dolls painted with non-toxic colors.',
-    badge: 'GI Tagged Art'
+    badge: 'GI Tagged Art',
+    image: 'https://images.unsplash.com/photo-1566438480900-0ff09be85425?w=600&auto=format&fit=crop'
   }
 ];
 
@@ -548,6 +553,13 @@ export default function WomenUserApp() {
       return;
     }
 
+    const categorySampleImages: Record<string, string> = {
+      'Handlooms': 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&auto=format&fit=crop',
+      'Food & Pickles': 'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?w=600&auto=format&fit=crop',
+      'Handicrafts': 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&auto=format&fit=crop',
+      'Organic Products': 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&auto=format&fit=crop'
+    };
+
     const newItem = {
       id: 'mp-' + Date.now(),
       name: newProdName,
@@ -559,7 +571,8 @@ export default function WomenUserApp() {
       phone: newProdPhone || phone || loginPhone,
       location: newProdLocation,
       desc: newProdDesc || 'Freshly handmade product listed by DWCRA artisan.',
-      badge: 'DWCRA Listed'
+      badge: 'DWCRA Listed',
+      image: categorySampleImages[newProdCategory] || 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&auto=format&fit=crop'
     };
 
     setMarketProducts([newItem, ...marketProducts]);
@@ -3104,20 +3117,37 @@ export default function WomenUserApp() {
                               isLight ? 'bg-white border-purple-200' : 'bg-slate-900/60 border-slate-800'
                             }`}
                           >
-                            <div className="flex justify-between items-start">
-                              <div className="space-y-0.5">
-                                <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold border font-mono ${
-                                  isLight ? 'bg-purple-100 text-purple-900 border-purple-200' : 'bg-purple-950/60 text-purple-300 border-purple-900'
-                                }`}>
-                                  {prod.category}
+                            <div className="flex space-x-3 items-start">
+                              {/* Product Image Thumbnail */}
+                              <div className={`w-20 h-20 rounded-xl overflow-hidden shrink-0 border relative shadow-sm ${
+                                isLight ? 'border-purple-200 bg-purple-50' : 'border-slate-800 bg-slate-950'
+                              }`}>
+                                <img
+                                  src={prod.image}
+                                  alt={prod.name}
+                                  className="w-full h-full object-cover"
+                                />
+                                <span className="absolute bottom-1 left-1 text-[7.5px] bg-slate-950/80 text-amber-300 px-1 py-0.2 rounded font-mono font-bold">
+                                  DWCRA
                                 </span>
-                                <h3 className={`text-xs font-black pt-1 ${isLight ? 'text-slate-900' : 'text-white'}`}>{prod.name}</h3>
-                                <p className={`text-[9.5px] font-bold ${isLight ? 'text-purple-700' : 'text-purple-300'}`}>{prod.teluguName}</p>
                               </div>
 
-                              <div className="text-right shrink-0">
-                                <span className="text-sm font-black text-emerald-600 block font-mono">₹{prod.price.toLocaleString()}</span>
-                                <span className="text-[8px] text-slate-400 font-bold block">{prod.unit}</span>
+                              <div className="flex-1 space-y-1">
+                                <div className="flex justify-between items-start">
+                                  <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold border font-mono ${
+                                    isLight ? 'bg-purple-100 text-purple-900 border-purple-200' : 'bg-purple-950/60 text-purple-300 border-purple-900'
+                                  }`}>
+                                    {prod.category}
+                                  </span>
+
+                                  <div className="text-right shrink-0">
+                                    <span className="text-sm font-black text-emerald-600 block font-mono">₹{prod.price.toLocaleString()}</span>
+                                    <span className="text-[8px] text-slate-400 font-bold block">{prod.unit}</span>
+                                  </div>
+                                </div>
+
+                                <h3 className={`text-xs font-black leading-tight ${isLight ? 'text-slate-900' : 'text-white'}`}>{prod.name}</h3>
+                                <p className={`text-[9.5px] font-bold ${isLight ? 'text-purple-700' : 'text-purple-300'}`}>{prod.teluguName}</p>
                               </div>
                             </div>
 
