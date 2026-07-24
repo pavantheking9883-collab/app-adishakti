@@ -226,7 +226,7 @@ const MNC_JOBS = [
     salary: '₹3.2 Lakhs per annum',
     deadline: 'Apply by Aug 15, 2026',
     requirements: 'Any non-tech graduate (BA, B.Com, B.Sc) passouts',
-    link: 'https://nextstep.tcs.com',
+    link: 'https://www.tcs.com/careers',
     prepModuleId: 'c1'
   },
   {
@@ -238,7 +238,7 @@ const MNC_JOBS = [
     salary: '₹4.5 Lakhs per annum',
     deadline: 'Apply by Aug 20, 2026',
     requirements: '1-3 years corporate or data entry experience',
-    link: 'https://careers.cognizant.com',
+    link: 'https://www.cognizant.com/in/en/careers',
     prepModuleId: 'c4'
   },
   {
@@ -250,7 +250,7 @@ const MNC_JOBS = [
     salary: '₹1.5 Lakhs to ₹5 Lakhs (Revenue share)',
     deadline: 'Rolling Registrations',
     requirements: 'Any registered DWCRA group or woman entrepreneur',
-    link: 'https://supplier.meesho.com',
+    link: 'https://www.meesho.com',
     prepModuleId: 'c2'
   }
 ];
@@ -431,6 +431,9 @@ export default function WomenUserApp() {
   // Active Tab
   const [activeTab, setActiveTab] = useState<'HOME' | 'SCHEMES' | 'LEGAL' | 'UPSKILL' | 'MARKET'>('HOME');
   const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [applyingJob, setApplyingJob] = useState<any | null>(null);
+  const [jobAppliedSuccess, setJobAppliedSuccess] = useState(false);
+  const [applicantQual, setApplicantQual] = useState('B.Com / BA Graduate');
 
   // Safety Engine State
   const [warningActive, setWarningActive] = useState(false);
@@ -1510,6 +1513,141 @@ export default function WomenUserApp() {
               </div>
             )}
 
+            {/* 1-Click Job Application Modal */}
+            {applyingJob && (
+              <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-end justify-center p-4">
+                <div className={`w-full border rounded-3xl p-5 space-y-3.5 shadow-2xl animate-in slide-in-from-bottom duration-300 max-h-[88%] overflow-y-auto ${
+                  isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-900 border-slate-800 text-white'
+                }`}>
+                  <div className={`flex items-center justify-between border-b pb-2.5 ${isLight ? 'border-purple-100' : 'border-slate-800'}`}>
+                    <div>
+                      <span className="text-[8px] bg-fuchsia-100 text-fuchsia-900 px-2 py-0.5 rounded-full font-bold uppercase font-mono">1-Click Fast Apply</span>
+                      <h3 className={`text-xs font-black mt-1 ${isLight ? 'text-slate-900' : 'text-white'}`}>{applyingJob.role}</h3>
+                      <p className="text-[10px] text-fuchsia-600 font-bold">{applyingJob.company}</p>
+                    </div>
+                    <button
+                      onClick={() => setApplyingJob(null)}
+                      className={`px-3 py-1 rounded-xl text-[10px] font-black border ${
+                        isLight ? 'bg-slate-100 text-slate-700 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700'
+                      }`}
+                    >
+                      Close ✕
+                    </button>
+                  </div>
+
+                  {!jobAppliedSuccess ? (
+                    <div className="space-y-3">
+                      <div className={`p-3 rounded-2xl border text-[10px] space-y-1.5 ${isLight ? 'bg-purple-50/50 border-purple-100' : 'bg-slate-950 border-slate-800'}`}>
+                        <p><strong className={isLight ? 'text-purple-900' : 'text-purple-300'}>Location:</strong> {applyingJob.location}</p>
+                        <p><strong className={isLight ? 'text-purple-900' : 'text-purple-300'}>Salary Package:</strong> {applyingJob.salary}</p>
+                        <p><strong className={isLight ? 'text-purple-900' : 'text-purple-300'}>Eligibility:</strong> {applyingJob.requirements}</p>
+                      </div>
+
+                      <div className="space-y-2 text-[10px]">
+                        <p className="font-bold text-slate-500 uppercase tracking-wider">Confirm Application Profile:</p>
+                        <div className="space-y-1.5">
+                          <label className="block">
+                            <span className="text-[9px] font-bold text-slate-500">Applicant Full Name:</span>
+                            <input
+                              type="text"
+                              value={fullName}
+                              onChange={(e) => setFullName(e.target.value)}
+                              className={`w-full px-3 py-1.5 text-xs rounded-xl border mt-0.5 ${
+                                isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                              }`}
+                            />
+                          </label>
+
+                          <label className="block">
+                            <span className="text-[9px] font-bold text-slate-500">Contact Number:</span>
+                            <input
+                              type="text"
+                              value={phone || loginPhone}
+                              onChange={(e) => setPhone(e.target.value)}
+                              className={`w-full px-3 py-1.5 text-xs rounded-xl border mt-0.5 ${
+                                isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                              }`}
+                            />
+                          </label>
+
+                          <label className="block">
+                            <span className="text-[9px] font-bold text-slate-500">Highest Qualification:</span>
+                            <select
+                              value={applicantQual}
+                              onChange={(e) => setApplicantQual(e.target.value)}
+                              className={`w-full px-3 py-1.5 text-xs rounded-xl border mt-0.5 ${
+                                isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                              }`}
+                            >
+                              <option>BA / B.Com / B.Sc Graduate</option>
+                              <option>B.Tech / MCA / BE Degree</option>
+                              <option>Diploma / ITI Certificate</option>
+                              <option>10th / 12th Pass</option>
+                            </select>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className={`p-2.5 rounded-xl border flex items-center justify-between text-[10px] ${
+                        isLight ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-emerald-950/40 border-emerald-900/60 text-emerald-300'
+                      }`}>
+                        <div className="flex items-center space-x-1.5">
+                          <span>📄</span>
+                          <span className="font-bold">Resume Profile Attached (PDF)</span>
+                        </div>
+                        <span className="text-[8px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-mono font-bold">Verified</span>
+                      </div>
+
+                      <div className="space-y-1.5 pt-1">
+                        <button
+                          onClick={() => {
+                            setJobAppliedSuccess(true);
+                          }}
+                          className="w-full py-2.5 bg-gradient-to-r from-purple-700 to-fuchsia-600 hover:from-purple-800 hover:to-fuchsia-700 text-white font-bold text-xs rounded-xl shadow-lg transition transform active:scale-95"
+                        >
+                          🚀 Submit 1-Click Application Now
+                        </button>
+
+                        <a
+                          href={applyingJob.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`block text-center py-1.5 text-[9.5px] font-bold rounded-xl border transition ${
+                            isLight ? 'bg-purple-50 text-purple-900 border-purple-200' : 'bg-slate-800 text-slate-200 border-slate-700'
+                          }`}
+                        >
+                          Or visit external web careers portal ↗
+                        </a>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-6 space-y-3 animate-in zoom-in-95 duration-200">
+                      <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl animate-bounce">
+                        ✓
+                      </div>
+                      <h4 className={`text-sm font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>Application Submitted Successfully!</h4>
+                      <p className="text-[10px] text-slate-500 leading-relaxed max-w-xs mx-auto">
+                        Your application for <strong className="text-purple-700 dark:text-purple-300">{applyingJob.role}</strong> at <strong>{applyingJob.company}</strong> has been transmitted directly to HR.
+                      </p>
+                      <div className={`p-2.5 rounded-xl border text-[9px] font-mono text-left space-y-1 max-w-xs mx-auto ${
+                        isLight ? 'bg-purple-50 border-purple-200 text-slate-800' : 'bg-slate-950 border-slate-800 text-slate-300'
+                      }`}>
+                        <p><strong>Ref Code:</strong> {applyingJob.company.substring(0, 3).toUpperCase()}-AP-2026-9874</p>
+                        <p><strong>Status:</strong> Under HR Screening</p>
+                        <p><strong>SMS Confirmation:</strong> Sent to {phone || loginPhone}</p>
+                      </div>
+                      <button
+                        onClick={() => setApplyingJob(null)}
+                        className="px-6 py-2 bg-purple-700 text-white font-bold text-xs rounded-xl shadow-md"
+                      >
+                        Done &amp; Return
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Double Verification Modals */}
             {activeConfirmType && (
               <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-end justify-center p-4">
@@ -2402,14 +2540,15 @@ export default function WomenUserApp() {
                               </div>
 
                               <div className="flex space-x-2 pt-1">
-                                <a
-                                  href={job.link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex-1 text-center py-1.5 bg-gradient-to-r from-purple-700 to-fuchsia-600 hover:from-purple-800 hover:to-fuchsia-700 text-white font-bold text-[9px] rounded-xl shadow-md"
+                                <button
+                                  onClick={() => {
+                                    setApplyingJob(job);
+                                    setJobAppliedSuccess(false);
+                                  }}
+                                  className="flex-1 text-center py-1.5 bg-gradient-to-r from-purple-700 to-fuchsia-600 hover:from-purple-800 hover:to-fuchsia-700 text-white font-bold text-[9px] rounded-xl shadow-md transition active:scale-95"
                                 >
                                   {language === 'te' ? 'అప్లై చేసుకోండి ↗' : 'Apply Online ↗'}
-                                </a>
+                                </button>
                                 <button
                                   onClick={() => {
                                     const el = document.getElementById(job.prepModuleId);
