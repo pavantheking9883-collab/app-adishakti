@@ -632,7 +632,7 @@ export default function WomenUserApp() {
           lastBattery: batteryLevel,
           lastNetworkStatus: networkStatus,
           audioFlag: audioConsent,
-          notes: `Warning Trigger ON. Dispatched to ${selectedLoc.nearbyStations[0].name}`
+          notes: `Warning Trigger ON. Dispatched to ${dynamicNearbyStations[0]?.name || selectedLoc.name}`
         })
       });
     } else if (activeConfirmType === 'SOS') {
@@ -860,7 +860,7 @@ export default function WomenUserApp() {
                       <span className="text-[10px] text-emerald-600 font-bold font-mono">Use 123456</span>
                     </div>
 
-                    <div className="flex justify-between space-x-2">
+                    <div className="flex justify-between gap-1">
                       {otpDigits.map((digit, idx) => (
                         <input
                           key={idx}
@@ -870,7 +870,7 @@ export default function WomenUserApp() {
                           value={digit}
                           onChange={(e) => handleOtpChange(idx, e.target.value, false)}
                           onKeyDown={(e) => handleOtpKeyDown(idx, e, false)}
-                          className={`w-10 h-10 border rounded-xl text-center font-bold text-sm focus:border-purple-600 focus:outline-none ${
+                          className={`w-8 h-8 sm:w-10 sm:h-10 border rounded-xl text-center font-bold text-sm focus:border-purple-600 focus:outline-none flex-1 max-w-[40px] ${
                             isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
                           }`}
                         />
@@ -914,7 +914,7 @@ export default function WomenUserApp() {
                         <label className="text-[10px] font-bold">OTP CODE</label>
                         <span className="text-[10px] text-emerald-600 font-bold font-mono">Use 123456</span>
                       </div>
-                      <div className="flex justify-between space-x-2">
+                      <div className="flex justify-between gap-1">
                         {regOtpDigits.map((digit, idx) => (
                           <input
                             key={idx}
@@ -924,7 +924,7 @@ export default function WomenUserApp() {
                             value={digit}
                             onChange={(e) => handleOtpChange(idx, e.target.value, true)}
                             onKeyDown={(e) => handleOtpKeyDown(idx, e, true)}
-                            className={`w-10 h-10 border rounded-xl text-center font-bold text-sm focus:border-purple-600 focus:outline-none ${
+                            className={`w-8 h-8 sm:w-10 sm:h-10 border rounded-xl text-center font-bold text-sm focus:border-purple-600 focus:outline-none flex-1 max-w-[40px] ${
                               isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
                             }`}
                           />
@@ -1342,7 +1342,7 @@ export default function WomenUserApp() {
                     </div>
                     {warningActive && (
                       <div className="bg-amber-100 border border-amber-200 p-2 rounded-xl text-[10px]">
-                        <span className="text-amber-950 font-bold">{T[language].alertSent} to: {selectedLoc.nearbyStations[0].name}</span>
+                        <span className="text-amber-950 font-bold">{T[language].alertSent} to: {dynamicNearbyStations[0]?.name || selectedLoc.name}</span>
                       </div>
                     )}
                   </div>
