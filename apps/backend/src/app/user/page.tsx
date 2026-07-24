@@ -558,14 +558,29 @@ export default function WomenUserApp() {
     const mapElement = document.getElementById('leaflet-map');
     if (!mapElement) return;
 
-    // Update existing map view and marker position
+    // Check if map is initialized and container is still valid in the current DOM
     if (leafletMapRef.current) {
-      const currentLatLng = leafletMarkerRef.current?.getLatLng();
-      if (currentLatLng && (currentLatLng.lat !== selectedLoc.lat || currentLatLng.lng !== selectedLoc.lng)) {
-        leafletMapRef.current.setView([selectedLoc.lat, selectedLoc.lng], 14);
-        leafletMarkerRef.current.setLatLng([selectedLoc.lat, selectedLoc.lng]);
+      const container = leafletMapRef.current.getContainer();
+      if (container === mapElement) {
+        const currentLatLng = leafletMarkerRef.current?.getLatLng();
+        if (currentLatLng && (currentLatLng.lat !== selectedLoc.lat || currentLatLng.lng !== selectedLoc.lng)) {
+          leafletMapRef.current.setView([selectedLoc.lat, selectedLoc.lng], 14);
+          leafletMarkerRef.current.setLatLng([selectedLoc.lat, selectedLoc.lng]);
+          setTimeout(() => {
+            leafletMapRef.current?.invalidateSize();
+          }, 100);
+        }
+        return;
+      } else {
+        // Clean up unmounted leaflet instance before re-initializing
+        try {
+          leafletMapRef.current.remove();
+        } catch (e) {
+          console.warn('Leaflet cleanup warning:', e);
+        }
+        leafletMapRef.current = null;
+        leafletMarkerRef.current = null;
       }
-      return;
     }
 
     // Initialize map container on the DOM element
@@ -593,10 +608,15 @@ export default function WomenUserApp() {
 
       leafletMapRef.current = map;
       leafletMarkerRef.current = marker;
+
+      // Invalidate size after layout completes to fix blank/grey tiles rendering issues
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 150);
     } catch (err) {
       console.error('Leaflet Map Init Error:', err);
     }
-  }, [leafletLoaded, selectedLoc.lat, selectedLoc.lng]);
+  }, [leafletLoaded, selectedLoc.lat, selectedLoc.lng, activeTab]);
 
   // Handle Multi-box OTP input focus progression
   const handleOtpChange = (index: number, val: string, isReg: boolean) => {
