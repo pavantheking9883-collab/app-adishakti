@@ -1183,42 +1183,40 @@ export default function WomenUserApp() {
         {!isRegistered ? (
           <div className="flex-1 flex flex-col justify-between overflow-y-auto">
             {authMode === 'WELCOME' && (
-              <div className="flex-1 relative w-full h-full overflow-y-auto bg-[#3e0d4d] flex flex-col justify-between">
-                {/* 100% Full-Width Edge-to-Edge Poster Image (Zero Gaps, Zero Padding, Zero Stretching) */}
-                <div className="w-full flex-1 flex flex-col items-center">
-                  <img
-                    src="/adishakti-poster.jpg"
-                    alt="Adishakti Initiated by Daggubati Purandeswari Garu Poster"
-                    className="w-full h-auto block"
-                  />
-                </div>
+              <div className="flex-1 w-full h-full overflow-y-auto bg-[#3b0b49] flex flex-col items-center text-white">
+                {/* 100% Full-Width Edge-to-Edge Poster Image */}
+                <img
+                  src="/adishakti-poster.jpg"
+                  alt="Adishakti Initiated by Daggubati Purandeswari Garu Poster"
+                  className="w-full h-auto block shrink-0"
+                />
 
-                {/* Sticky Floating Bottom Action Bar for Log In & Register */}
-                <div className="sticky bottom-0 left-0 right-0 p-3 bg-purple-950/95 backdrop-blur-xl border-t border-amber-400/30 shadow-2xl space-y-2 shrink-0 z-30">
-                  <div className="text-center">
-                    <p className="text-[10px] font-black text-amber-300 tracking-wide">
-                      {language === 'te' ? 'ఆదిశక్తి ప్లాట్‌ఫామ్‌లోకి స్వాగతం • లాగిన్ / రిజిస్టర్ అవ్వండి' : 'Welcome to Adishakti • Log in or Register to continue'}
+                {/* Log In & Register Action Bar - Attached Directly to Poster (Zero Gap) */}
+                <div className="w-full p-3.5 bg-gradient-to-b from-[#3b0b49] via-[#2a0635] to-[#1a0322] border-t border-amber-400/30 shadow-2xl space-y-3 shrink-0 z-20">
+                  {/* Primary Log In Button */}
+                  <button
+                    onClick={() => setAuthMode('LOGIN')}
+                    className="w-full py-3.5 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-700 hover:to-fuchsia-700 text-white font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-2 border border-purple-300/40"
+                  >
+                    <LogIn className="w-4 h-4" />
+                    <span>{language === 'te' ? 'లాగిన్ అవ్వండి (Log In)' : 'Log In'}</span>
+                  </button>
+
+                  {/* Don't have an account? Section */}
+                  <div className="pt-2 text-center space-y-2 border-t border-purple-800/40">
+                    <p className="text-[10.5px] font-bold text-amber-200/90 tracking-wide">
+                      {language === 'te' ? 'ఖాతా లేదా? (Don’t have an account?)' : "Don't have an account?"}
                     </p>
-                  </div>
-
-                  <div className="flex space-x-2.5">
-                    <button
-                      onClick={() => setAuthMode('LOGIN')}
-                      className="flex-1 py-3 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-700 hover:to-fuchsia-700 text-white font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-purple-300/40"
-                    >
-                      <LogIn className="w-4 h-4" />
-                      <span>{language === 'te' ? 'లాగిన్ (Log In)' : 'Log In'}</span>
-                    </button>
 
                     <button
                       onClick={() => {
                         setAuthMode('REGISTER');
                         setRegStep(1);
                       }}
-                      className="flex-1 py-3 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-amber-300/60"
+                      className="w-full py-3 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-2 border border-amber-300/60"
                     >
                       <UserPlus className="w-4 h-4" />
-                      <span>{language === 'te' ? 'రిజిస్టర్ (Register)' : 'Register'}</span>
+                      <span>{language === 'te' ? 'ఇప్పుడే రిజిస్టర్ అవ్వండి (Register Now)' : 'Register Now'}</span>
                     </button>
                   </div>
                 </div>
