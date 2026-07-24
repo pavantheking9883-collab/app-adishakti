@@ -531,24 +531,18 @@ export default function WomenUserApp() {
     };
   }, []);
 
-  // Load and inject Leaflet dynamically
+  // Load and inject MapLibre GL dynamically
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    if ((window as any).L) {
+    if ((window as any).maplibregl) {
       setLeafletLoaded(true);
       return;
     }
 
-    // Append Leaflet stylesheet dynamically
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-    document.head.appendChild(link);
-
-    // Append Leaflet script dynamically
+    // Append MapLibre GL script dynamically
     const script = document.createElement('script');
-    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.src = 'https://unpkg.com/maplibre-gl@4.5.0/dist/maplibre-gl.js';
     script.async = true;
     script.onload = () => {
       setLeafletLoaded(true);
@@ -556,72 +550,78 @@ export default function WomenUserApp() {
     document.body.appendChild(script);
   }, []);
 
-  // Initialize and synchronize Leaflet map view
+  // Initialize and synchronize MapLibre map view
   useEffect(() => {
     if (!leafletLoaded || typeof window === 'undefined') return;
-    const L = (window as any).L;
-    if (!L) return;
+    const maplibregl = (window as any).maplibregl;
+    if (!maplibregl) return;
 
     const mapElement = document.getElementById('leaflet-map');
     if (!mapElement) return;
 
-    // Check if map is initialized and container is still valid in the current DOM
+    // Check if map is initialized and container is still valid in current DOM
     if (leafletMapRef.current) {
       const container = leafletMapRef.current.getContainer();
       if (container === mapElement) {
-        const currentLatLng = leafletMarkerRef.current?.getLatLng();
+        const currentLatLng = leafletMarkerRef.current?.getLngLat();
         if (currentLatLng && (currentLatLng.lat !== selectedLoc.lat || currentLatLng.lng !== selectedLoc.lng)) {
-          leafletMapRef.current.setView([selectedLoc.lat, selectedLoc.lng], 14);
-          leafletMarkerRef.current.setLatLng([selectedLoc.lat, selectedLoc.lng]);
+          leafletMapRef.current.setCenter([selectedLoc.lng, selectedLoc.lat]);
+          leafletMarkerRef.current.setLngLat([selectedLoc.lng, selectedLoc.lat]);
           setTimeout(() => {
-            leafletMapRef.current?.invalidateSize();
+            leafletMapRef.current?.resize();
           }, 100);
         }
         return;
       } else {
-        // Clean up unmounted leaflet instance before re-initializing
+        // Clean up unmounted instance before re-initializing
         try {
           leafletMapRef.current.remove();
         } catch (e) {
-          console.warn('Leaflet cleanup warning:', e);
+          console.warn('MapLibre cleanup warning:', e);
         }
         leafletMapRef.current = null;
         leafletMarkerRef.current = null;
       }
     }
 
-    // Initialize map container on the DOM element
+    // Initialize MapLibre GL map container on the DOM element
     try {
-      const map = L.map('leaflet-map', { zoomControl: false }).setView([selectedLoc.lat, selectedLoc.lng], 14);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-      }).addTo(map);
+      const map = new maplibregl.Map({
+        container: 'leaflet-map',
+        style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+        center: [selectedLoc.lng, selectedLoc.lat],
+        zoom: 14,
+        attributionControl: false
+      });
 
-      L.control.zoom({ position: 'topright' }).addTo(map);
+      // Add navigation controls
+      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
 
-      // Add user marker that is draggable
-      const marker = L.marker([selectedLoc.lat, selectedLoc.lng], { draggable: true }).addTo(map);
+      // Add a draggable marker
+      const marker = new maplibregl.Marker({ draggable: true })
+        .setLngLat([selectedLoc.lng, selectedLoc.lat])
+        .addTo(map);
 
-      marker.on('dragend', (e: any) => {
-        const position = marker.getLatLng();
+      marker.on('dragend', () => {
+        const lngLat = marker.getLngLat();
         setSelectedLoc((prev: any) => ({
           ...prev,
           id: 'live-gps',
           name: 'Selected Pin Location',
-          lat: position.lat,
-          lng: position.lng
+          lat: lngLat.lat,
+          lng: lngLat.lng
         }));
       });
 
       leafletMapRef.current = map;
       leafletMarkerRef.current = marker;
 
-      // Invalidate size after layout completes to fix blank/grey tiles rendering issues
+      // Crucial: resize after map renders in DOM
       setTimeout(() => {
-        map.invalidateSize();
+        map.resize();
       }, 150);
     } catch (err) {
-      console.error('Leaflet Map Init Error:', err);
+      console.error('MapLibre GL Map Init Error:', err);
     }
   }, [leafletLoaded, selectedLoc.lat, selectedLoc.lng, activeTab]);
 
