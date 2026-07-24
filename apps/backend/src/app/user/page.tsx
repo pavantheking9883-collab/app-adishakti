@@ -252,6 +252,7 @@ export default function WomenUserApp() {
 
   // Double verification action modal triggers
   const [activeConfirmType, setActiveConfirmType] = useState<'WARNING' | 'SOS' | 'SAFE' | null>(null);
+  const [leafletLoaded, setLeafletLoaded] = useState(false);
 
   // Legal Tab States
   const [selectedDistrictFilter, setSelectedDistrictFilter] = useState('East Godavari');
@@ -523,13 +524,12 @@ export default function WomenUserApp() {
     }
   }, []);
 
-  // Load and initialize Leaflet map in the client browser environment
+  // Load and inject Leaflet dynamically
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Check if Leaflet script is already injected
     if ((window as any).L) {
-      initMap();
+      setLeafletLoaded(true);
       return;
     }
 
@@ -544,18 +544,32 @@ export default function WomenUserApp() {
     script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
     script.async = true;
     script.onload = () => {
-      initMap();
+      setLeafletLoaded(true);
     };
     document.body.appendChild(script);
+  }, []);
 
-    function initMap() {
-      const L = (window as any).L;
-      if (!L) return;
+  // Initialize and synchronize Leaflet map view
+  useEffect(() => {
+    if (!leafletLoaded || typeof window === 'undefined') return;
+    const L = (window as any).L;
+    if (!L) return;
 
-      const mapElement = document.getElementById('leaflet-map');
-      if (!mapElement || leafletMapRef.current) return;
+    const mapElement = document.getElementById('leaflet-map');
+    if (!mapElement) return;
 
-      // Initialize Leaflet map instance centered on selected location coordinates
+    // Update existing map view and marker position
+    if (leafletMapRef.current) {
+      const currentLatLng = leafletMarkerRef.current?.getLatLng();
+      if (currentLatLng && (currentLatLng.lat !== selectedLoc.lat || currentLatLng.lng !== selectedLoc.lng)) {
+        leafletMapRef.current.setView([selectedLoc.lat, selectedLoc.lng], 14);
+        leafletMarkerRef.current.setLatLng([selectedLoc.lat, selectedLoc.lng]);
+      }
+      return;
+    }
+
+    // Initialize map container on the DOM element
+    try {
       const map = L.map('leaflet-map', { zoomControl: false }).setView([selectedLoc.lat, selectedLoc.lng], 14);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
@@ -563,37 +577,26 @@ export default function WomenUserApp() {
 
       L.control.zoom({ position: 'topright' }).addTo(map);
 
-      // Create user marker that is draggable
+      // Add user marker that is draggable
       const marker = L.marker([selectedLoc.lat, selectedLoc.lng], { draggable: true }).addTo(map);
-      
-      // Update coordinates whenever user finishes dragging the marker
+
       marker.on('dragend', (e: any) => {
         const position = marker.getLatLng();
-        setSelectedLoc({
+        setSelectedLoc((prev: any) => ({
+          ...prev,
           id: 'live-gps',
           name: 'Selected Pin Location',
           lat: position.lat,
-          lng: position.lng,
-          nearbyStations: [] // Calculated dynamically via OSRM
-        });
+          lng: position.lng
+        }));
       });
 
       leafletMapRef.current = map;
       leafletMarkerRef.current = marker;
+    } catch (err) {
+      console.error('Leaflet Map Init Error:', err);
     }
-  }, []);
-
-  // Update map coordinates and marker position dynamically when selectedLoc changes
-  useEffect(() => {
-    const L = (window as any).L;
-    if (!L || !leafletMapRef.current || !leafletMarkerRef.current) return;
-
-    const currentLatLng = leafletMarkerRef.current.getLatLng();
-    if (currentLatLng.lat !== selectedLoc.lat || currentLatLng.lng !== selectedLoc.lng) {
-      leafletMapRef.current.setView([selectedLoc.lat, selectedLoc.lng], 14);
-      leafletMarkerRef.current.setLatLng([selectedLoc.lat, selectedLoc.lng]);
-    }
-  }, [selectedLoc]);
+  }, [leafletLoaded, selectedLoc.lat, selectedLoc.lng]);
 
   // Handle Multi-box OTP input focus progression
   const handleOtpChange = (index: number, val: string, isReg: boolean) => {
