@@ -193,7 +193,7 @@ export default function WomenUserApp() {
   const [language, setLanguage] = useState<'te' | 'en' | 'hi'>('te');
 
   // Selected Location & Stations
-  const [selectedLoc, setSelectedLoc] = useState(LOCATION_PRESETS[0]);
+  const [selectedLoc, setSelectedLoc] = useState<any>(LOCATION_PRESETS[0]);
   const [selectedStation, setSelectedStation] = useState<any | null>(null);
   const [showMap, setShowMap] = useState(true);
 
@@ -495,33 +495,37 @@ export default function WomenUserApp() {
   const [upiStep, setUpiStep] = useState(1);
   const [simPin, setSimPin] = useState('');
 
-  // Load high-accuracy HTML5 GPS coordinates immediately on component mount
+  // Continuously watch user's live GPS coordinates for highest possible accuracy
   useEffect(() => {
-    if (typeof window !== 'undefined' && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          
-          // Set live accurate GPS location dynamically
-          const gpsLoc = {
-            id: 'live-gps',
-            name: 'Live GPS Location, Rajahmundry',
-            lat: latitude,
-            lng: longitude,
-            nearbyStations: [
-              { id: 'p1', name: 'Disha Mahila Police Station Rajahmundry', dist: '0.6 km', phone: '0883-2471091', type: 'DISHA', lat: 16.9895, lng: 81.7850, address: 'Subhash Road, Rajahmundry Central' },
-              { id: 'p2', name: 'Three Town Police Station Danavaipeta', dist: '1.2 km', phone: '0883-2472233', type: 'POLICE', lat: 16.9930, lng: 81.7890, address: 'Danavaipeta Main Road, Rajahmundry' },
-              { id: 'p3', name: 'Sakhi One Stop Centre GGH Compound', dist: '1.4 km', phone: '0883-2441091', type: 'SAKHI', lat: 16.9910, lng: 81.7840, address: 'District Hospital Compound, Rajahmundry' }
-            ]
-          };
-          setSelectedLoc(gpsLoc);
-        },
-        (error) => {
-          console.warn('HTML5 Geolocation Fallback:', error);
-        },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-      );
-    }
+    if (typeof window === 'undefined' || !navigator.geolocation) return;
+
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        const { latitude, longitude, accuracy } = pos.coords;
+        console.log(`Live GPS update: Lat ${latitude}, Lng ${longitude}, Accuracy ±${accuracy}m`);
+
+        setSelectedLoc((prev: any) => {
+          // If user is currently on default view or live GPS view, update coordinates dynamically!
+          if (prev.id === 'live-gps' || prev.id === 'rjy-station') {
+            return {
+              id: 'live-gps',
+              name: `Live GPS Location (±${Math.round(accuracy)}m)`,
+              lat: latitude,
+              lng: longitude
+            };
+          }
+          return prev;
+        });
+      },
+      (error) => {
+        console.warn('HTML5 watchPosition warning:', error);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+    };
   }, []);
 
   // Load and inject Leaflet dynamically
@@ -1510,7 +1514,38 @@ export default function WomenUserApp() {
                   )}
 
                   {/* Location Switcher presets */}
-                  <div className="flex space-x-2 overflow-x-auto pb-1 text-[10px]">
+                  <div className="flex space-x-2 overflow-x-auto pb-1 text-[10px] items-center">
+                    <button
+                      onClick={() => {
+                        if (typeof window !== 'undefined' && navigator.geolocation) {
+                          navigator.geolocation.getCurrentPosition(
+                            (pos) => {
+                              const { latitude, longitude, accuracy } = pos.coords;
+                              setSelectedLoc({
+                                id: 'live-gps',
+                                name: `Live GPS Location (±${Math.round(accuracy)}m)`,
+                                lat: latitude,
+                                lng: longitude
+                              });
+                            },
+                            (error) => {
+                              alert('Failed to get high accuracy GPS location. Please allow location permissions in your browser.');
+                            },
+                            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+                          );
+                        } else {
+                          alert('Geolocation is not supported by your browser.');
+                        }
+                      }}
+                      className={`px-3 py-1 rounded-xl border shrink-0 font-bold ${
+                        selectedLoc.id === 'live-gps'
+                          ? 'bg-emerald-600 border-emerald-700 text-white'
+                          : 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                      }`}
+                    >
+                      🟢 {language === 'te' ? 'లైవ్ GPS లొకేషన్' : 'Live GPS Location'}
+                    </button>
+
                     {LOCATION_PRESETS.map((loc) => (
                       <button key={loc.id} onClick={() => setSelectedLoc(loc)} className={`px-3 py-1 rounded-xl border shrink-0 ${selectedLoc.id === loc.id ? 'bg-purple-700 text-white' : 'bg-purple-100 text-slate-700'}`}>
                         {loc.name.split(',')[0]}
