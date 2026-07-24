@@ -718,15 +718,15 @@ export default function WomenUserApp() {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 flex flex-col items-center justify-center p-4 font-sans ${
+      className={`min-h-screen transition-colors duration-300 flex flex-col items-center justify-center sm:p-4 p-0 font-sans ${
         isLight ? 'bg-purple-50/80 text-slate-900' : 'bg-[#070312] text-slate-100'
       }`}
     >
       <div className="fixed top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
 
-      {/* Main Smartphone Shell */}
+      {/* Main Smartphone Shell (Responsive: Fullscreen on mobile, Phone Mockup on Desktop) */}
       <div
-        className={`w-full max-w-sm border-[6px] rounded-[44px] shadow-2xl overflow-hidden flex flex-col h-[780px] relative z-10 transition-colors duration-300 ${
+        className={`w-full h-[100dvh] sm:h-[820px] sm:max-w-sm sm:border-[6px] sm:rounded-[44px] sm:shadow-2xl border-0 rounded-none shadow-none overflow-hidden flex flex-col relative z-10 transition-colors duration-300 ${
           isLight
             ? 'bg-white border-purple-200/90 shadow-purple-200/60'
             : 'bg-slate-950 border-slate-800/90 shadow-[0_0_50px_rgba(168,85,247,0.25)]'
