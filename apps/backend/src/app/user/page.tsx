@@ -269,7 +269,7 @@ const INITIAL_MARKET_PRODUCTS = [
     location: 'Uppada, Kakinada District',
     desc: 'Lightweight authentic Uppada Jamdani silk saree with zari border. Direct weaver price.',
     badge: 'DWCRA Certified',
-    image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&auto=format&fit=crop'
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%23831843'/><path d='M0 0 L400 400 M0 100 L300 400 M0 200 L200 400' stroke='%23f59e0b' stroke-width='12'/><rect x='20' y='20' width='360' height='360' fill='none' stroke='%23fbbf24' stroke-width='8'/><text x='200' y='230' text-anchor='middle' fill='%23fef08a' font-size='32' font-family='sans-serif' font-weight='bold'>🥻 Pattu Saree</text></svg>"
   },
   {
     id: 'mp2',
@@ -283,7 +283,7 @@ const INITIAL_MARKET_PRODUCTS = [
     location: 'Danavaipeta, Rajahmundry',
     desc: 'Made with organic Kothapalli mangoes and cold-pressed sesame oil. No artificial preservatives.',
     badge: 'FSSAI Approved',
-    image: 'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?w=600&auto=format&fit=crop'
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%23450a0a'/><circle cx='200' cy='220' r='110' fill='%23b91c1c'/><rect x='140' y='80' width='120' height='45' rx='10' fill='%23fef08a'/><path d='M140 125 L260 125 L280 270 L120 270 Z' fill='%23dc2626' stroke='%23f59e0b' stroke-width='6'/><circle cx='200' cy='180' r='30' fill='%23f59e0b'/><text x='200' y='330' text-anchor='middle' fill='%23fef08a' font-size='28' font-family='sans-serif' font-weight='bold'>🌶️ Mango Pickle</text></svg>"
   },
   {
     id: 'mp3',
@@ -297,7 +297,7 @@ const INITIAL_MARKET_PRODUCTS = [
     location: 'Surya Rao Peta, Kakinada',
     desc: 'Durable eco-friendly jute bags with zip closure for daily shopping and office use.',
     badge: 'Eco Friendly',
-    image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&auto=format&fit=crop'
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%2378350f'/><rect x='80' y='140' width='240' height='200' rx='20' fill='%23d97706' stroke='%23fef08a' stroke-width='6'/><path d='M140 140 C140 70 260 70 260 140' fill='none' stroke='%2315803d' stroke-width='16' stroke-linecap='round'/><circle cx='200' cy='230' r='40' fill='%2315803d'/><text x='200' y='370' text-anchor='middle' fill='%23fef08a' font-size='26' font-family='sans-serif' font-weight='bold'>🛍️ Eco Jute Bag</text></svg>"
   },
   {
     id: 'mp4',
@@ -311,7 +311,7 @@ const INITIAL_MARKET_PRODUCTS = [
     location: 'Rampachodavaram Agency Area',
     desc: 'Naturally collected forest honey and traditional bilona method cow ghee.',
     badge: '100% Organic',
-    image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&auto=format&fit=crop'
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%237c2d12'/><rect x='120' y='120' width='160' height='200' rx='30' fill='%23f59e0b' stroke='%23fef08a' stroke-width='8'/><rect x='140' y='80' width='120' height='40' rx='10' fill='%23b45309'/><path d='M180 180 L220 180 L240 220 L200 250 L160 220 Z' fill='%23fef08a'/><text x='200' y='360' text-anchor='middle' fill='%23fef08a' font-size='28' font-family='sans-serif' font-weight='bold'>🍯 Honey %26 Ghee</text></svg>"
   },
   {
     id: 'mp5',
@@ -325,7 +325,7 @@ const INITIAL_MARKET_PRODUCTS = [
     location: 'Kondapalli, NTR District',
     desc: 'Authentic Poniki wood hand-carved dancing dolls painted with non-toxic colors.',
     badge: 'GI Tagged Art',
-    image: 'https://images.unsplash.com/photo-1566438480900-0ff09be85425?w=600&auto=format&fit=crop'
+    image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%23312e81'/><circle cx='200' cy='130' r='50' fill='%23fed7aa'/><path d='M150 180 L250 180 L290 320 L110 320 Z' fill='%23c026d3' stroke='%23f59e0b' stroke-width='8'/><polygon points='200,40 170,80 230,80' fill='%23f59e0b'/><text x='200' y='370' text-anchor='middle' fill='%23fef08a' font-size='24' font-family='sans-serif' font-weight='bold'>🪆 Kondapalli Doll</text></svg>"
   }
 ];
 
@@ -554,10 +554,10 @@ export default function WomenUserApp() {
     }
 
     const categorySampleImages: Record<string, string> = {
-      'Handlooms': 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&auto=format&fit=crop',
-      'Food & Pickles': 'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?w=600&auto=format&fit=crop',
-      'Handicrafts': 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&auto=format&fit=crop',
-      'Organic Products': 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&auto=format&fit=crop'
+      'Handlooms': "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%23831843'/><path d='M0 0 L400 400 M0 100 L300 400 M0 200 L200 400' stroke='%23f59e0b' stroke-width='12'/><rect x='20' y='20' width='360' height='360' fill='none' stroke='%23fbbf24' stroke-width='8'/><text x='200' y='230' text-anchor='middle' fill='%23fef08a' font-size='32' font-family='sans-serif' font-weight='bold'>🥻 Pattu Saree</text></svg>",
+      'Food & Pickles': "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%23450a0a'/><circle cx='200' cy='220' r='110' fill='%23b91c1c'/><rect x='140' y='80' width='120' height='45' rx='10' fill='%23fef08a'/><path d='M140 125 L260 125 L280 270 L120 270 Z' fill='%23dc2626' stroke='%23f59e0b' stroke-width='6'/><circle cx='200' cy='180' r='30' fill='%23f59e0b'/><text x='200' y='330' text-anchor='middle' fill='%23fef08a' font-size='28' font-family='sans-serif' font-weight='bold'>🌶️ Mango Pickle</text></svg>",
+      'Handicrafts': "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%23312e81'/><circle cx='200' cy='130' r='50' fill='%23fed7aa'/><path d='M150 180 L250 180 L290 320 L110 320 Z' fill='%23c026d3' stroke='%23f59e0b' stroke-width='8'/><polygon points='200,40 170,80 230,80' fill='%23f59e0b'/><text x='200' y='370' text-anchor='middle' fill='%23fef08a' font-size='24' font-family='sans-serif' font-weight='bold'>🪆 Handicraft</text></svg>",
+      'Organic Products': "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%237c2d12'/><rect x='120' y='120' width='160' height='200' rx='30' fill='%23f59e0b' stroke='%23fef08a' stroke-width='8'/><rect x='140' y='80' width='120' height='40' rx='10' fill='%23b45309'/><path d='M180 180 L220 180 L240 220 L200 250 L160 220 Z' fill='%23fef08a'/><text x='200' y='360' text-anchor='middle' fill='%23fef08a' font-size='28' font-family='sans-serif' font-weight='bold'>🍯 Wild Honey</text></svg>"
     };
 
     const newItem = {
@@ -572,7 +572,7 @@ export default function WomenUserApp() {
       location: newProdLocation,
       desc: newProdDesc || 'Freshly handmade product listed by DWCRA artisan.',
       badge: 'DWCRA Listed',
-      image: categorySampleImages[newProdCategory] || 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&auto=format&fit=crop'
+      image: categorySampleImages[newProdCategory] || categorySampleImages['Handicrafts']
     };
 
     setMarketProducts([newItem, ...marketProducts]);
