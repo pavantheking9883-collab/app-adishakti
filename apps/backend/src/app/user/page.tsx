@@ -1183,33 +1183,28 @@ export default function WomenUserApp() {
         {!isRegistered ? (
           <div className="flex-1 flex flex-col justify-between overflow-y-auto">
             {authMode === 'WELCOME' && (
-              <div className="flex-1 flex flex-col justify-between overflow-hidden relative bg-gradient-to-b from-[#3a0d4c] via-[#240630] to-[#12021a] text-white">
-                {/* Poster Display - Full Bleed Edge-to-Edge with zero black borders */}
-                <div className="flex-1 w-full h-full relative flex items-center justify-center overflow-hidden">
+              <div className="flex-1 flex flex-col justify-between overflow-y-auto bg-gradient-to-b from-[#481156] via-[#3d0d4a] to-[#2b0835] text-white">
+                {/* Poster Display - Crystal Clear, Unshadowed, & Full Quote Visibility */}
+                <div className="flex-1 flex flex-col items-center justify-center p-2 overflow-y-auto">
                   <img
                     src="/adishakti-poster.jpg"
                     alt="Adishakti Initiated by Daggubati Purandeswari Garu Poster"
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-auto max-h-[72vh] object-contain rounded-xl shadow-2xl border border-purple-400/20"
                   />
-                  {/* Subtle gradient vignette at top & bottom for high text readability */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-purple-950/20 via-transparent to-purple-950/80 pointer-events-none"></div>
                 </div>
 
-                {/* Bottom Action Bar - Floating Frosted Glass over Poster */}
-                <div className="p-3.5 border-t border-purple-400/30 backdrop-blur-xl bg-purple-950/85 shadow-2xl space-y-2 shrink-0 relative z-20">
-                  <div className="text-center space-y-0.5">
-                    <p className="text-[10.5px] font-black text-amber-300 tracking-wide drop-shadow">
-                      {language === 'te' ? 'ఆదిశక్తి మొబైల్ ప్లాట్‌ఫామ్‌లోకి స్వాగతం!' : 'Welcome to Adishakti Mobile Platform'}
-                    </p>
-                    <p className="text-[8.5px] text-purple-200/90 font-semibold">
-                      {language === 'te' ? 'కొనసాగించడానికి లాగిన్ అవ్వండి లేదా కొత్త ఖాతా తెరవండి' : 'Log in to existing account or register a new account to continue'}
+                {/* Bottom Action Bar - Below Poster (Zero Quote Overlay & High Visibility) */}
+                <div className="p-3 bg-[#2d0838] border-t border-amber-400/30 shadow-2xl space-y-2 shrink-0 relative z-20">
+                  <div className="text-center">
+                    <p className="text-[10px] font-black text-amber-300 tracking-wide">
+                      {language === 'te' ? 'ఆదిశక్తి ప్లాట్‌ఫామ్‌లోకి స్వాగతం • లాగిన్ / రిజిస్టర్ అవ్వండి' : 'Welcome to Adishakti • Log in or Register to continue'}
                     </p>
                   </div>
 
-                  <div className="flex space-x-2.5">
+                  <div className="flex space-x-2">
                     <button
                       onClick={() => setAuthMode('LOGIN')}
-                      className="flex-1 py-3 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-700 hover:to-fuchsia-700 text-white font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-purple-300/40"
+                      className="flex-1 py-2.5 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-700 hover:to-fuchsia-700 text-white font-black text-xs rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-purple-300/40"
                     >
                       <LogIn className="w-4 h-4" />
                       <span>{language === 'te' ? 'లాగిన్ (Log In)' : 'Log In'}</span>
@@ -1220,7 +1215,7 @@ export default function WomenUserApp() {
                         setAuthMode('REGISTER');
                         setRegStep(1);
                       }}
-                      className="flex-1 py-3 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-amber-300/60"
+                      className="flex-1 py-2.5 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-amber-300/60"
                     >
                       <UserPlus className="w-4 h-4" />
                       <span>{language === 'te' ? 'రిజిస్టర్ (Register)' : 'Register'}</span>
