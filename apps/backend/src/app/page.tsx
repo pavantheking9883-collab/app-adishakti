@@ -29,7 +29,7 @@ export default function Home() {
       {/* Hero Body */}
       <main className="max-w-6xl mx-auto w-full py-12 space-y-12">
         {/* Official Hero Poster Card with Action Buttons */}
-        <div className="max-w-4xl mx-auto bg-slate-900 border border-purple-800/40 rounded-3xl overflow-hidden shadow-2xl p-6 flex flex-col md:flex-row items-center gap-6">
+        <div className="max-w-4xl mx-auto bg-gradient-to-br from-[#3b0d4d] via-purple-950 to-[#180424] border border-purple-500/40 rounded-3xl overflow-hidden shadow-2xl shadow-purple-950/50 p-6 flex flex-col md:flex-row items-center gap-6">
           <div className="flex-1 space-y-4 text-center md:text-left">
             <span className="text-[10px] bg-purple-950 text-purple-300 border border-purple-500/40 px-3 py-1 rounded-full font-bold uppercase tracking-wider">
               Initiated by Daggubati Purandeswari Garu

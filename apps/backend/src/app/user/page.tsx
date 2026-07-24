@@ -1120,7 +1120,7 @@ export default function WomenUserApp() {
   return (
     <div
       className={`min-h-screen transition-colors duration-300 flex flex-col items-center justify-center sm:p-4 p-0 font-sans ${
-        isLight ? 'bg-purple-50/80 text-slate-900' : 'bg-[#070312] text-slate-100'
+        isLight ? 'bg-purple-100/90 text-slate-900' : 'bg-gradient-to-b from-[#2a0636] via-[#160220] to-[#0c0114] text-slate-100'
       }`}
     >
       <div className="fixed top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
@@ -1130,7 +1130,7 @@ export default function WomenUserApp() {
         className={`w-full h-[100dvh] sm:h-[820px] sm:max-w-sm sm:border-[6px] sm:rounded-[44px] sm:shadow-2xl border-0 rounded-none shadow-none overflow-hidden flex flex-col relative z-10 transition-colors duration-300 ${
           isLight
             ? 'bg-white border-purple-200/90 shadow-purple-200/60'
-            : 'bg-slate-950 border-slate-800/90 shadow-[0_0_50px_rgba(168,85,247,0.25)]'
+            : 'bg-[#180324] border-purple-900/60 shadow-[0_0_50px_rgba(168,85,247,0.3)]'
         }`}
       >
         {/* Status Bar */}
@@ -1183,25 +1183,25 @@ export default function WomenUserApp() {
         {!isRegistered ? (
           <div className="flex-1 flex flex-col justify-between overflow-y-auto">
             {authMode === 'WELCOME' && (
-              <div className="flex-1 flex flex-col justify-between overflow-y-auto relative bg-slate-950 text-white">
-                {/* Poster Display Container - Full Image Uncropped & Unhidden */}
-                <div className="flex-1 flex items-center justify-center p-3 overflow-y-auto">
+              <div className="flex-1 flex flex-col justify-between overflow-hidden relative bg-gradient-to-b from-[#3a0d4c] via-[#240630] to-[#12021a] text-white">
+                {/* Poster Display - Full Bleed Edge-to-Edge with zero black borders */}
+                <div className="flex-1 w-full h-full relative flex items-center justify-center overflow-hidden">
                   <img
                     src="/adishakti-poster.jpg"
                     alt="Adishakti Initiated by Daggubati Purandeswari Garu Poster"
-                    className="w-full h-auto max-h-[75vh] object-contain rounded-2xl shadow-2xl border border-purple-500/30"
+                    className="w-full h-full object-cover object-top"
                   />
+                  {/* Subtle gradient vignette at top & bottom for high text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-purple-950/20 via-transparent to-purple-950/80 pointer-events-none"></div>
                 </div>
 
-                {/* Bottom Action Bar - Floating & High Visibility */}
-                <div className={`p-4 border-t backdrop-blur-xl shadow-2xl space-y-2.5 shrink-0 ${
-                  isLight ? 'bg-white/95 border-purple-200 text-slate-900' : 'bg-slate-950/95 border-purple-900/40 text-white'
-                }`}>
+                {/* Bottom Action Bar - Floating Frosted Glass over Poster */}
+                <div className="p-3.5 border-t border-purple-400/30 backdrop-blur-xl bg-purple-950/85 shadow-2xl space-y-2 shrink-0 relative z-20">
                   <div className="text-center space-y-0.5">
-                    <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">
+                    <p className="text-[10.5px] font-black text-amber-300 tracking-wide drop-shadow">
                       {language === 'te' ? 'ఆదిశక్తి మొబైల్ ప్లాట్‌ఫామ్‌లోకి స్వాగతం!' : 'Welcome to Adishakti Mobile Platform'}
                     </p>
-                    <p className="text-[8.5px] text-slate-500 font-medium">
+                    <p className="text-[8.5px] text-purple-200/90 font-semibold">
                       {language === 'te' ? 'కొనసాగించడానికి లాగిన్ అవ్వండి లేదా కొత్త ఖాతా తెరవండి' : 'Log in to existing account or register a new account to continue'}
                     </p>
                   </div>
@@ -1209,7 +1209,7 @@ export default function WomenUserApp() {
                   <div className="flex space-x-2.5">
                     <button
                       onClick={() => setAuthMode('LOGIN')}
-                      className="flex-1 py-3 bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 hover:from-purple-800 hover:to-fuchsia-700 text-white font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-purple-400/30"
+                      className="flex-1 py-3 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-700 hover:to-fuchsia-700 text-white font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-purple-300/40"
                     >
                       <LogIn className="w-4 h-4" />
                       <span>{language === 'te' ? 'లాగిన్ (Log In)' : 'Log In'}</span>
@@ -1220,7 +1220,7 @@ export default function WomenUserApp() {
                         setAuthMode('REGISTER');
                         setRegStep(1);
                       }}
-                      className="flex-1 py-3 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-amber-300/50"
+                      className="flex-1 py-3 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-amber-300/60"
                     >
                       <UserPlus className="w-4 h-4" />
                       <span>{language === 'te' ? 'రిజిస్టర్ (Register)' : 'Register'}</span>
