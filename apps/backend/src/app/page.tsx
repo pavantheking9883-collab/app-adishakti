@@ -28,13 +28,45 @@ export default function Home() {
 
       {/* Hero Body */}
       <main className="max-w-6xl mx-auto w-full py-12 space-y-12">
-        <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <h2 className="text-4xl font-extrabold tracking-tight">
-            Safety Engine &amp; Multilingual Stakeholder Portals
-          </h2>
-          <p className="text-slate-400 text-sm leading-relaxed">
-            "We don't sell fear — we sell everyday utility. Safety is the seatbelt, not the sales pitch."
-          </p>
+        {/* Official Hero Poster Card with Action Buttons */}
+        <div className="max-w-4xl mx-auto bg-slate-900 border border-purple-800/40 rounded-3xl overflow-hidden shadow-2xl p-6 flex flex-col md:flex-row items-center gap-6">
+          <div className="flex-1 space-y-4 text-center md:text-left">
+            <span className="text-[10px] bg-purple-950 text-purple-300 border border-purple-500/40 px-3 py-1 rounded-full font-bold uppercase tracking-wider">
+              Initiated by Daggubati Purandeswari Garu
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black text-white leading-tight">
+              ADISHAKTI — Empower • Protect • Progress
+            </h2>
+            <p className="text-xs text-purple-200/80 leading-relaxed font-medium">
+              యా దేవీ సర్వభూతేషు శక్తిరూపేణ సంస్థితా। నమస్తస్యై నమస్తస్యై నమస్తస్యై నమో నమః ॥<br />
+              <strong>Every Woman is an ADISHAKTI — Strong. Fearless. Limitless.</strong>
+            </p>
+
+            {/* Prominent High-Visibility Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <Link href="/user" className="flex-1">
+                <button className="w-full py-3 px-6 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-700 hover:to-fuchsia-700 text-white font-black text-sm rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-2 border border-purple-400/30">
+                  <span>🔑 Log In</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </Link>
+
+              <Link href="/user" className="flex-1">
+                <button className="w-full py-3 px-6 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-sm rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-2 border border-amber-300/50">
+                  <span>📝 Register New Account</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </Link>
+            </div>
+          </div>
+
+          <div className="w-full md:w-80 shrink-0 flex justify-center">
+            <img
+              src="/adishakti-poster.jpg"
+              alt="Adishakti Official Poster"
+              className="w-full max-h-[380px] object-contain rounded-2xl shadow-xl border border-purple-500/30"
+            />
+          </div>
         </div>
 
         {/* 4 Portal Cards Grid */}

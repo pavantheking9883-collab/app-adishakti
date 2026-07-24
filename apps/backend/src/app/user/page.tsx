@@ -460,7 +460,7 @@ export default function WomenUserApp() {
   const [showMap, setShowMap] = useState(true);
 
   // Auth Modes & Status
-  const [authMode, setAuthMode] = useState<'LOGIN' | 'REGISTER'>('LOGIN');
+  const [authMode, setAuthMode] = useState<'WELCOME' | 'LOGIN' | 'REGISTER'>('WELCOME');
   const [isRegistered, setIsRegistered] = useState(false);
   const [regStep, setRegStep] = useState<1 | 2 | 3 | 4>(1);
 
@@ -1179,342 +1179,403 @@ export default function WomenUserApp() {
           </div>
         </div>
 
-        {/* Auth Forms */}
+        {/* Auth & Welcome Screens */}
         {!isRegistered ? (
-          <div
-            className={`flex-1 p-5 flex flex-col justify-between overflow-y-auto ${
-              isLight
-                ? 'bg-gradient-to-b from-purple-100/60 via-white to-purple-50/40'
-                : 'bg-gradient-to-b from-purple-950/40 via-slate-950 to-slate-950'
-            }`}
-          >
-            <div className="text-center space-y-2 pt-1">
-              <div className="flex justify-center">
-                <BrandLogo size={58} />
-              </div>
-              <h1 className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-700 via-fuchsia-600 to-blue-600 tracking-tight">
-                ADISHAKTI
-              </h1>
-              <p className="text-[10px] text-purple-700/80 font-bold">Quantex Intelligence Systems</p>
-
-              <div className="pt-2">
-                <div
-                  className={`p-1 rounded-xl border flex text-xs font-bold ${
-                    isLight ? 'bg-purple-100/70 border-purple-200' : 'bg-slate-900 border-slate-800'
-                  }`}
-                >
-                  <button
-                    onClick={() => setAuthMode('LOGIN')}
-                    className={`flex-1 py-1.5 rounded-lg transition flex items-center justify-center space-x-1 ${
-                      authMode === 'LOGIN' ? 'bg-purple-700 text-white shadow-sm' : 'text-slate-400'
-                    }`}
-                  >
-                    <LogIn className="w-3.5 h-3.5" />
-                    <span>Log In</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setAuthMode('REGISTER');
-                      setRegStep(1);
-                    }}
-                    className={`flex-1 py-1.5 rounded-lg transition flex items-center justify-center space-x-1 ${
-                      authMode === 'REGISTER' ? 'bg-fuchsia-600 text-white shadow-sm' : 'text-slate-400'
-                    }`}
-                  >
-                    <UserPlus className="w-3.5 h-3.5" />
-                    <span>Register</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {authMode === 'LOGIN' && (
-              <div
-                className={`space-y-4 my-auto p-5 rounded-2xl border ${
-                  isLight ? 'bg-white border-purple-200 shadow-xl' : 'bg-slate-900/80 border-purple-500/20'
-                }`}
-              >
-                <div className="space-y-1">
-                  <h2 className={`text-xs font-bold flex items-center space-x-1.5 ${isLight ? 'text-purple-900' : 'text-white'}`}>
-                    <LogIn className="w-4 h-4 text-purple-600" />
-                    <span>Existing Account Login</span>
-                  </h2>
+          <div className="flex-1 flex flex-col justify-between overflow-y-auto">
+            {authMode === 'WELCOME' && (
+              <div className="flex-1 flex flex-col justify-between overflow-y-auto relative bg-slate-950 text-white">
+                {/* Poster Display Container - Full Image Uncropped & Unhidden */}
+                <div className="flex-1 flex items-center justify-center p-3 overflow-y-auto">
+                  <img
+                    src="/adishakti-poster.jpg"
+                    alt="Adishakti Initiated by Daggubati Purandeswari Garu Poster"
+                    className="w-full h-auto max-h-[75vh] object-contain rounded-2xl shadow-2xl border border-purple-500/30"
+                  />
                 </div>
 
-                <div className="space-y-3">
-                  <div>
-                    <label className="text-[10px] font-bold block mb-1">REGISTERED MOBILE</label>
-                    <input
-                      type="text"
-                      value={loginPhone}
-                      onChange={(e) => setLoginPhone(e.target.value)}
-                      className={`w-full border rounded-xl px-3.5 py-2 text-xs focus:outline-none ${
-                        isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                      }`}
-                    />
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between items-center mb-1.5">
-                      <label className="text-[10px] font-bold">OTP SECURITY CODE</label>
-                      <span className="text-[10px] text-emerald-600 font-bold font-mono">Use 123456</span>
-                    </div>
-
-                    <div className="flex justify-between gap-1">
-                      {otpDigits.map((digit, idx) => (
-                        <input
-                          key={idx}
-                          ref={otpRefs[idx]}
-                          type="text"
-                          maxLength={1}
-                          value={digit}
-                          onChange={(e) => handleOtpChange(idx, e.target.value, false)}
-                          onKeyDown={(e) => handleOtpKeyDown(idx, e, false)}
-                          className={`w-8 h-8 sm:w-10 sm:h-10 border rounded-xl text-center font-bold text-sm focus:border-purple-600 focus:outline-none flex-1 max-w-[40px] ${
-                            isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleLoginSubmit}
-                    className="w-full py-2.5 bg-gradient-to-r from-purple-700 to-fuchsia-600 text-white font-bold text-xs rounded-xl shadow-md transition"
-                  >
-                    Log In
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {authMode === 'REGISTER' && (
-              <div
-                className={`space-y-4 my-auto p-5 rounded-2xl border ${
-                  isLight ? 'bg-white border-purple-200 shadow-xl' : 'bg-slate-900/80 border-purple-500/20'
-                }`}
-              >
-                {regStep === 1 && (
-                  <div className="space-y-3">
-                    <h2 className="text-xs font-bold">New User Registration</h2>
-                    <div>
-                      <label className="text-[10px] font-bold block mb-1">MOBILE PHONE NUMBER</label>
-                      <input
-                        type="text"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className={`w-full border rounded-xl px-3.5 py-2 text-xs focus:outline-none ${
-                          isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                        }`}
-                      />
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between items-center mb-1">
-                        <label className="text-[10px] font-bold">OTP CODE</label>
-                        <span className="text-[10px] text-emerald-600 font-bold font-mono">Use 123456</span>
-                      </div>
-                      <div className="flex justify-between gap-1">
-                        {regOtpDigits.map((digit, idx) => (
-                          <input
-                            key={idx}
-                            ref={regOtpRefs[idx]}
-                            type="text"
-                            maxLength={1}
-                            value={digit}
-                            onChange={(e) => handleOtpChange(idx, e.target.value, true)}
-                            onKeyDown={(e) => handleOtpKeyDown(idx, e, true)}
-                            className={`w-8 h-8 sm:w-10 sm:h-10 border rounded-xl text-center font-bold text-sm focus:border-purple-600 focus:outline-none flex-1 max-w-[40px] ${
-                              isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={handleRegisterOtpSubmit}
-                      className="w-full py-2.5 bg-gradient-to-r from-fuchsia-600 to-purple-700 text-white font-bold text-xs rounded-xl shadow-md transition"
-                    >
-                      Verify OTP Code
-                    </button>
-                  </div>
-                )}
-
-                {regStep === 2 && (
-                  <div className="space-y-3">
-                    <h2 className="text-xs font-bold text-purple-900 dark:text-white">Configure Profile</h2>
-                    <div>
-                      <label className="text-[10px] font-bold block mb-1">YOUR FULL NAME</label>
-                      <input
-                        type="text"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        placeholder="Enter your name"
-                        className={`w-full border rounded-xl px-3.5 py-2 text-xs focus:outline-none ${
-                          isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                        }`}
-                      />
-                    </div>
-                    <button
-                      onClick={async () => {
-                        if (!fullName) {
-                          alert("Please enter your name");
-                          return;
-                        }
-                        try {
-                          const res = await fetch('/api/auth/otp', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              userId,
-                              name: fullName,
-                              action: 'UPDATE_PROFILE'
-                            })
-                          });
-                          const data = await res.json();
-                          if (data.success) {
-                            setRegStep(3);
-                          } else {
-                            alert(data.error || 'Failed to update name');
-                          }
-                        } catch (err: any) {
-                          alert(err.message);
-                        }
-                      }}
-                      className="w-full py-2 bg-purple-700 text-white rounded-xl text-xs font-bold"
-                    >
-                      Next: Setup Emergency Contacts
-                    </button>
-                  </div>
-                )}
-
-                {regStep === 3 && (
-                  <div className="space-y-3.5">
-                    <h2 className="text-xs font-black uppercase tracking-wider text-purple-900 dark:text-white">Emergency Contacts (Guardians)</h2>
-                    <p className="text-[10px] text-slate-500 leading-normal">
-                      Add phone numbers of your husband, brother, or parents to receive the automated Voice IVR emergency calls.
+                {/* Bottom Action Bar - Floating & High Visibility */}
+                <div className={`p-4 border-t backdrop-blur-xl shadow-2xl space-y-2.5 shrink-0 ${
+                  isLight ? 'bg-white/95 border-purple-200 text-slate-900' : 'bg-slate-950/95 border-purple-900/40 text-white'
+                }`}>
+                  <div className="text-center space-y-0.5">
+                    <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">
+                      {language === 'te' ? 'ఆదిశక్తి మొబైల్ ప్లాట్‌ఫామ్‌లోకి స్వాగతం!' : 'Welcome to Adishakti Mobile Platform'}
                     </p>
-                    
-                    <div className="space-y-2.5">
-                      <input
-                        type="text"
-                        value={gNameInput}
-                        onChange={(e) => setGNameInput(e.target.value)}
-                        placeholder="Guardian Name (e.g. Husband)"
-                        className={`w-full border rounded-xl px-3 py-1.5 text-xs focus:outline-none ${
-                          isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                        }`}
-                      />
-                      <input
-                        type="text"
-                        value={gPhoneInput}
-                        onChange={(e) => setGPhoneInput(e.target.value)}
-                        placeholder="Guardian Phone (e.g. +91 99999 99999)"
-                        className={`w-full border rounded-xl px-3 py-1.5 text-xs focus:outline-none ${
-                          isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                        }`}
-                      />
-                      <button
-                        onClick={addGuardian}
-                        className="w-full py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-900 font-bold text-[10px] rounded-lg border border-purple-200 transition"
-                      >
-                        + Add Guardian Contact
-                      </button>
-                    </div>
+                    <p className="text-[8.5px] text-slate-500 font-medium">
+                      {language === 'te' ? 'కొనసాగించడానికి లాగిన్ అవ్వండి లేదా కొత్త ఖాతా తెరవండి' : 'Log in to existing account or register a new account to continue'}
+                    </p>
+                  </div>
 
-                    {/* Show list of added guardians */}
-                    {guardians.length > 0 && (
-                      <div className="space-y-1.5 border-t pt-2 border-purple-100">
-                        <p className="text-[9px] font-black uppercase text-slate-500 tracking-wider">Added Contacts ({guardians.length})</p>
-                        <div className="max-h-24 overflow-y-auto space-y-1">
-                          {guardians.map((g, idx) => (
-                            <div key={g.id} className="p-1.5 border rounded-lg flex justify-between items-center text-[10px] bg-slate-50/50 border-slate-100">
-                              <div className="flex items-center space-x-1.5">
-                                <span className="font-mono text-[8px] bg-purple-100 text-purple-800 px-1 rounded-full">
-                                  #{idx + 1}
-                                </span>
-                                <span className="font-bold text-slate-800">{g.name}</span>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <span className="font-mono text-slate-500">{g.phone}</span>
-                                <button
-                                  onClick={() => deleteGuardian(g.id)}
-                                  className="text-red-500 hover:text-red-700 transition"
-                                  title="Delete Guardian"
-                                >
-                                  <Trash2 className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                  <div className="flex space-x-2.5">
+                    <button
+                      onClick={() => setAuthMode('LOGIN')}
+                      className="flex-1 py-3 bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 hover:from-purple-800 hover:to-fuchsia-700 text-white font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-purple-400/30"
+                    >
+                      <LogIn className="w-4 h-4" />
+                      <span>{language === 'te' ? 'లాగిన్ (Log In)' : 'Log In'}</span>
+                    </button>
 
                     <button
                       onClick={() => {
-                        if (guardians.length === 0) {
-                          alert("Please add at least one guardian contact to receive emergency calls.");
-                          return;
-                        }
-                        setRegStep(4);
+                        setAuthMode('REGISTER');
+                        setRegStep(1);
                       }}
-                      className="w-full py-2 bg-purple-700 hover:bg-purple-600 text-white rounded-xl text-xs font-black shadow-md transition"
+                      className="flex-1 py-3 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-amber-300/50"
                     >
-                      Save &amp; Continue
+                      <UserPlus className="w-4 h-4" />
+                      <span>{language === 'te' ? 'రిజిస్టర్ (Register)' : 'Register'}</span>
                     </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {(authMode === 'LOGIN' || authMode === 'REGISTER') && (
+              <div
+                className={`flex-1 p-5 flex flex-col justify-between overflow-y-auto ${
+                  isLight
+                    ? 'bg-gradient-to-b from-purple-100/60 via-white to-purple-50/40'
+                    : 'bg-gradient-to-b from-purple-950/40 via-slate-950 to-slate-950'
+                }`}
+              >
+                <div className="space-y-3 pt-1">
+                  <div className="flex items-center justify-between">
+                    <button
+                      onClick={() => setAuthMode('WELCOME')}
+                      className={`px-3 py-1.5 rounded-xl border text-[10px] font-bold flex items-center space-x-1 transition ${
+                        isLight ? 'bg-white border-purple-200 text-purple-900 shadow-sm' : 'bg-slate-900 border-slate-800 text-slate-200'
+                      }`}
+                    >
+                      <span>← {language === 'te' ? 'ప్రారంభ చిత్రం (Poster Screen)' : 'Poster Home'}</span>
+                    </button>
+
+                    <BrandLogo size={32} />
+                  </div>
+
+                  <div className="text-center">
+                    <h1 className="text-lg font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-700 via-fuchsia-600 to-blue-600 tracking-tight">
+                      ADISHAKTI
+                    </h1>
+                  </div>
+
+                  <div
+                    className={`p-1 rounded-xl border flex text-xs font-bold ${
+                      isLight ? 'bg-purple-100/70 border-purple-200' : 'bg-slate-900 border-slate-800'
+                    }`}
+                  >
+                    <button
+                      onClick={() => setAuthMode('LOGIN')}
+                      className={`flex-1 py-1.5 rounded-lg transition flex items-center justify-center space-x-1 ${
+                        authMode === 'LOGIN' ? 'bg-purple-700 text-white shadow-sm' : 'text-slate-400'
+                      }`}
+                    >
+                      <LogIn className="w-3.5 h-3.5" />
+                      <span>Log In</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setAuthMode('REGISTER');
+                        setRegStep(1);
+                      }}
+                      className={`flex-1 py-1.5 rounded-lg transition flex items-center justify-center space-x-1 ${
+                        authMode === 'REGISTER' ? 'bg-fuchsia-600 text-white shadow-sm' : 'text-slate-400'
+                      }`}
+                    >
+                      <UserPlus className="w-3.5 h-3.5" />
+                      <span>Register</span>
+                    </button>
+                  </div>
+                </div>
+
+                {authMode === 'LOGIN' && (
+                  <div
+                    className={`space-y-4 my-auto p-5 rounded-2xl border ${
+                      isLight ? 'bg-white border-purple-200 shadow-xl' : 'bg-slate-900/80 border-purple-500/20'
+                    }`}
+                  >
+                    <div className="space-y-1">
+                      <h2 className={`text-xs font-bold flex items-center space-x-1.5 ${isLight ? 'text-purple-900' : 'text-white'}`}>
+                        <LogIn className="w-4 h-4 text-purple-600" />
+                        <span>Existing Account Login</span>
+                      </h2>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-[10px] font-bold block mb-1">REGISTERED MOBILE</label>
+                        <input
+                          type="text"
+                          value={loginPhone}
+                          onChange={(e) => setLoginPhone(e.target.value)}
+                          className={`w-full border rounded-xl px-3.5 py-2 text-xs focus:outline-none ${
+                            isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                          }`}
+                        />
+                      </div>
+
+                      <div>
+                        <div className="flex justify-between items-center mb-1.5">
+                          <label className="text-[10px] font-bold">OTP SECURITY CODE</label>
+                          <span className="text-[10px] text-emerald-600 font-bold font-mono">Use 123456</span>
+                        </div>
+
+                        <div className="flex justify-between gap-1">
+                          {otpDigits.map((digit, idx) => (
+                            <input
+                              key={idx}
+                              ref={otpRefs[idx]}
+                              type="text"
+                              maxLength={1}
+                              value={digit}
+                              onChange={(e) => handleOtpChange(idx, e.target.value, false)}
+                              onKeyDown={(e) => handleOtpKeyDown(idx, e, false)}
+                              className={`w-8 h-8 sm:w-10 sm:h-10 border rounded-xl text-center font-bold text-sm focus:border-purple-600 focus:outline-none flex-1 max-w-[40px] ${
+                                isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={handleLoginSubmit}
+                        className="w-full py-2.5 bg-gradient-to-r from-purple-700 to-fuchsia-600 text-white font-bold text-xs rounded-xl shadow-md transition"
+                      >
+                        Log In
+                      </button>
+                    </div>
                   </div>
                 )}
 
-                {regStep === 4 && (
-                  <div className="space-y-3">
-                    <h2 className="text-xs font-bold text-purple-900 dark:text-white">Opt-In Audio Consent</h2>
-                    <p className="text-[10px] text-slate-500 leading-normal">
-                      Do you consent to automatic ambient audio monitoring during emergency Red alerts? This helps responders hear the surrounding environment.
-                    </p>
-                    <div className="flex items-center space-x-2 py-1">
-                      <input
-                        type="checkbox"
-                        checked={audioConsent}
-                        onChange={(e) => setAudioConsent(e.target.checked)}
-                        className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
-                      />
-                      <span className="text-[10px] font-bold text-slate-700">Yes, I grant audio surveillance consent.</span>
-                    </div>
-                    <button
-                      onClick={async () => {
-                        try {
-                          const res = await fetch('/api/auth/otp', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              userId,
-                              name: fullName,
-                              consentAudioMonitoring: audioConsent,
-                              action: 'UPDATE_PROFILE'
-                            })
-                          });
-                          const data = await res.json();
-                          if (data.success) {
-                            setIsRegistered(true);
-                          } else {
-                            alert(data.error || 'Failed to submit consent');
-                          }
-                        } catch (err: any) {
-                          alert(err.message);
-                        }
-                      }}
-                      className="w-full py-2 bg-purple-700 text-white rounded-xl text-xs font-bold"
-                    >
-                      Finish Setup
-                    </button>
+                {authMode === 'REGISTER' && (
+                  <div
+                    className={`space-y-4 my-auto p-5 rounded-2xl border ${
+                      isLight ? 'bg-white border-purple-200 shadow-xl' : 'bg-slate-900/80 border-purple-500/20'
+                    }`}
+                  >
+                    {regStep === 1 && (
+                      <div className="space-y-3">
+                        <h2 className="text-xs font-bold">New User Registration</h2>
+                        <div>
+                          <label className="text-[10px] font-bold block mb-1">MOBILE PHONE NUMBER</label>
+                          <input
+                            type="text"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            className={`w-full border rounded-xl px-3.5 py-2 text-xs focus:outline-none ${
+                              isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                            }`}
+                          />
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between items-center mb-1">
+                            <label className="text-[10px] font-bold">OTP CODE</label>
+                            <span className="text-[10px] text-emerald-600 font-bold font-mono">Use 123456</span>
+                          </div>
+                          <div className="flex justify-between gap-1">
+                            {regOtpDigits.map((digit, idx) => (
+                              <input
+                                key={idx}
+                                ref={regOtpRefs[idx]}
+                                type="text"
+                                maxLength={1}
+                                value={digit}
+                                onChange={(e) => handleOtpChange(idx, e.target.value, true)}
+                                onKeyDown={(e) => handleOtpKeyDown(idx, e, true)}
+                                className={`w-8 h-8 sm:w-10 sm:h-10 border rounded-xl text-center font-bold text-sm focus:border-purple-600 focus:outline-none flex-1 max-w-[40px] ${
+                                  isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={handleRegisterOtpSubmit}
+                          className="w-full py-2.5 bg-gradient-to-r from-fuchsia-600 to-purple-700 text-white font-bold text-xs rounded-xl shadow-md transition"
+                        >
+                          Verify OTP Code
+                        </button>
+                      </div>
+                    )}
+
+                    {regStep === 2 && (
+                      <div className="space-y-3">
+                        <h2 className="text-xs font-bold text-purple-900 dark:text-white">Configure Profile</h2>
+                        <div>
+                          <label className="text-[10px] font-bold block mb-1">YOUR FULL NAME</label>
+                          <input
+                            type="text"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            placeholder="Enter your name"
+                            className={`w-full border rounded-xl px-3.5 py-2 text-xs focus:outline-none ${
+                              isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                            }`}
+                          />
+                        </div>
+                        <button
+                          onClick={async () => {
+                            if (!fullName.trim()) {
+                              alert('Please enter your full name');
+                              return;
+                            }
+                            try {
+                              const res = await fetch('/api/auth/otp', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                  userId,
+                                  name: fullName,
+                                  action: 'UPDATE_PROFILE'
+                                })
+                              });
+                              const data = await res.json();
+                              if (data.success) {
+                                setRegStep(3);
+                              } else {
+                                alert(data.error || 'Failed to update profile');
+                              }
+                            } catch (err: any) {
+                              alert(err.message);
+                            }
+                          }}
+                          className="w-full py-2 bg-purple-700 text-white rounded-xl text-xs font-bold"
+                        >
+                          Next: Setup Emergency Contacts
+                        </button>
+                      </div>
+                    )}
+
+                    {regStep === 3 && (
+                      <div className="space-y-3.5">
+                        <h2 className="text-xs font-black uppercase tracking-wider text-purple-900 dark:text-white">Emergency Contacts (Guardians)</h2>
+                        <p className="text-[10px] text-slate-500 leading-normal">
+                          Add phone numbers of your husband, brother, or parents to receive the automated Voice IVR emergency calls.
+                        </p>
+                        
+                        <div className="space-y-2.5">
+                          <input
+                            type="text"
+                            value={gNameInput}
+                            onChange={(e) => setGNameInput(e.target.value)}
+                            placeholder="Guardian Name (e.g. Husband)"
+                            className={`w-full border rounded-xl px-3 py-1.5 text-xs focus:outline-none ${
+                              isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                            }`}
+                          />
+                          <input
+                            type="text"
+                            value={gPhoneInput}
+                            onChange={(e) => setGPhoneInput(e.target.value)}
+                            placeholder="Guardian Phone (e.g. +91 99999 99999)"
+                            className={`w-full border rounded-xl px-3 py-1.5 text-xs focus:outline-none ${
+                              isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                            }`}
+                          />
+                          <button
+                            onClick={addGuardian}
+                            className="w-full py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-900 font-bold text-[10px] rounded-lg border border-purple-200 transition"
+                          >
+                            + Add Guardian Contact
+                          </button>
+                        </div>
+
+                        {/* Show list of added guardians */}
+                        {guardians.length > 0 && (
+                          <div className="space-y-1.5 border-t pt-2 border-purple-100">
+                            <p className="text-[9px] font-black uppercase text-slate-500 tracking-wider">Added Contacts ({guardians.length})</p>
+                            <div className="max-h-24 overflow-y-auto space-y-1">
+                              {guardians.map((g, idx) => (
+                                <div key={g.id} className="p-1.5 border rounded-lg flex justify-between items-center text-[10px] bg-slate-50/50 border-slate-100">
+                                  <div className="flex items-center space-x-1.5">
+                                    <span className="font-mono text-[8px] bg-purple-100 text-purple-800 px-1 rounded-full">
+                                      #{idx + 1}
+                                    </span>
+                                    <span className="font-bold text-slate-800">{g.name}</span>
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <span className="font-mono text-slate-500">{g.phone}</span>
+                                    <button
+                                      onClick={() => deleteGuardian(g.id)}
+                                      className="text-red-500 hover:text-red-700 transition"
+                                      title="Delete Guardian"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        <button
+                          onClick={() => {
+                            if (guardians.length === 0) {
+                              alert("Please add at least one guardian contact to receive emergency calls.");
+                              return;
+                            }
+                            setRegStep(4);
+                          }}
+                          className="w-full py-2 bg-purple-700 hover:bg-purple-600 text-white rounded-xl text-xs font-black shadow-md transition"
+                        >
+                          Save &amp; Continue
+                        </button>
+                      </div>
+                    )}
+
+                    {regStep === 4 && (
+                      <div className="space-y-3">
+                        <h2 className="text-xs font-bold text-purple-900 dark:text-white">Opt-In Audio Consent</h2>
+                        <p className="text-[10px] text-slate-500 leading-normal">
+                          Do you consent to automatic ambient audio monitoring during emergency Red alerts? This helps responders hear the surrounding environment.
+                        </p>
+                        <div className="flex items-center space-x-2 py-1">
+                          <input
+                            type="checkbox"
+                            checked={audioConsent}
+                            onChange={(e) => setAudioConsent(e.target.checked)}
+                            className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                          />
+                          <span className="text-[10px] font-bold text-slate-700">Yes, I grant audio surveillance consent.</span>
+                        </div>
+                        <button
+                          onClick={async () => {
+                            try {
+                              const res = await fetch('/api/auth/otp', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                  userId,
+                                  name: fullName,
+                                  consentAudioMonitoring: audioConsent,
+                                  action: 'UPDATE_PROFILE'
+                                })
+                              });
+                              const data = await res.json();
+                              if (data.success) {
+                                setIsRegistered(true);
+                              } else {
+                                alert(data.error || 'Failed to submit consent');
+                              }
+                            } catch (err: any) {
+                              alert(err.message);
+                            }
+                          }}
+                          className="w-full py-2 bg-purple-700 text-white rounded-xl text-xs font-bold"
+                        >
+                          Finish Setup
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
+                <div className="text-center text-[10px] text-slate-500 pt-2">ADISHAKTI Safety Portal</div>
               </div>
             )}
-            <div className="text-center text-[10px] text-slate-500">ADISHAKTI Safety Portal</div>
           </div>
         ) : (
 
