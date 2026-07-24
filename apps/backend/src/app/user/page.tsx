@@ -1382,10 +1382,23 @@ export default function WomenUserApp() {
                     ))}
                   </div>
 
-                  {/* Station Responders */}
-                  <div className={`border p-3.5 rounded-2xl text-xs space-y-2.5 shadow-sm ${isLight ? 'bg-white border-purple-200' : 'bg-slate-900 border-slate-800'}`}>
-                    <h3 className={`font-black ${isLight ? 'text-purple-700' : 'text-purple-300'}`}>{T[language].nearByStations}</h3>
-                    {dynamicNearbyStations.map((st) => (
+                   <div className={`border p-3.5 rounded-2xl text-xs space-y-2.5 shadow-sm ${isLight ? 'bg-white border-purple-200' : 'bg-slate-900 border-slate-800'}`}>
+                     <h3 className={`font-black ${isLight ? 'text-purple-700' : 'text-purple-300'}`}>{T[language].nearByStations}</h3>
+                     <div className="flex items-center space-x-1.5 text-[9px] font-bold text-slate-500 pb-1 border-b border-purple-100/40 dark:border-slate-800">
+                       {selectedLoc.id === 'live-gps' ? (
+                         <span className="text-emerald-600 dark:text-emerald-400 flex items-center">
+                           <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping mr-1"></span>
+                           🟢 {language === 'te' ? 'లైవ్ GPS లొకేషన్ నుండి లెక్కించబడింది' : 'Calculated from Live GPS Location'}
+                         </span>
+                       ) : (
+                         <span className="text-amber-600 dark:text-amber-400 flex items-center">
+                           📍 {language === 'te' 
+                             ? `ప్రెసెట్: ${selectedLoc.name.split(',')[0]} నుండి లెక్కించబడింది (నిజమైన డ్రైవింగ్ దూరం కోసం మ్యాప్స్ క్లిక్ చేయండి)` 
+                             : `Preset: ${selectedLoc.name.split(',')[0]} (Tap maps for real driving route)`}
+                         </span>
+                       )}
+                     </div>
+                     {dynamicNearbyStations.map((st) => (
                       <div key={st.id} className={`p-2.5 border rounded-xl flex justify-between items-center ${isLight ? 'bg-purple-50/40 border-purple-100 text-slate-900' : 'bg-slate-950 border-purple-950/20 text-white'}`}>
                         <div className="flex-1 mr-2">
                           <p className="font-bold">{st.name}</p>
