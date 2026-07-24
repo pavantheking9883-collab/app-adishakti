@@ -1183,28 +1183,26 @@ export default function WomenUserApp() {
         {!isRegistered ? (
           <div className="flex-1 flex flex-col justify-between overflow-y-auto">
             {authMode === 'WELCOME' && (
-              <div className="flex-1 flex flex-col justify-between overflow-y-auto bg-gradient-to-b from-[#481156] via-[#3d0d4a] to-[#2b0835] text-white">
-                {/* Poster Display - Crystal Clear, Unshadowed, & Full Quote Visibility */}
-                <div className="flex-1 flex flex-col items-center justify-center p-2 overflow-y-auto">
-                  <img
-                    src="/adishakti-poster.jpg"
-                    alt="Adishakti Initiated by Daggubati Purandeswari Garu Poster"
-                    className="w-full h-auto max-h-[72vh] object-contain rounded-xl shadow-2xl border border-purple-400/20"
-                  />
-                </div>
+              <div className="flex-1 relative w-full h-full overflow-hidden bg-[#3c0c4c] flex flex-col">
+                {/* 100% Full-Screen Edge-to-Edge Poster Image (Zero Gaps, Zero Padding, Zero Borders) */}
+                <img
+                  src="/adishakti-poster.jpg"
+                  alt="Adishakti Initiated by Daggubati Purandeswari Garu Poster"
+                  className="w-full h-full object-fill block"
+                />
 
-                {/* Bottom Action Bar - Below Poster (Zero Quote Overlay & High Visibility) */}
-                <div className="p-3 bg-[#2d0838] border-t border-amber-400/30 shadow-2xl space-y-2 shrink-0 relative z-20">
+                {/* Seamless Floating Bottom Action Bar Overlaid directly on Poster */}
+                <div className="absolute bottom-0 left-0 right-0 p-3.5 bg-gradient-to-t from-purple-950/95 via-purple-950/80 to-transparent backdrop-blur-md space-y-2 z-30 border-t border-amber-400/20">
                   <div className="text-center">
-                    <p className="text-[10px] font-black text-amber-300 tracking-wide">
+                    <p className="text-[10.5px] font-black text-amber-300 tracking-wide drop-shadow-md">
                       {language === 'te' ? 'ఆదిశక్తి ప్లాట్‌ఫామ్‌లోకి స్వాగతం • లాగిన్ / రిజిస్టర్ అవ్వండి' : 'Welcome to Adishakti • Log in or Register to continue'}
                     </p>
                   </div>
 
-                  <div className="flex space-x-2">
+                  <div className="flex space-x-2.5">
                     <button
                       onClick={() => setAuthMode('LOGIN')}
-                      className="flex-1 py-2.5 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-700 hover:to-fuchsia-700 text-white font-black text-xs rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-purple-300/40"
+                      className="flex-1 py-3 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-700 hover:to-fuchsia-700 text-white font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-purple-300/40"
                     >
                       <LogIn className="w-4 h-4" />
                       <span>{language === 'te' ? 'లాగిన్ (Log In)' : 'Log In'}</span>
@@ -1215,7 +1213,7 @@ export default function WomenUserApp() {
                         setAuthMode('REGISTER');
                         setRegStep(1);
                       }}
-                      className="flex-1 py-2.5 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-amber-300/60"
+                      className="flex-1 py-3 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-2xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-1.5 border border-amber-300/60"
                     >
                       <UserPlus className="w-4 h-4" />
                       <span>{language === 'te' ? 'రిజిస్టర్ (Register)' : 'Register'}</span>
