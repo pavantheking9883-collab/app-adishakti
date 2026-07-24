@@ -255,6 +255,75 @@ const MNC_JOBS = [
   }
 ];
 
+// Real DWCRA / SHG Women Products Directory for Marketplace
+const INITIAL_MARKET_PRODUCTS = [
+  {
+    id: 'mp1',
+    name: 'Handcrafted Uppada Pure Silk Saree',
+    teluguName: 'ఉప్పాడ హ్యాండ్‌లూమ్ పట్టు చీర',
+    category: 'Handlooms',
+    price: 4800,
+    unit: 'Per Piece',
+    artisan: 'Sita Devi (Uppada DWCRA Weaver Cluster)',
+    phone: '+91 94401 88234',
+    location: 'Uppada, Kakinada District',
+    desc: 'Lightweight authentic Uppada Jamdani silk saree with zari border. Direct weaver price.',
+    badge: 'DWCRA Certified'
+  },
+  {
+    id: 'mp2',
+    name: 'Traditional Godavari Homemade Avakaya Pickle',
+    teluguName: 'గోదావరి స్వచ్ఛమైన ఆవకాయ పచ్చడి',
+    category: 'Food & Pickles',
+    price: 280,
+    unit: '1 kg Pack',
+    artisan: 'Rajahmundry DWCRA Mahila Sangam',
+    phone: '+91 98765 43210',
+    location: 'Danavaipeta, Rajahmundry',
+    desc: 'Made with organic Kothapalli mangoes and cold-pressed sesame oil. No artificial preservatives.',
+    badge: 'FSSAI Approved'
+  },
+  {
+    id: 'mp3',
+    name: 'Eco-Friendly Handmade Jute Carry Bags (Set of 3)',
+    teluguName: 'పర్యావరణ హిత జ్యూట్ బ్యాగులు',
+    category: 'Handicrafts',
+    price: 350,
+    unit: 'Pack of 3',
+    artisan: 'Sri Lakshmi SHG Handicrafts',
+    phone: '+91 91234 56789',
+    location: 'Surya Rao Peta, Kakinada',
+    desc: 'Durable eco-friendly jute bags with zip closure for daily shopping and office use.',
+    badge: 'Eco Friendly'
+  },
+  {
+    id: 'mp4',
+    name: 'Pure Girijan Wild Honey & Pure Cow Ghee',
+    teluguName: 'ఏజెన్సీ స్వచ్ఛమైన తేనె & ఆవు నెయ్యి',
+    category: 'Organic Products',
+    price: 650,
+    unit: '500ml Honey + 500ml Ghee',
+    artisan: 'Maredumilli Tribal Women Welfare Co-op',
+    phone: '+91 94901 12233',
+    location: 'Rampachodavaram Agency Area',
+    desc: 'Naturally collected forest honey and traditional bilona method cow ghee.',
+    badge: '100% Organic'
+  },
+  {
+    id: 'mp5',
+    name: 'Traditional Kondapalli Dancing Doll (Raja Rani)',
+    teluguName: 'కొండపల్లి డాన్సింగ్ డాల్స్ (రాజా రాణి)',
+    category: 'Handicrafts',
+    price: 450,
+    unit: 'Pair',
+    artisan: 'Kondapalli Women Artisan Society',
+    phone: '+91 98480 99887',
+    location: 'Kondapalli, NTR District',
+    desc: 'Authentic Poniki wood hand-carved dancing dolls painted with non-toxic colors.',
+    badge: 'GI Tagged Art'
+  }
+];
+
 function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
   const R = 6371; // Radius of the earth in km
   const dLat = deg2rad(lat2 - lat1);
@@ -456,6 +525,53 @@ export default function WomenUserApp() {
   const [schemeSearchQuery, setSchemeSearchQuery] = useState('');
   const [upskillPersonaFilter, setUpskillPersonaFilter] = useState<'All' | 'Student' | 'Homemaker' | 'Working Employee' | 'Business Woman'>('All');
   const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>({});
+
+  // Marketplace Tab States & Sell Item Form States
+  const [marketProducts, setMarketProducts] = useState(INITIAL_MARKET_PRODUCTS);
+  const [selectedMarketCategory, setSelectedMarketCategory] = useState('All');
+  const [marketSearchQuery, setMarketSearchQuery] = useState('');
+  const [sellModalOpen, setSellModalOpen] = useState(false);
+  const [sellSuccessToast, setSellSuccessToast] = useState(false);
+
+  const [newProdName, setNewProdName] = useState('');
+  const [newProdCategory, setNewProdCategory] = useState('Handicrafts');
+  const [newProdPrice, setNewProdPrice] = useState('');
+  const [newProdUnit, setNewProdUnit] = useState('1 Item');
+  const [newProdPhone, setNewProdPhone] = useState('+91 98765 43210');
+  const [newProdLocation, setNewProdLocation] = useState('Rajahmundry, AP');
+  const [newProdDesc, setNewProdDesc] = useState('');
+
+  const handleAddProduct = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newProdName.trim() || !newProdPrice) {
+      alert('Please enter Product Name and Price');
+      return;
+    }
+
+    const newItem = {
+      id: 'mp-' + Date.now(),
+      name: newProdName,
+      teluguName: newProdName,
+      category: newProdCategory,
+      price: Number(newProdPrice),
+      unit: newProdUnit,
+      artisan: `${fullName || 'SHG Member'} (Self-Help Group Artisan)`,
+      phone: newProdPhone || phone || loginPhone,
+      location: newProdLocation,
+      desc: newProdDesc || 'Freshly handmade product listed by DWCRA artisan.',
+      badge: 'DWCRA Listed'
+    };
+
+    setMarketProducts([newItem, ...marketProducts]);
+    setSellSuccessToast(true);
+    setTimeout(() => {
+      setSellSuccessToast(false);
+      setSellModalOpen(false);
+      setNewProdName('');
+      setNewProdPrice('');
+      setNewProdDesc('');
+    }, 1500);
+  };
 
   const [roadDistances, setRoadDistances] = useState<Record<string, string>>({});
 
@@ -1648,6 +1764,152 @@ export default function WomenUserApp() {
               </div>
             )}
 
+            {/* List Item / Sell Product Modal for SHG Women */}
+            {sellModalOpen && (
+              <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-end justify-center p-4">
+                <div className={`w-full border rounded-3xl p-5 space-y-3.5 shadow-2xl animate-in slide-in-from-bottom duration-300 max-h-[90%] overflow-y-auto ${
+                  isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-900 border-slate-800 text-white'
+                }`}>
+                  <div className={`flex items-center justify-between border-b pb-2.5 ${isLight ? 'border-purple-100' : 'border-slate-800'}`}>
+                    <div>
+                      <span className="text-[8px] bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full font-black uppercase font-mono">DWCRA Merchant Portal</span>
+                      <h3 className={`text-xs font-black mt-1 ${isLight ? 'text-slate-900' : 'text-white'}`}>
+                        {language === 'te' ? 'మీ ప్రొడక్ట్ అమ్మకానికి పెట్టండి' : 'List Product on SHG Mahila Bazaar'}
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => setSellModalOpen(false)}
+                      className={`px-3 py-1 rounded-xl text-[10px] font-black border ${
+                        isLight ? 'bg-slate-100 text-slate-700 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700'
+                      }`}
+                    >
+                      Close ✕
+                    </button>
+                  </div>
+
+                  {sellSuccessToast ? (
+                    <div className="text-center py-6 space-y-3 animate-in zoom-in-95 duration-200">
+                      <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl animate-bounce">
+                        ✓
+                      </div>
+                      <h4 className={`text-sm font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>Product Listed Live!</h4>
+                      <p className="text-[10px] text-slate-500 leading-relaxed max-w-xs mx-auto">
+                        Your product <strong className="text-purple-700">{newProdName}</strong> is now published on Adishakti SHG Mahila Bazaar. Buyers can call or message you directly.
+                      </p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleAddProduct} className="space-y-3 text-[10px]">
+                      <div className="space-y-2">
+                        <label className="block">
+                          <span className="text-[9px] font-bold text-slate-500">Product Title (ప్రొడక్ట్ పేరు):</span>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. Authentic Organic Homemade Mango Pickle"
+                            value={newProdName}
+                            onChange={(e) => setNewProdName(e.target.value)}
+                            className={`w-full px-3 py-2 text-xs rounded-xl border mt-0.5 ${
+                              isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                            }`}
+                          />
+                        </label>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <label className="block">
+                            <span className="text-[9px] font-bold text-slate-500">Category (కేటగిరీ):</span>
+                            <select
+                              value={newProdCategory}
+                              onChange={(e) => setNewProdCategory(e.target.value)}
+                              className={`w-full px-3 py-2 text-xs rounded-xl border mt-0.5 ${
+                                isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                              }`}
+                            >
+                              <option>Handicrafts</option>
+                              <option>Food & Pickles</option>
+                              <option>Handlooms</option>
+                              <option>Organic Products</option>
+                            </select>
+                          </label>
+
+                          <label className="block">
+                            <span className="text-[9px] font-bold text-slate-500">Price in ₹ (ధర):</span>
+                            <input
+                              type="number"
+                              required
+                              placeholder="e.g. 250"
+                              value={newProdPrice}
+                              onChange={(e) => setNewProdPrice(e.target.value)}
+                              className={`w-full px-3 py-2 text-xs rounded-xl border mt-0.5 ${
+                                isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                              }`}
+                            />
+                          </label>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <label className="block">
+                            <span className="text-[9px] font-bold text-slate-500">Unit / Quantity:</span>
+                            <input
+                              type="text"
+                              value={newProdUnit}
+                              onChange={(e) => setNewProdUnit(e.target.value)}
+                              className={`w-full px-3 py-2 text-xs rounded-xl border mt-0.5 ${
+                                isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                              }`}
+                            />
+                          </label>
+
+                          <label className="block">
+                            <span className="text-[9px] font-bold text-slate-500">Contact Phone Number:</span>
+                            <input
+                              type="text"
+                              value={newProdPhone}
+                              onChange={(e) => setNewProdPhone(e.target.value)}
+                              className={`w-full px-3 py-2 text-xs rounded-xl border mt-0.5 ${
+                                isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                              }`}
+                            />
+                          </label>
+                        </div>
+
+                        <label className="block">
+                          <span className="text-[9px] font-bold text-slate-500">SHG Group & Location (ప్రాంతం):</span>
+                          <input
+                            type="text"
+                            value={newProdLocation}
+                            onChange={(e) => setNewProdLocation(e.target.value)}
+                            className={`w-full px-3 py-2 text-xs rounded-xl border mt-0.5 ${
+                              isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                            }`}
+                          />
+                        </label>
+
+                        <label className="block">
+                          <span className="text-[9px] font-bold text-slate-500">Description (వివరణ):</span>
+                          <textarea
+                            rows={2}
+                            placeholder="Describe your product details..."
+                            value={newProdDesc}
+                            onChange={(e) => setNewProdDesc(e.target.value)}
+                            className={`w-full px-3 py-2 text-xs rounded-xl border mt-0.5 ${
+                              isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+                            }`}
+                          ></textarea>
+                        </label>
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full py-2.5 bg-gradient-to-r from-purple-700 to-fuchsia-600 hover:from-purple-800 hover:to-fuchsia-700 text-white font-bold text-xs rounded-xl shadow-lg transition transform active:scale-95"
+                      >
+                        🚀 Publish Item to Mahila Bazaar Live
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Double Verification Modals */}
             {activeConfirmType && (
               <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-end justify-center p-4">
@@ -2761,17 +3023,144 @@ export default function WomenUserApp() {
                 );
               })()}
 
-              {/* TAB 5: MARKET */}
-              {activeTab === 'MARKET' && (
-                <div className="space-y-3">
-                  <h2 className="text-xs font-bold text-purple-700 uppercase tracking-wider">SHG Direct Marketplace</h2>
-                  <div className="bg-white border border-purple-200 p-3.5 rounded-xl space-y-2 shadow-sm">
-                    <span className="text-emerald-600 text-xs font-black">₹4,500</span>
-                    <h3 className="text-xs font-bold text-slate-900">Handcrafted Uppada Silk Saree</h3>
-                    <a href="tel:+919440188234" className="block text-center py-1.5 bg-purple-700 text-white font-bold text-[10px] rounded-lg shadow">Call Artisan Direct</a>
+              {/* TAB 5: MARKET - SHG DWCRA MAHILA BAZAAR */}
+              {activeTab === 'MARKET' && (() => {
+                const categories = ['All', 'Handlooms', 'Food & Pickles', 'Handicrafts', 'Organic Products'];
+                const filteredProducts = marketProducts.filter((prod) => {
+                  const matchesCategory = selectedMarketCategory === 'All' || prod.category === selectedMarketCategory;
+                  const matchesSearch = prod.name.toLowerCase().includes(marketSearchQuery.toLowerCase()) ||
+                                        prod.teluguName.includes(marketSearchQuery) ||
+                                        prod.artisan.toLowerCase().includes(marketSearchQuery.toLowerCase()) ||
+                                        prod.location.toLowerCase().includes(marketSearchQuery.toLowerCase());
+                  return matchesCategory && matchesSearch;
+                });
+
+                return (
+                  <div className="space-y-3.5 flex-1 overflow-y-auto pr-1">
+                    {/* Header Banner with Sell Button */}
+                    <div className={`p-3.5 rounded-2xl border flex items-center justify-between shadow-sm ${
+                      isLight ? 'bg-gradient-to-r from-purple-700 to-fuchsia-600 text-white border-purple-600' : 'bg-slate-900 border-slate-800 text-white'
+                    }`}>
+                      <div>
+                        <div className="flex items-center space-x-1.5">
+                          <ShoppingBag className="w-4.5 h-4.5 text-amber-300" />
+                          <h2 className="text-xs font-black uppercase tracking-wider">
+                            {language === 'te' ? 'డ్వాక్రా మహిళా బజార్' : 'DWCRA Mahila Direct Bazaar'}
+                          </h2>
+                        </div>
+                        <p className="text-[9.5px] opacity-90 font-medium mt-0.5">
+                          {language === 'te' ? 'నేరుగా డ్వాక్రా మహిళల ఉత్పత్తులు కొనండి / అమ్మండి' : 'Buy & Sell Authentic Handicrafts & Homemade Products'}
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={() => setSellModalOpen(true)}
+                        className="px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-[9.5px] rounded-xl shadow transition transform active:scale-95 shrink-0 flex items-center space-x-1"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>{language === 'te' ? '+ ప్రొడక్ట్ అమ్మండి' : '+ Sell Product'}</span>
+                      </button>
+                    </div>
+
+                    {/* Search bar */}
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder={language === 'te' ? '🔍 ప్రొడక్ట్ పేరు, ప్రాంతం లేదా ఆర్టిజన్ పేరు వెతకండి...' : '🔍 Search product name, location, or artisan...'}
+                        value={marketSearchQuery}
+                        onChange={(e) => setMarketSearchQuery(e.target.value)}
+                        className={`w-full px-3 py-2 text-xs rounded-xl border focus:outline-none focus:border-purple-600 transition-colors ${
+                          isLight ? 'bg-white border-purple-200 text-slate-900 shadow-sm' : 'bg-slate-900 border-slate-800 text-white'
+                        }`}
+                      />
+                    </div>
+
+                    {/* Category Selector Pills */}
+                    <div className="flex space-x-1.5 overflow-x-auto pb-1 text-[9px] scrollbar-thin">
+                      {categories.map((cat) => (
+                        <button
+                          key={cat}
+                          onClick={() => setSelectedMarketCategory(cat)}
+                          className={`px-3 py-1 rounded-full border shrink-0 font-bold transition ${
+                            selectedMarketCategory === cat
+                              ? 'bg-fuchsia-600 border-fuchsia-700 text-white shadow-sm'
+                              : isLight
+                              ? 'bg-purple-50 border-purple-200 text-purple-900 hover:bg-purple-100'
+                              : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800'
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Products Grid / List */}
+                    <div className="space-y-3">
+                      {filteredProducts.length > 0 ? (
+                        filteredProducts.map((prod) => (
+                          <div
+                            key={prod.id}
+                            className={`p-3.5 border rounded-2xl space-y-2.5 shadow-sm transition ${
+                              isLight ? 'bg-white border-purple-200' : 'bg-slate-900/60 border-slate-800'
+                            }`}
+                          >
+                            <div className="flex justify-between items-start">
+                              <div className="space-y-0.5">
+                                <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold border font-mono ${
+                                  isLight ? 'bg-purple-100 text-purple-900 border-purple-200' : 'bg-purple-950/60 text-purple-300 border-purple-900'
+                                }`}>
+                                  {prod.category}
+                                </span>
+                                <h3 className={`text-xs font-black pt-1 ${isLight ? 'text-slate-900' : 'text-white'}`}>{prod.name}</h3>
+                                <p className={`text-[9.5px] font-bold ${isLight ? 'text-purple-700' : 'text-purple-300'}`}>{prod.teluguName}</p>
+                              </div>
+
+                              <div className="text-right shrink-0">
+                                <span className="text-sm font-black text-emerald-600 block font-mono">₹{prod.price.toLocaleString()}</span>
+                                <span className="text-[8px] text-slate-400 font-bold block">{prod.unit}</span>
+                              </div>
+                            </div>
+
+                            <p className={`text-[9.5px] leading-relaxed ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>{prod.desc}</p>
+
+                            <div className={`p-2.5 rounded-xl border text-[9px] space-y-1 ${
+                              isLight ? 'bg-purple-50/50 border-purple-100' : 'bg-slate-950 border-slate-850'
+                            }`}>
+                              <p className="flex justify-between">
+                                <span>👩‍🌾 <strong className={isLight ? 'text-purple-900' : 'text-purple-300'}>Artisan / SHG:</strong> {prod.artisan}</span>
+                                <span className="text-[8px] bg-emerald-100 text-emerald-900 px-1.5 py-0.2 rounded font-bold font-mono">{prod.badge}</span>
+                              </p>
+                              <p>📍 <strong className={isLight ? 'text-purple-900' : 'text-purple-300'}>Location:</strong> <span className={isLight ? 'text-slate-700' : 'text-slate-300'}>{prod.location}</span></p>
+                            </div>
+
+                            <div className="flex space-x-2 pt-1">
+                              <a
+                                href={`tel:${prod.phone}`}
+                                className="flex-1 text-center py-2 bg-gradient-to-r from-purple-700 to-fuchsia-600 hover:from-purple-800 hover:to-fuchsia-700 text-white font-bold text-[9.5px] rounded-xl shadow-md transition active:scale-95 flex items-center justify-center space-x-1"
+                              >
+                                <PhoneCall className="w-3.5 h-3.5" />
+                                <span>{language === 'te' ? 'ఫోన్ చేయండి (Direct Call)' : 'Call Artisan Direct'}</span>
+                              </a>
+                              <a
+                                href={`https://wa.me/${prod.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello ${prod.artisan}, I want to buy your ${prod.name} (₹${prod.price}) listed on Adishakti DWCRA Bazaar.`)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 text-center py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[9.5px] rounded-xl shadow-md transition active:scale-95 flex items-center justify-center space-x-1"
+                              >
+                                <span>💬 WhatsApp Direct</span>
+                              </a>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-6 text-slate-500 text-xs font-bold">
+                          No products found matching your search.
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
             </div>
 
             {/* Bottom Nav Bar */}
