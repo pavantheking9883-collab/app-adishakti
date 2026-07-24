@@ -67,67 +67,87 @@ const MASTER_POLICE_STATIONS = [
   { id: 'ps-10', name: 'Disha Police Station Kakinada', phone: '0884-2378900', type: 'DISHA', lat: 16.9626, lng: 82.2361, address: 'Surya Rao Peta, Kakinada' }
 ];
 
-// Real AP Government Schemes Data for Women Safety, Empowerment & Support
+// Real Government Schemes Data for Women (AP State TDP/NDA Coalition & Central Govt)
 const REAL_AP_SCHEMES = [
   {
     id: 's1',
-    category: 'Financial Aid',
-    name: 'YSR Aasara Scheme',
-    teluguName: 'వైఎస్ఆర్ ఆసరా',
-    desc: 'Waiver of outstanding bank loans of women SHG (Self Help Group) members in four installments, empowering rural and urban poor women.',
-    benefits: 'Debt waiver of outstanding loans (credited directly to SHG bank accounts)',
-    eligibility: 'Women members of DWCRA / SHG groups registered in AP',
-    link: 'https://navasakam.ap.gov.in'
+    category: 'State Govt (AP)',
+    name: 'Thalliki Vandhanam Scheme',
+    teluguName: 'తల్లికి వందనం పథకం',
+    desc: 'NDA coalition government initiative providing ₹15,000 annually to every mother sending her children to school, promoting quality education.',
+    benefits: '₹15,000 annual financial assistance deposited directly into the mother\'s bank account',
+    eligibility: 'Mothers residing in AP who send their children to school (Class 1 to 12)',
+    link: 'https://gramawardsachivalayam.ap.gov.in'
   },
   {
     id: 's2',
-    category: 'Financial Aid',
-    name: 'YSR Cheyutha Scheme',
-    teluguName: 'వైఎస్ఆర్ చేయూత',
-    desc: 'Financial assistance of ₹75,000 (in four installments of ₹18,750 per year) to women of minority/backward classes to establish retail shops or small businesses.',
-    benefits: '₹18,750 per year (Total ₹75,000 over 4 years) for livelihood setup',
-    eligibility: 'Women aged 45 to 60 years belonging to SC, ST, BC, or Minority communities',
+    category: 'State Govt (AP)',
+    name: 'Aadabidda Nidhi Scheme',
+    teluguName: 'ఆడబిడ్డ నిధి పథకం (సూపర్ సిక్స్)',
+    desc: 'Financial empowerment program under Super Six providing monthly financial aid to eligible women to support their self-reliance.',
+    benefits: '₹1,500 per month (Total ₹18,000 per year) directly credited to the beneficiary\'s account',
+    eligibility: 'Women residents of Andhra Pradesh aged between 18 to 59 years',
     link: 'https://gramawardsachivalayam.ap.gov.in'
   },
   {
     id: 's3',
-    category: 'Livelihood',
-    name: 'DWCRA Collateral-Free Bank Linkage Loan',
-    teluguName: 'డ్వాక్రా రుణ సంధాన పథకం',
-    desc: 'Interest subvention loans to promote entrepreneurship among women Self-Help Groups, facilitating setting up micro enterprises and cottage industries.',
-    benefits: 'Collateral-free loans up to ₹20 Lakhs with 0% interest subvention',
-    eligibility: 'Active DWCRA groups with minimum A/B grade grading',
-    link: 'https://serp.ap.gov.in'
+    category: 'State Govt (AP)',
+    name: 'Deepam Scheme (3 Free LPG Cylinders)',
+    teluguName: 'దీపం పథకం (3 ఉచిత గ్యాస్ సిలిండర్లు)',
+    desc: 'Fulfilling the NDA coalition promise to reduce cooking fuel expenses and promote clean cooking energy in households.',
+    benefits: '3 free domestic LPG gas cylinder refills per financial year',
+    eligibility: 'All households in Andhra Pradesh holding an active gas connection',
+    link: 'https://civilsupplies.ap.gov.in'
   },
   {
     id: 's4',
-    category: 'Education',
-    name: 'Jagananna Amma Vodi',
-    teluguName: 'జగనన్న అమ్మ ఒడి',
-    desc: 'Direct cash transfer to the bank accounts of mothers to support the school education of their children from Class 1 to 12.',
-    benefits: '₹15,000 annual financial support to the mother\'s bank account',
-    eligibility: 'Mothers below the poverty line (BPL) sending children to school',
-    link: 'https://jaganannaammavodi.ap.gov.in'
+    category: 'State Govt (AP)',
+    name: 'Free RTC Bus Travel for Women',
+    teluguName: 'మహిళలకు ఆర్టీసీ బస్సుల్లో ఉచిత ప్రయాణం',
+    desc: 'State-wide free travel for women in AP State Road Transport Corporation (APSRTC) Palle Velugu and Express buses to enhance mobility and savings.',
+    benefits: '100% concession on bus fares across APSRTC non-AC buses within the state limits',
+    eligibility: 'All women residents of Andhra Pradesh (no age or income restrictions)',
+    link: 'https://www.apsrtc.ap.gov.in'
   },
   {
     id: 's5',
-    category: 'Skill Training',
-    name: 'APSSDC Women Skill Development Program',
-    teluguName: 'మహిళా నైపుణ్యాభివృద్ధి శిక్షణ',
-    desc: 'Free employability skill training programs in IT/ITES, tailoring, nursing, beauty wellness, and entrepreneurship skills with placement support.',
-    benefits: 'Free certification, lodging/boarding, and assured placement assistance',
-    eligibility: 'Unemployed women/girls aged 18 to 35 years with minimum 10th pass',
-    link: 'https://www.apssdc.in'
+    category: 'Central Govt',
+    name: 'Lakhpati Didi Yojana',
+    teluguName: 'లఖ్‌పతి దీదీ పథకం (కేంద్ర ప్రభుత్వం)',
+    desc: 'Central government initiative enabling women Self-Help Group (SHG) members to earn a sustainable annual income of ₹1 Lakh or more through micro-enterprise support.',
+    benefits: 'Financial support, business skill training, market linkages, and technical guidance',
+    eligibility: 'Active women members of registered Self-Help Groups (SHGs) under SRLM',
+    link: 'https://nrlm.gov.in'
   },
   {
     id: 's6',
-    category: 'Financial Aid',
-    name: 'YSR Kapu Nestham',
-    teluguName: 'వైఎస్ఆర్ కాపు నేస్తం',
-    desc: 'Financial support of ₹15,000 per year to improve the livelihood and living standards of women belonging to Kapu communities.',
-    benefits: '₹15,000 per year (Total ₹75,000 for 5 years)',
-    eligibility: 'Women aged 45 to 60 belonging to Kapu, Balija, Ontari, and Telaga communities',
-    link: 'https://navasakam.ap.gov.in'
+    category: 'Central Govt',
+    name: 'Pradhan Mantri Matru Vandana Yojana (PMMVY)',
+    teluguName: 'ప్రధానమంత్రి మాతృ వందన యోజన',
+    desc: 'Direct Benefit Transfer (DBT) scheme for pregnant women and lactating mothers for improved health and nutrition during maternity.',
+    benefits: 'Cash incentive of up to ₹6,000 in installments directly credited to bank account',
+    eligibility: 'Pregnant and lactating mothers for the first and second child (if second is a girl)',
+    link: 'https://wcd.nic.in'
+  },
+  {
+    id: 's7',
+    category: 'Central Govt',
+    name: 'PM Mudra Loan (Shishu, Kishor, Tarun)',
+    teluguName: 'పీఎం ముద్ర లోన్ (మహిళా యాంట్రప్రెన్యూర్)',
+    desc: 'Collateral-free micro loans to support women entrepreneurs in starting or expanding small scale business units, shops, or manufacturing setups.',
+    benefits: 'Collateral-free business loans up to ₹10 Lakhs with lower interest rates and flexible repayment',
+    eligibility: 'Any individual/woman entrepreneur establishing non-farm micro enterprises',
+    link: 'https://www.mudra.org.in'
+  },
+  {
+    id: 's8',
+    category: 'Central Govt',
+    name: 'Stand-Up India Scheme',
+    teluguName: 'స్టాండప్ ఇండియా లోన్ పథకం',
+    desc: 'Financial support targeting at least one woman per bank branch to set up greenfield enterprises in manufacturing, services, or trading sector.',
+    benefits: 'Bank loans ranging from ₹10 Lakhs up to ₹1 Crore covering 75% of project cost',
+    eligibility: 'Women entrepreneurs aged above 18 years setting up greenfield projects',
+    link: 'https://www.standupmitra.in'
   }
 ];
 
@@ -1642,7 +1662,7 @@ export default function WomenUserApp() {
 
               {/* TAB 2: SCHEMES */}
               {activeTab === 'SCHEMES' && (() => {
-                const categories = ['All', 'Financial Aid', 'Livelihood', 'Education', 'Skill Training'];
+                const categories = ['All', 'State Govt (AP)', 'Central Govt'];
                 const filteredSchemes = REAL_AP_SCHEMES.filter((sc) => {
                   const matchesCategory = selectedSchemeCategory === 'All' || sc.category === selectedSchemeCategory;
                   const matchesSearch = sc.name.toLowerCase().includes(schemeSearchQuery.toLowerCase()) ||
@@ -1657,7 +1677,7 @@ export default function WomenUserApp() {
                     <div className="flex items-center space-x-1.5 border-b pb-2 border-purple-100 dark:border-slate-800">
                       <BookOpen className="w-5 h-5 text-purple-700 dark:text-purple-400" />
                       <h2 className={`text-xs font-black uppercase tracking-wider ${isLight ? 'text-purple-900' : 'text-white'}`}>
-                        {language === 'te' ? 'ఆంధ్రప్రదేశ్ ప్రభుత్వ మహిళా పథకాలు' : 'AP Women Scheme Navigator'}
+                        {language === 'te' ? 'కేంద్ర & రాష్ట్ర ప్రభుత్వ మహిళా పథకాలు' : 'Central & AP State Scheme Navigator'}
                       </h2>
                     </div>
 
@@ -1705,17 +1725,15 @@ export default function WomenUserApp() {
                           >
                             <div className="flex justify-between items-start">
                               <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold border ${
-                                sc.category === 'Financial Aid'
-                                  ? 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/40'
-                                  : sc.category === 'Livelihood'
-                                  ? 'bg-sky-50 text-sky-700 border-sky-100 dark:bg-sky-950/40 dark:text-sky-400 dark:border-sky-900/40'
-                                  : sc.category === 'Education'
-                                  ? 'bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-900/40'
-                                  : 'bg-purple-50 text-purple-700 border-purple-100 dark:bg-purple-950/40 dark:text-purple-400 dark:border-purple-900/40'
+                                sc.category === 'State Govt (AP)'
+                                  ? 'bg-purple-50 text-purple-700 border-purple-100 dark:bg-purple-950/40 dark:text-purple-400 dark:border-purple-900/40'
+                                  : 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/40'
                               }`}>
                                 {sc.category}
                               </span>
-                              <span className="text-[9px] font-bold text-fuchsia-600 font-mono">AP Govt</span>
+                              <span className="text-[9px] font-bold text-fuchsia-600 font-mono">
+                                {sc.category === 'State Govt (AP)' ? 'AP State (NDA)' : 'Central (BJP)'}
+                              </span>
                             </div>
 
                             <div className="space-y-0.5">
