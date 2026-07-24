@@ -667,78 +667,68 @@ export default function WomenUserApp() {
     }
   }, []);
 
-  // Speech-to-Text (STT) Recognition States
+  // Speech-to-Text (STT) Recognition States - Enhanced Telugu Voice Engine
   const [isListening, setIsListening] = useState(false);
+  const [sttTranscript, setSttTranscript] = useState('');
 
   const startListening = () => {
     if (typeof window !== 'undefined') {
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (!SpeechRecognition) {
-        alert('Web Speech API is not supported in this browser. Please use the simulated prompt buttons.');
+        alert('Web Speech API is not supported in this browser. Please use Chrome/Edge or click the sample Telugu voice prompts.');
         return;
       }
 
-      const rec = new SpeechRecognition();
-      rec.continuous = false;
-      rec.interimResults = false;
-      rec.lang = language === 'te' ? 'te-IN' : language === 'hi' ? 'hi-IN' : 'en-IN';
+      try {
+        const rec = new SpeechRecognition();
+        rec.continuous = true;
+        rec.interimResults = true;
+        // Prioritize Telugu (te-IN) for voice input
+        rec.lang = 'te-IN';
+        rec.maxAlternatives = 3;
 
-      rec.onstart = () => {
-        setIsListening(true);
-      };
+        let silenceTimer: any = null;
 
-      rec.onerror = (e: any) => {
-        console.error('Speech recognition error:', e);
+        rec.onstart = () => {
+          setIsListening(true);
+          setSttTranscript('');
+        };
+
+        rec.onerror = (e: any) => {
+          console.error('Speech recognition error:', e);
+          setIsListening(false);
+        };
+
+        rec.onend = () => {
+          setIsListening(false);
+        };
+
+        rec.onresult = (event: any) => {
+          let fullTranscript = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            fullTranscript += event.results[i][0].transcript;
+          }
+          
+          if (fullTranscript.trim()) {
+            console.log('🎙️ STT Telugu Voice Live:', fullTranscript);
+            setIncidentDetails(fullTranscript);
+            setSttTranscript(fullTranscript);
+
+            // Auto finalize after 2.5 seconds of silence
+            if (silenceTimer) clearTimeout(silenceTimer);
+            silenceTimer = setTimeout(() => {
+              try { rec.stop(); } catch (_) {}
+              setIsListening(false);
+            }, 2500);
+          }
+        };
+
+        rec.start();
+      } catch (err: any) {
+        console.error('STT activation error:', err);
         setIsListening(false);
-      };
-
-      rec.onend = () => {
-        setIsListening(false);
-      };
-
-      rec.onresult = (event: any) => {
-        const rawText = event.results[0][0].transcript;
-        const text = rawText.toLowerCase();
-        setIsListening(false);
-        
-        console.log('🎙️ STT Voice Captured Raw:', rawText);
-
-        // Run the robust bilingual translator/matcher
-        const matched = getMatchedPathway(text);
-        if (matched === 'DV') {
-          setIncidentDetails('"Husband hits me"');
-          alert(`🎙️ STT Voice Heard: "${rawText}"\n\n🔄 Translated to AP Safety Pathway:\n🎯 "Domestic Violence Protection Act"`);
-        } else if (matched === 'POSH') {
-          setIncidentDetails('"Boss touches me"');
-          alert(`🎙️ STT Voice Heard: "${rawText}"\n\n🔄 Translated to AP Safety Pathway:\n🎯 "Workplace Harassment (POSH Act) Committee"`);
-        } else if (matched === 'PROPERTY') {
-          setIncidentDetails('"Brother took land"');
-          alert(`🎙️ STT Voice Heard: "${rawText}"\n\n🔄 Translated to AP Safety Pathway:\n🎯 "Hindu Succession (Property Rights) Dispute"`);
-        } else if (matched === 'CYBER') {
-          setIncidentDetails(rawText);
-          alert(`🎙️ STT Voice Heard: "${rawText}"\n\n🔄 Translated to AP Safety Pathway:\n🎯 "Cyber Crime & Online Harassment"`);
-        } else if (matched === 'RAGGING') {
-          setIncidentDetails(rawText);
-          alert(`🎙️ STT Voice Heard: "${rawText}"\n\n🔄 Translated to AP Safety Pathway:\n🎯 "Campus Ragging UGC Guidelines"`);
-        } else if (matched === 'LEGAL_AID') {
-          setIncidentDetails(rawText);
-          alert(`🎙️ STT Voice Heard: "${rawText}"\n\n🔄 Translated to AP Safety Pathway:\n🎯 "Free Legal Aid & Counsel Advice"`);
-        } else if (matched === 'ZERO_FIR') {
-          setIncidentDetails(rawText);
-          alert(`🎙️ STT Voice Heard: "${rawText}"\n\n🔄 Translated to AP Safety Pathway:\n🎯 "Zero FIR Rights Section 173"`);
-        } else if (matched === 'CHILD_RIGHTS') {
-          setIncidentDetails(rawText);
-          alert(`🎙️ STT Voice Heard: "${rawText}"\n\n🔄 Translated to AP Safety Pathway:\n🎯 "Child Rights Protection Act"`);
-        } else if (matched === 'PERSONAL_SAFETY') {
-          setIncidentDetails(rawText);
-          alert(`🎙️ STT Voice Heard: "${rawText}"\n\n🔄 Translated to AP Safety Pathway:\n🎯 "Personal Safety & Self-Defence BNS"`);
-        } else {
-          setIncidentDetails(rawText);
-          alert(`🎙️ STT Voice Heard: "${rawText}"\nGeneral safety support loaded.`);
-        }
-      };
-
-      rec.start();
+        alert('Microphone access denied or error initiating Speech-to-Text. Please check browser permissions.');
+      }
     }
   };
 
@@ -2389,24 +2379,51 @@ export default function WomenUserApp() {
                   {/* Speaks Problem / Voice Prompt Simulation Columns */}
                   <div className={`border p-3.5 rounded-2xl space-y-3 shadow-sm bg-white dark:bg-slate-900 ${isLight ? 'border-purple-200' : 'border-slate-800'}`}>
                     
-                    {/* Real STT Microphone Integration */}
-                    <div className="flex flex-col items-center p-2 bg-purple-50/50 rounded-2xl border border-purple-100 space-y-2">
-                      <p className="text-[10px] text-purple-700 font-extrabold uppercase tracking-widest">Voice-based Navigation (STT)</p>
+                    {/* Real STT Microphone Integration with Live Telugu Feedback */}
+                    <div className="flex flex-col items-center p-3 bg-gradient-to-r from-purple-50 via-fuchsia-50/40 to-purple-50 rounded-2xl border border-purple-200/80 space-y-2.5 shadow-sm">
+                      <p className="text-[10.5px] text-purple-900 dark:text-purple-300 font-black uppercase tracking-wider flex items-center space-x-1">
+                        <span>🎙️</span>
+                        <span>{language === 'te' ? 'వాయిస్ ద్వారా చెప్పండి (Telugu STT)' : 'Voice-based Navigation (Telugu STT)'}</span>
+                      </p>
                       
                       <button
                         onClick={startListening}
-                        className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
+                        className={`w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-lg transform active:scale-95 ${
                           isListening 
-                            ? 'bg-red-600 animate-ping text-white' 
-                            : 'bg-purple-700 hover:bg-purple-600 text-white shadow-md'
+                            ? 'bg-red-600 animate-pulse text-white ring-4 ring-red-400/50' 
+                            : 'bg-gradient-to-tr from-purple-700 via-fuchsia-600 to-purple-800 hover:from-purple-800 text-white border-2 border-purple-300/40'
                         }`}
                       >
-                        <Mic className="w-5 h-5" />
+                        <Mic className="w-6 h-6" />
                       </button>
                       
-                      <span className="text-[9px] font-bold text-slate-600">
-                        {isListening ? '🎙️ Listening... Speak now!' : 'Tap mic to speak problem in English/Telugu'}
+                      <span className="text-[10px] font-bold text-purple-950 dark:text-purple-200 text-center">
+                        {isListening ? '🎙️ వింటున్నాము... తెలుగులో మాట్లాడండి! (Listening in Telugu...)' : 'మైక్ మైక్ నొక్కి మీ సమస్యను తెలుగులో చెప్పండి'}
                       </span>
+
+                      {/* Telugu Voice Quick Sample Chips */}
+                      <div className="w-full pt-2 border-t border-purple-200/60 space-y-1 text-center">
+                        <p className="text-[8.5px] font-bold text-slate-500 uppercase tracking-wider">లేదా ఈ నమూనా మాటలపై క్లిక్ చేయండి:</p>
+                        <div className="flex flex-wrap gap-1.5 justify-center">
+                          {[
+                            { text: 'మా భర్త గొడవపడి కొట్టాడు', label: '🗣️ భర్త కొట్టాడు' },
+                            { text: 'ఆఫీసులో మేనేజర్ వేధిస్తున్నాడు', label: '🗣️ ఆఫీస్ వేధింపు' },
+                            { text: 'మా అన్నయ్య ఆస్తి భూమి ఇవ్వడం లేదు', label: '🗣️ ఆస్తి భూమి గొడవ' },
+                            { text: 'ఆన్‌లైన్‌లో ఫోటోలు మార్ఫ్ చేసి బెదిరిస్తున్నారు', label: '🗣️ సైబర్ మార్ఫింగ్' }
+                          ].map((chip, idx) => (
+                            <button
+                              key={idx}
+                              onClick={() => {
+                                setIncidentDetails(chip.text);
+                                setGeneratedScript('');
+                              }}
+                              className="text-[9.5px] font-bold bg-white dark:bg-slate-950 text-purple-900 dark:text-purple-300 px-2 py-1 rounded-xl border border-purple-200 hover:border-purple-500 shadow-sm transition"
+                            >
+                              {chip.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     </div>
 
                     <div className="space-y-2 pt-2 border-t border-purple-100">
