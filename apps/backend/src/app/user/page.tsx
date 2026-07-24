@@ -1780,8 +1780,8 @@ export default function WomenUserApp() {
                 return (
                   <div className="space-y-3 flex-1 overflow-y-auto pr-1">
                     {/* Header */}
-                    <div className="flex items-center space-x-1.5 border-b pb-2 border-purple-100 dark:border-slate-800">
-                      <BookOpen className="w-5 h-5 text-purple-700 dark:text-purple-400" />
+                    <div className={`flex items-center space-x-1.5 border-b pb-2 ${isLight ? 'border-purple-100' : 'border-slate-800'}`}>
+                      <BookOpen className="w-5 h-5 text-purple-700" />
                       <h2 className={`text-xs font-black uppercase tracking-wider ${isLight ? 'text-purple-900' : 'text-white'}`}>
                         {language === 'te' ? 'కేంద్ర & రాష్ట్ర ప్రభుత్వ మహిళా పథకాలు' : 'Central & AP State Scheme Navigator'}
                       </h2>
@@ -1832,8 +1832,8 @@ export default function WomenUserApp() {
                             <div className="flex justify-between items-start">
                               <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold border ${
                                 sc.category === 'State Govt (AP)'
-                                  ? 'bg-purple-50 text-purple-700 border-purple-100 dark:bg-purple-950/40 dark:text-purple-400 dark:border-purple-900/40'
-                                  : 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/40'
+                                  ? isLight ? 'bg-purple-100 text-purple-900 border-purple-200' : 'bg-purple-950/60 text-purple-300 border-purple-900'
+                                  : isLight ? 'bg-emerald-100 text-emerald-900 border-emerald-200' : 'bg-emerald-950/60 text-emerald-300 border-emerald-900'
                               }`}>
                                 {sc.category}
                               </span>
@@ -1844,14 +1844,14 @@ export default function WomenUserApp() {
 
                             <div className="space-y-0.5">
                               <h3 className={`text-xs font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>{sc.name}</h3>
-                              <p className="text-[10px] font-bold text-purple-600 dark:text-purple-400 font-sans">{sc.teluguName}</p>
+                              <p className={`text-[10px] font-bold font-sans ${isLight ? 'text-purple-700' : 'text-purple-300'}`}>{sc.teluguName}</p>
                             </div>
 
                             <p className={`text-[10px] leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>{sc.desc}</p>
 
                             <div className={`p-2.5 rounded-xl text-[9px] space-y-1 ${isLight ? 'bg-purple-50/50' : 'bg-slate-950/60'}`}>
-                              <p><strong className="text-purple-700 dark:text-purple-400">{language === 'te' ? 'ప్రయోజనాలు:' : 'Benefits:'}</strong> <span className={isLight ? 'text-slate-700' : 'text-slate-300'}>{sc.benefits}</span></p>
-                              <p><strong className="text-purple-700 dark:text-purple-400">{language === 'te' ? 'అర్హత:' : 'Eligibility:'}</strong> <span className={isLight ? 'text-slate-700' : 'text-slate-300'}>{sc.eligibility}</span></p>
+                              <p><strong className={isLight ? 'text-purple-800' : 'text-purple-300'}>{language === 'te' ? 'ప్రయోజనాలు:' : 'Benefits:'}</strong> <span className={isLight ? 'text-slate-700' : 'text-slate-300'}>{sc.benefits}</span></p>
+                              <p><strong className={isLight ? 'text-purple-800' : 'text-purple-300'}>{language === 'te' ? 'అర్హత:' : 'Eligibility:'}</strong> <span className={isLight ? 'text-slate-700' : 'text-slate-300'}>{sc.eligibility}</span></p>
                             </div>
 
                             <a
@@ -2329,7 +2329,7 @@ export default function WomenUserApp() {
                 return (
                   <div className="space-y-3.5 flex-1 overflow-y-auto pr-1">
                     {/* Top Academy Title */}
-                    <div className="flex items-center space-x-1.5 border-b pb-2 border-purple-100 dark:border-slate-800">
+                    <div className={`flex items-center space-x-1.5 border-b pb-2 ${isLight ? 'border-purple-100' : 'border-slate-800'}`}>
                       <Sparkles className="w-5 h-5 text-fuchsia-600 animate-pulse" />
                       <h2 className={`text-xs font-black uppercase tracking-wider ${isLight ? 'text-purple-900' : 'text-white'}`}>
                         {language === 'te' ? 'ఆడిశక్తి అకాడమీ & కెరీర్ పోర్టల్' : 'Adishakti Academy & Career'}
@@ -2350,7 +2350,7 @@ export default function WomenUserApp() {
                               upskillPersonaFilter === per
                                 ? 'bg-fuchsia-600 border-fuchsia-700 text-white shadow-sm'
                                 : isLight
-                                ? 'bg-purple-50 border-purple-100 text-purple-700 hover:bg-purple-100'
+                                ? 'bg-purple-50 border-purple-200 text-purple-900 hover:bg-purple-100'
                                 : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800'
                             }`}
                           >
@@ -2366,7 +2366,11 @@ export default function WomenUserApp() {
                         <h3 className={`text-[10px] font-black uppercase tracking-wide ${isLight ? 'text-slate-900' : 'text-white'}`}>
                           💼 {language === 'te' ? 'జాబ్ నోటిఫికేషన్స్' : 'MNC Job Notifications'}
                         </h3>
-                        <span className="text-[8px] bg-purple-100 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-1.5 py-0.2 rounded font-mono font-bold">Real Opportunities</span>
+                        <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold border font-mono ${
+                          isLight ? 'bg-purple-100 text-purple-900 border-purple-200' : 'bg-purple-950/60 text-purple-300 border-purple-900'
+                        }`}>
+                          Real Opportunities
+                        </span>
                       </div>
 
                       <div className="space-y-2.5">
@@ -2374,25 +2378,27 @@ export default function WomenUserApp() {
                           filteredJobs.map((job) => (
                             <div
                               key={job.id}
-                              className={`p-3 border rounded-2xl space-y-2 shadow-sm transition ${
-                                isLight ? 'bg-white border-purple-100' : 'bg-slate-900/60 border-slate-800'
+                              className={`p-3.5 border rounded-2xl space-y-2.5 shadow-sm transition ${
+                                isLight ? 'bg-white border-purple-200' : 'bg-slate-900/60 border-slate-800'
                               }`}
                             >
                               <div className="flex justify-between items-start">
                                 <div>
                                   <h4 className={`text-xs font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>{job.role}</h4>
-                                  <p className="text-[9px] text-fuchsia-600 font-bold">{job.company}</p>
+                                  <p className="text-[9.5px] text-fuchsia-700 font-bold">{job.company}</p>
                                 </div>
-                                <span className="text-[8px] bg-slate-100 dark:bg-slate-950 text-slate-500 border border-slate-200 dark:border-slate-850 px-1.5 py-0.5 rounded font-bold font-mono">
+                                <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold border font-mono ${
+                                  isLight ? 'bg-fuchsia-50 text-fuchsia-900 border-fuchsia-200' : 'bg-slate-950 text-slate-300 border-slate-800'
+                                }`}>
                                   {job.persona}
                                 </span>
                               </div>
 
-                              <div className="text-[9px] grid grid-cols-2 gap-1 text-slate-500 font-medium">
-                                <p>📍 {job.location}</p>
-                                <p>💰 {job.salary}</p>
+                              <div className="text-[9.5px] grid grid-cols-2 gap-1.5 text-slate-600 font-medium">
+                                <p className={isLight ? 'text-slate-700' : 'text-slate-300'}>📍 {job.location}</p>
+                                <p className={isLight ? 'text-slate-700' : 'text-slate-300'}>💰 {job.salary}</p>
                                 <p className="col-span-2 text-rose-600 font-bold">⏳ {job.deadline}</p>
-                                <p className="col-span-2 text-[8px] italic leading-tight text-slate-400 mt-0.5">Req: {job.requirements}</p>
+                                <p className={`col-span-2 text-[8.5px] italic leading-tight mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Req: {job.requirements}</p>
                               </div>
 
                               <div className="flex space-x-2 pt-1">
@@ -2400,7 +2406,7 @@ export default function WomenUserApp() {
                                   href={job.link}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex-1 text-center py-1.5 bg-purple-700 hover:bg-purple-800 text-white font-bold text-[9px] rounded-lg shadow-sm"
+                                  className="flex-1 text-center py-1.5 bg-gradient-to-r from-purple-700 to-fuchsia-600 hover:from-purple-800 hover:to-fuchsia-700 text-white font-bold text-[9px] rounded-xl shadow-md"
                                 >
                                   {language === 'te' ? 'అప్లై చేసుకోండి ↗' : 'Apply Online ↗'}
                                 </a>
@@ -2413,7 +2419,11 @@ export default function WomenUserApp() {
                                       setTimeout(() => el.classList.remove('animate-pulse'), 2000);
                                     }
                                   }}
-                                  className="flex-1 py-1.5 bg-slate-200 hover:bg-slate-250 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-850 dark:text-slate-200 font-bold text-[9px] rounded-lg"
+                                  className={`flex-1 py-1.5 font-bold text-[9px] rounded-xl border transition ${
+                                    isLight
+                                      ? 'bg-purple-50 hover:bg-purple-100 text-purple-900 border-purple-200'
+                                      : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
+                                  }`}
                                 >
                                   {language === 'te' ? 'ట్రైనింగ్ ప్రారంభించండి' : 'Start Prep Course'}
                                 </button>
@@ -2446,33 +2456,35 @@ export default function WomenUserApp() {
                               id={c.id}
                               key={c.id}
                               className={`p-3.5 border rounded-2xl space-y-2.5 shadow-sm transition ${
-                                isLight ? 'bg-white border-purple-100' : 'bg-slate-900/60 border-slate-800'
+                                isLight ? 'bg-white border-purple-200' : 'bg-slate-900/60 border-slate-800'
                               }`}
                             >
                               <div className="flex justify-between items-start">
                                 <div>
                                   <h4 className={`text-xs font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>{c.title}</h4>
-                                  <p className="text-[9px] font-bold text-purple-600 dark:text-purple-400">{c.teluguTitle}</p>
+                                  <p className={`text-[9.5px] font-bold ${isLight ? 'text-purple-700' : 'text-purple-300'}`}>{c.teluguTitle}</p>
                                 </div>
-                                <span className="text-[8px] bg-fuchsia-50 dark:bg-fuchsia-950/40 text-fuchsia-700 dark:text-fuchsia-400 border border-fuchsia-100 dark:border-fuchsia-900/40 px-1.5 py-0.5 rounded font-bold font-mono shrink-0">
+                                <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold border font-mono shrink-0 ${
+                                  isLight ? 'bg-fuchsia-50 text-fuchsia-900 border-fuchsia-200' : 'bg-fuchsia-950/60 text-fuchsia-300 border-fuchsia-900'
+                                }`}>
                                   {c.persona}
                                 </span>
                               </div>
 
-                              <p className={`text-[9.5px] leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>{c.desc}</p>
+                              <p className={`text-[9.5px] leading-relaxed ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>{c.desc}</p>
 
-                              <div className="text-[8px] flex justify-between text-slate-500 font-mono">
+                              <div className={`text-[8.5px] flex justify-between font-mono font-medium ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
                                 <span>⏳ {c.duration}</span>
                                 <span>🏢 {c.instructor}</span>
                               </div>
 
                               {/* Progress bar */}
                               <div className="space-y-1">
-                                <div className="flex justify-between text-[8px] font-bold font-mono">
-                                  <span className="text-slate-500">Course Progress</span>
+                                <div className="flex justify-between text-[8.5px] font-bold font-mono">
+                                  <span className={isLight ? 'text-slate-600' : 'text-slate-400'}>Course Progress</span>
                                   <span className="text-fuchsia-600">{progressPercent}%</span>
                                 </div>
-                                <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden">
+                                <div className={`h-1.5 w-full rounded-full overflow-hidden ${isLight ? 'bg-purple-100' : 'bg-slate-950'}`}>
                                   <div
                                     className="h-full bg-gradient-to-r from-purple-600 to-fuchsia-500 rounded-full transition-all duration-300"
                                     style={{ width: `${progressPercent}%` }}
@@ -2481,8 +2493,8 @@ export default function WomenUserApp() {
                               </div>
 
                               {/* Curriculum list */}
-                              <div className="space-y-2 pt-1 border-t border-slate-100 dark:border-slate-850">
-                                <p className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Curriculum Roadmap:</p>
+                              <div className={`space-y-2 pt-1 border-t ${isLight ? 'border-purple-100' : 'border-slate-800'}`}>
+                                <p className={`text-[9px] font-bold uppercase tracking-wider ${isLight ? 'text-purple-900' : 'text-slate-300'}`}>Curriculum Roadmap:</p>
                                 {c.curriculum.map((cur) => {
                                   const isChecked = !!completedSteps[cur.step];
                                   return (
@@ -2490,8 +2502,8 @@ export default function WomenUserApp() {
                                       key={cur.step}
                                       className={`flex items-start space-x-2.5 p-2 rounded-xl border transition cursor-pointer select-none ${
                                         isChecked
-                                          ? isLight ? 'bg-emerald-50/50 border-emerald-100' : 'bg-emerald-950/20 border-emerald-900/30'
-                                          : isLight ? 'bg-slate-50/30 border-slate-100 hover:bg-slate-50' : 'bg-slate-950/20 border-slate-900 hover:bg-slate-900'
+                                          ? isLight ? 'bg-emerald-50/70 border-emerald-200' : 'bg-emerald-950/40 border-emerald-900/60'
+                                          : isLight ? 'bg-purple-50/40 border-purple-100 hover:bg-purple-50' : 'bg-slate-950/40 border-slate-850 hover:bg-slate-900'
                                       }`}
                                     >
                                       <input
@@ -2506,10 +2518,14 @@ export default function WomenUserApp() {
                                         className="mt-0.5 rounded border-slate-300 text-fuchsia-600 focus:ring-fuchsia-500 h-3 w-3"
                                       />
                                       <div className="text-[9.5px]">
-                                        <p className={`font-bold leading-tight ${isChecked ? 'text-emerald-700 dark:text-emerald-400 line-through' : isLight ? 'text-slate-800' : 'text-slate-200'}`}>
+                                        <p className={`font-bold leading-tight ${
+                                          isChecked
+                                            ? isLight ? 'text-emerald-800 line-through' : 'text-emerald-400 line-through'
+                                            : isLight ? 'text-slate-900' : 'text-slate-100'
+                                        }`}>
                                           {cur.title}
                                         </p>
-                                        <p className="text-[8.5px] text-slate-500 leading-tight mt-0.5">{cur.desc}</p>
+                                        <p className={`text-[8.5px] leading-tight mt-0.5 ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>{cur.desc}</p>
                                       </div>
                                     </label>
                                   );
@@ -2527,13 +2543,13 @@ export default function WomenUserApp() {
                         <AlertTriangle className="w-4.5 h-4.5 text-rose-600 animate-pulse" />
                         <span>Safe UPI Payment Training Simulator</span>
                       </div>
-                      <p className="text-[10px] text-slate-500 leading-relaxed">
+                      <p className={`text-[10px] leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
                         Practice how to verify business details before typing your UPI PIN. Avoid cyber fraud scams.
                       </p>
 
                       {upiStep === 1 ? (
-                        <div className="bg-purple-50/50 p-3 rounded-xl border border-purple-100 space-y-2">
-                          <div className="flex justify-between items-center bg-white p-2 rounded-lg border text-[10px] font-bold">
+                        <div className={`p-3 rounded-xl border space-y-2 ${isLight ? 'bg-purple-50/50 border-purple-100' : 'bg-slate-950 border-slate-850'}`}>
+                          <div className={`flex justify-between items-center p-2 rounded-lg border text-[10px] font-bold ${isLight ? 'bg-white border-purple-200 text-slate-900' : 'bg-slate-900 border-slate-800 text-white'}`}>
                             <span>Pay To: Fake Winner Lottery Desk</span>
                             <span className="text-red-600 font-extrabold">₹5,000</span>
                           </div>
@@ -2553,7 +2569,7 @@ export default function WomenUserApp() {
                             </button>
                             <button
                               onClick={() => setUpiStep(2)}
-                              className="flex-1 py-1.5 bg-slate-200 text-slate-700 font-bold text-[10px] rounded-lg"
+                              className={`flex-1 py-1.5 font-bold text-[10px] rounded-lg ${isLight ? 'bg-purple-100 text-purple-900' : 'bg-slate-800 text-slate-200'}`}
                             >
                               Proceed to Practice PIN
                             </button>
