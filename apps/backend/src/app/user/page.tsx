@@ -1183,18 +1183,20 @@ export default function WomenUserApp() {
         {!isRegistered ? (
           <div className="flex-1 flex flex-col justify-between overflow-y-auto">
             {authMode === 'WELCOME' && (
-              <div className="flex-1 relative w-full h-full overflow-hidden bg-[#3c0c4c] flex flex-col">
-                {/* 100% Full-Screen Edge-to-Edge Poster Image (Zero Gaps, Zero Padding, Zero Borders) */}
-                <img
-                  src="/adishakti-poster.jpg"
-                  alt="Adishakti Initiated by Daggubati Purandeswari Garu Poster"
-                  className="w-full h-full object-fill block"
-                />
+              <div className="flex-1 relative w-full h-full overflow-y-auto bg-[#3e0d4d] flex flex-col justify-between">
+                {/* 100% Full-Width Edge-to-Edge Poster Image (Zero Gaps, Zero Padding, Zero Stretching) */}
+                <div className="w-full flex-1 flex flex-col items-center">
+                  <img
+                    src="/adishakti-poster.jpg"
+                    alt="Adishakti Initiated by Daggubati Purandeswari Garu Poster"
+                    className="w-full h-auto block"
+                  />
+                </div>
 
-                {/* Seamless Floating Bottom Action Bar Overlaid directly on Poster */}
-                <div className="absolute bottom-0 left-0 right-0 p-3.5 bg-gradient-to-t from-purple-950/95 via-purple-950/80 to-transparent backdrop-blur-md space-y-2 z-30 border-t border-amber-400/20">
+                {/* Sticky Floating Bottom Action Bar for Log In & Register */}
+                <div className="sticky bottom-0 left-0 right-0 p-3 bg-purple-950/95 backdrop-blur-xl border-t border-amber-400/30 shadow-2xl space-y-2 shrink-0 z-30">
                   <div className="text-center">
-                    <p className="text-[10.5px] font-black text-amber-300 tracking-wide drop-shadow-md">
+                    <p className="text-[10px] font-black text-amber-300 tracking-wide">
                       {language === 'te' ? 'ఆదిశక్తి ప్లాట్‌ఫామ్‌లోకి స్వాగతం • లాగిన్ / రిజిస్టర్ అవ్వండి' : 'Welcome to Adishakti • Log in or Register to continue'}
                     </p>
                   </div>
