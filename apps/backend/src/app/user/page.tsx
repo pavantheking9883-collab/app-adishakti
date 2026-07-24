@@ -67,6 +67,70 @@ const MASTER_POLICE_STATIONS = [
   { id: 'ps-10', name: 'Disha Police Station Kakinada', phone: '0884-2378900', type: 'DISHA', lat: 16.9626, lng: 82.2361, address: 'Surya Rao Peta, Kakinada' }
 ];
 
+// Real AP Government Schemes Data for Women Safety, Empowerment & Support
+const REAL_AP_SCHEMES = [
+  {
+    id: 's1',
+    category: 'Financial Aid',
+    name: 'YSR Aasara Scheme',
+    teluguName: 'వైఎస్ఆర్ ఆసరా',
+    desc: 'Waiver of outstanding bank loans of women SHG (Self Help Group) members in four installments, empowering rural and urban poor women.',
+    benefits: 'Debt waiver of outstanding loans (credited directly to SHG bank accounts)',
+    eligibility: 'Women members of DWCRA / SHG groups registered in AP',
+    link: 'https://navasakam.ap.gov.in'
+  },
+  {
+    id: 's2',
+    category: 'Financial Aid',
+    name: 'YSR Cheyutha Scheme',
+    teluguName: 'వైఎస్ఆర్ చేయూత',
+    desc: 'Financial assistance of ₹75,000 (in four installments of ₹18,750 per year) to women of minority/backward classes to establish retail shops or small businesses.',
+    benefits: '₹18,750 per year (Total ₹75,000 over 4 years) for livelihood setup',
+    eligibility: 'Women aged 45 to 60 years belonging to SC, ST, BC, or Minority communities',
+    link: 'https://gramawardsachivalayam.ap.gov.in'
+  },
+  {
+    id: 's3',
+    category: 'Livelihood',
+    name: 'DWCRA Collateral-Free Bank Linkage Loan',
+    teluguName: 'డ్వాక్రా రుణ సంధాన పథకం',
+    desc: 'Interest subvention loans to promote entrepreneurship among women Self-Help Groups, facilitating setting up micro enterprises and cottage industries.',
+    benefits: 'Collateral-free loans up to ₹20 Lakhs with 0% interest subvention',
+    eligibility: 'Active DWCRA groups with minimum A/B grade grading',
+    link: 'https://serp.ap.gov.in'
+  },
+  {
+    id: 's4',
+    category: 'Education',
+    name: 'Jagananna Amma Vodi',
+    teluguName: 'జగనన్న అమ్మ ఒడి',
+    desc: 'Direct cash transfer to the bank accounts of mothers to support the school education of their children from Class 1 to 12.',
+    benefits: '₹15,000 annual financial support to the mother\'s bank account',
+    eligibility: 'Mothers below the poverty line (BPL) sending children to school',
+    link: 'https://jaganannaammavodi.ap.gov.in'
+  },
+  {
+    id: 's5',
+    category: 'Skill Training',
+    name: 'APSSDC Women Skill Development Program',
+    teluguName: 'మహిళా నైపుణ్యాభివృద్ధి శిక్షణ',
+    desc: 'Free employability skill training programs in IT/ITES, tailoring, nursing, beauty wellness, and entrepreneurship skills with placement support.',
+    benefits: 'Free certification, lodging/boarding, and assured placement assistance',
+    eligibility: 'Unemployed women/girls aged 18 to 35 years with minimum 10th pass',
+    link: 'https://www.apssdc.in'
+  },
+  {
+    id: 's6',
+    category: 'Financial Aid',
+    name: 'YSR Kapu Nestham',
+    teluguName: 'వైఎస్ఆర్ కాపు నేస్తం',
+    desc: 'Financial support of ₹15,000 per year to improve the livelihood and living standards of women belonging to Kapu communities.',
+    benefits: '₹15,000 per year (Total ₹75,000 for 5 years)',
+    eligibility: 'Women aged 45 to 60 belonging to Kapu, Balija, Ontari, and Telaga communities',
+    link: 'https://navasakam.ap.gov.in'
+  }
+];
+
 function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
   const R = 6371; // Radius of the earth in km
   const dLat = deg2rad(lat2 - lat1);
@@ -261,6 +325,8 @@ export default function WomenUserApp() {
   const [incidentDetails, setIncidentDetails] = useState('');
   const [generatedScript, setGeneratedScript] = useState('');
   const [consultationBooked, setConsultationBooked] = useState(false);
+  const [selectedSchemeCategory, setSelectedSchemeCategory] = useState('All');
+  const [schemeSearchQuery, setSchemeSearchQuery] = useState('');
 
   const [roadDistances, setRoadDistances] = useState<Record<string, string>>({});
 
@@ -1575,17 +1641,114 @@ export default function WomenUserApp() {
               )}
 
               {/* TAB 2: SCHEMES */}
-              {activeTab === 'SCHEMES' && (
-                <div className="space-y-3">
-                  <h2 className="text-xs font-bold text-purple-700 uppercase tracking-wider">AP Government Scheme Navigator</h2>
-                  <div className="bg-white border border-purple-200 p-3.5 rounded-xl space-y-2 shadow-sm">
-                    <span className="text-[10px] bg-purple-100 text-purple-900 border border-purple-200 px-2 py-0.5 rounded font-bold">Loan Scheme</span>
-                    <h3 className="text-xs font-bold text-slate-900">DWCRA Collateral-Free MSME Loan</h3>
-                    <p className="text-[10px] text-fuchsia-600 font-bold">₹50 Lakhs @ 4% Interest Subvention</p>
-                    <a href="https://serp.ap.gov.in" className="block text-center py-1.5 bg-purple-700 text-white font-bold text-[10px] rounded-lg shadow">Apply via SERP AP Portal</a>
+              {activeTab === 'SCHEMES' && (() => {
+                const categories = ['All', 'Financial Aid', 'Livelihood', 'Education', 'Skill Training'];
+                const filteredSchemes = REAL_AP_SCHEMES.filter((sc) => {
+                  const matchesCategory = selectedSchemeCategory === 'All' || sc.category === selectedSchemeCategory;
+                  const matchesSearch = sc.name.toLowerCase().includes(schemeSearchQuery.toLowerCase()) ||
+                                        sc.teluguName.includes(schemeSearchQuery) ||
+                                        sc.desc.toLowerCase().includes(schemeSearchQuery.toLowerCase());
+                  return matchesCategory && matchesSearch;
+                });
+
+                return (
+                  <div className="space-y-3 flex-1 overflow-y-auto pr-1">
+                    {/* Header */}
+                    <div className="flex items-center space-x-1.5 border-b pb-2 border-purple-100 dark:border-slate-800">
+                      <BookOpen className="w-5 h-5 text-purple-700 dark:text-purple-400" />
+                      <h2 className={`text-xs font-black uppercase tracking-wider ${isLight ? 'text-purple-900' : 'text-white'}`}>
+                        {language === 'te' ? 'ఆంధ్రప్రదేశ్ ప్రభుత్వ మహిళా పథకాలు' : 'AP Women Scheme Navigator'}
+                      </h2>
+                    </div>
+
+                    {/* Search input */}
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder={language === 'te' ? '🔍 పథకం పేరు లేదా వివరణను శోధించండి...' : '🔍 Search scheme name or details...'}
+                        value={schemeSearchQuery}
+                        onChange={(e) => setSchemeSearchQuery(e.target.value)}
+                        className={`w-full px-3 py-2 text-xs rounded-xl border focus:outline-none focus:border-purple-600 transition-colors ${
+                          isLight ? 'bg-purple-50/40 border-purple-200 text-slate-900' : 'bg-slate-900 border-slate-800 text-white'
+                        }`}
+                      />
+                    </div>
+
+                    {/* Categories filters */}
+                    <div className="flex space-x-1.5 overflow-x-auto pb-1 text-[9px] scrollbar-thin">
+                      {categories.map((cat) => (
+                        <button
+                          key={cat}
+                          onClick={() => setSelectedSchemeCategory(cat)}
+                          className={`px-3 py-1 rounded-full border shrink-0 font-bold transition ${
+                            selectedSchemeCategory === cat
+                              ? 'bg-purple-700 border-purple-800 text-white'
+                              : isLight
+                              ? 'bg-purple-50 border-purple-100 text-purple-700 hover:bg-purple-100'
+                              : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800'
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Schemes List */}
+                    <div className="space-y-3 max-h-[460px] overflow-y-auto pr-0.5">
+                      {filteredSchemes.length > 0 ? (
+                        filteredSchemes.map((sc) => (
+                          <div
+                            key={sc.id}
+                            className={`p-3.5 border rounded-2xl space-y-2 shadow-sm transition-all duration-200 ${
+                              isLight ? 'bg-white border-purple-100 hover:border-purple-300' : 'bg-slate-900/60 border-slate-800 hover:border-purple-950/40'
+                            }`}
+                          >
+                            <div className="flex justify-between items-start">
+                              <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold border ${
+                                sc.category === 'Financial Aid'
+                                  ? 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/40'
+                                  : sc.category === 'Livelihood'
+                                  ? 'bg-sky-50 text-sky-700 border-sky-100 dark:bg-sky-950/40 dark:text-sky-400 dark:border-sky-900/40'
+                                  : sc.category === 'Education'
+                                  ? 'bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-900/40'
+                                  : 'bg-purple-50 text-purple-700 border-purple-100 dark:bg-purple-950/40 dark:text-purple-400 dark:border-purple-900/40'
+                              }`}>
+                                {sc.category}
+                              </span>
+                              <span className="text-[9px] font-bold text-fuchsia-600 font-mono">AP Govt</span>
+                            </div>
+
+                            <div className="space-y-0.5">
+                              <h3 className={`text-xs font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>{sc.name}</h3>
+                              <p className="text-[10px] font-bold text-purple-600 dark:text-purple-400 font-sans">{sc.teluguName}</p>
+                            </div>
+
+                            <p className={`text-[10px] leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>{sc.desc}</p>
+
+                            <div className={`p-2.5 rounded-xl text-[9px] space-y-1 ${isLight ? 'bg-purple-50/50' : 'bg-slate-950/60'}`}>
+                              <p><strong className="text-purple-700 dark:text-purple-400">{language === 'te' ? 'ప్రయోజనాలు:' : 'Benefits:'}</strong> <span className={isLight ? 'text-slate-700' : 'text-slate-300'}>{sc.benefits}</span></p>
+                              <p><strong className="text-purple-700 dark:text-purple-400">{language === 'te' ? 'అర్హత:' : 'Eligibility:'}</strong> <span className={isLight ? 'text-slate-700' : 'text-slate-300'}>{sc.eligibility}</span></p>
+                            </div>
+
+                            <a
+                              href={sc.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block text-center py-2 bg-gradient-to-r from-purple-700 to-fuchsia-600 hover:from-purple-800 hover:to-fuchsia-700 text-white font-bold text-[10px] rounded-xl shadow-md transition transform active:scale-95"
+                            >
+                              {language === 'te' ? 'అధికారిక పోర్టల్ ద్వారా దరఖాస్తు చేసుకోండి ↗' : 'Apply via Official Portal ↗'}
+                            </a>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-8 text-slate-500 text-[10px]">
+                          {language === 'te' ? 'ఎలాంటి పథకాలు కనుగొనబడలేదు.' : 'No schemes found matching criteria.'}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* TAB 3: LEGAL AWARENESS & INTERACTIVE FLOW */}
               {activeTab === 'LEGAL' && (
