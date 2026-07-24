@@ -259,21 +259,61 @@ export default function WomenUserApp() {
   const [generatedScript, setGeneratedScript] = useState('');
   const [consultationBooked, setConsultationBooked] = useState(false);
 
+  const leafletMapRef = useRef<any>(null);
+  const leafletMarkerRef = useRef<any>(null);
+  const [roadDistances, setRoadDistances] = useState<Record<string, string>>({});
+
+  // Asynchronously fetch real driving distances using free OSRM API
+  useEffect(() => {
+    const fetchRoadDistances = async () => {
+      const distances: Record<string, string> = {};
+      try {
+        await Promise.all(
+          MASTER_POLICE_STATIONS.map(async (st) => {
+            try {
+              const res = await fetch(
+                `https://router.project-osrm.org/route/v1/driving/${selectedLoc.lng},${selectedLoc.lat};${st.lng},${st.lat}?overview=false`
+              );
+              const data = await res.json();
+              if (data.code === 'Ok' && data.routes?.[0]) {
+                const meters = data.routes[0].distance;
+                const km = (meters / 1000).toFixed(1);
+                distances[st.id] = `${km} km`;
+              } else {
+                const straightDist = getDistanceFromLatLonInKm(selectedLoc.lat, selectedLoc.lng, st.lat, st.lng);
+                distances[st.id] = `${straightDist.toFixed(1)} km (approx)`;
+              }
+            } catch (e) {
+              const straightDist = getDistanceFromLatLonInKm(selectedLoc.lat, selectedLoc.lng, st.lat, st.lng);
+              distances[st.id] = `${straightDist.toFixed(1)} km (approx)`;
+            }
+          })
+        );
+        setRoadDistances(distances);
+      } catch (err) {
+        console.error('OSRM Fetch Error:', err);
+      }
+    };
+
+    fetchRoadDistances();
+  }, [selectedLoc]);
+
+  // Dynamically sort nearby stations by actual road distance first
   const dynamicNearbyStations = useMemo(() => {
     return MASTER_POLICE_STATIONS.map((st) => {
-      const distance = getDistanceFromLatLonInKm(selectedLoc.lat, selectedLoc.lng, st.lat, st.lng);
+      const straightDist = getDistanceFromLatLonInKm(selectedLoc.lat, selectedLoc.lng, st.lat, st.lng);
+      const roadDistStr = roadDistances[st.id];
+      const parsedRoadDist = roadDistStr ? parseFloat(roadDistStr) : straightDist;
+      
       return {
         ...st,
-        calculatedDist: distance
+        calculatedDist: parsedRoadDist,
+        dist: roadDistStr || `${straightDist.toFixed(1)} km`
       };
     })
     .sort((a, b) => a.calculatedDist - b.calculatedDist)
-    .slice(0, 3)
-    .map((st) => ({
-      ...st,
-      dist: `${st.calculatedDist.toFixed(1)} km`
-    }));
-  }, [selectedLoc]);
+    .slice(0, 3);
+  }, [selectedLoc, roadDistances]);
   const [consultationName, setConsultationName] = useState('');
 
   // Dynamic Telemetry States
@@ -482,6 +522,78 @@ export default function WomenUserApp() {
       );
     }
   }, []);
+
+  // Load and initialize Leaflet map in the client browser environment
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    // Check if Leaflet script is already injected
+    if ((window as any).L) {
+      initMap();
+      return;
+    }
+
+    // Append Leaflet stylesheet dynamically
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(link);
+
+    // Append Leaflet script dynamically
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.async = true;
+    script.onload = () => {
+      initMap();
+    };
+    document.body.appendChild(script);
+
+    function initMap() {
+      const L = (window as any).L;
+      if (!L) return;
+
+      const mapElement = document.getElementById('leaflet-map');
+      if (!mapElement || leafletMapRef.current) return;
+
+      // Initialize Leaflet map instance centered on selected location coordinates
+      const map = L.map('leaflet-map', { zoomControl: false }).setView([selectedLoc.lat, selectedLoc.lng], 14);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      L.control.zoom({ position: 'topright' }).addTo(map);
+
+      // Create user marker that is draggable
+      const marker = L.marker([selectedLoc.lat, selectedLoc.lng], { draggable: true }).addTo(map);
+      
+      // Update coordinates whenever user finishes dragging the marker
+      marker.on('dragend', (e: any) => {
+        const position = marker.getLatLng();
+        setSelectedLoc({
+          id: 'live-gps',
+          name: 'Selected Pin Location',
+          lat: position.lat,
+          lng: position.lng,
+          nearbyStations: [] // Calculated dynamically via OSRM
+        });
+      });
+
+      leafletMapRef.current = map;
+      leafletMarkerRef.current = marker;
+    }
+  }, []);
+
+  // Update map coordinates and marker position dynamically when selectedLoc changes
+  useEffect(() => {
+    const L = (window as any).L;
+    if (!L || !leafletMapRef.current || !leafletMarkerRef.current) return;
+
+    const currentLatLng = leafletMarkerRef.current.getLatLng();
+    if (currentLatLng.lat !== selectedLoc.lat || currentLatLng.lng !== selectedLoc.lng) {
+      leafletMapRef.current.setView([selectedLoc.lat, selectedLoc.lng], 14);
+      leafletMarkerRef.current.setLatLng([selectedLoc.lat, selectedLoc.lng]);
+    }
+  }, [selectedLoc]);
 
   // Handle Multi-box OTP input focus progression
   const handleOtpChange = (index: number, val: string, isReg: boolean) => {
@@ -1362,14 +1474,15 @@ export default function WomenUserApp() {
 
                   {/* High Accuracy Map Display View */}
                   {showMap && (
-                    <div className="border border-purple-300 rounded-2xl overflow-hidden shadow-md">
-                      <iframe
-                        title="Live Accurate Location Map"
-                        width="100%"
-                        height="150"
-                        src={osmEmbedUrl}
-                        style={{ border: 0 }}
-                      ></iframe>
+                    <div className="space-y-1">
+                      <div 
+                        id="leaflet-map" 
+                        className="border border-purple-300 rounded-2xl overflow-hidden shadow-md h-[180px] w-full"
+                        style={{ zIndex: 1 }}
+                      ></div>
+                      <span className="text-[8px] font-black text-slate-500 block text-center animate-pulse">
+                        🎯 Drag map pin to set exact coordinates manually!
+                      </span>
                     </div>
                   )}
 
@@ -1388,13 +1501,13 @@ export default function WomenUserApp() {
                        {selectedLoc.id === 'live-gps' ? (
                          <span className="text-emerald-600 dark:text-emerald-400 flex items-center">
                            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping mr-1"></span>
-                           🟢 {language === 'te' ? 'లైవ్ GPS లొకేషన్ నుండి లెక్కించబడింది' : 'Calculated from Live GPS Location'}
+                           🟢 {language === 'te' ? 'లైవ్ GPS నుండి నిజమైన రోడ్డు మార్గం దూరం' : 'Real Road Driving Distance via GPS'}
                          </span>
                        ) : (
                          <span className="text-amber-600 dark:text-amber-400 flex items-center">
                            📍 {language === 'te' 
-                             ? `ప్రెసెట్: ${selectedLoc.name.split(',')[0]} నుండి లెక్కించబడింది (నిజమైన డ్రైవింగ్ దూరం కోసం మ్యాప్స్ క్లిక్ చేయండి)` 
-                             : `Preset: ${selectedLoc.name.split(',')[0]} (Tap maps for real driving route)`}
+                             ? `ప్రెసెట్: ${selectedLoc.name.split(',')[0]} (నిజమైన రోడ్డు మార్గం దూరం)` 
+                             : `Preset: ${selectedLoc.name.split(',')[0]} (Real Road Driving Route)`}
                          </span>
                        )}
                      </div>
