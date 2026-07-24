@@ -253,6 +253,9 @@ export default function WomenUserApp() {
   // Double verification action modal triggers
   const [activeConfirmType, setActiveConfirmType] = useState<'WARNING' | 'SOS' | 'SAFE' | null>(null);
   const [leafletLoaded, setLeafletLoaded] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   // Legal Tab States
   const [selectedDistrictFilter, setSelectedDistrictFilter] = useState('East Godavari');
@@ -621,6 +624,36 @@ export default function WomenUserApp() {
       console.error('Leaflet Map Init Error:', err);
     }
   }, [leafletLoaded, selectedLoc.lat, selectedLoc.lng, activeTab]);
+
+  // Free public Geocoding search handler (using Nominatim OpenStreetMap API)
+  const handleAddressSearch = async () => {
+    if (!searchQuery.trim()) return;
+    setSearchLoading(true);
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5`);
+      const data = await res.json();
+      setSearchResults(data || []);
+    } catch (err) {
+      console.error('Nominatim Geocoding Error:', err);
+      alert('Error searching for location. Please try again.');
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  const handleSelectSearchResult = (res: any) => {
+    const lat = parseFloat(res.lat);
+    const lng = parseFloat(res.lon);
+    setSelectedLoc({
+      id: 'live-gps',
+      name: res.display_name,
+      lat,
+      lng,
+      nearbyStations: []
+    });
+    setSearchResults([]);
+    setSearchQuery('');
+  };
 
   // Handle Multi-box OTP input focus progression
   const handleOtpChange = (index: number, val: string, isReg: boolean) => {
@@ -1501,14 +1534,56 @@ export default function WomenUserApp() {
 
                   {/* High Accuracy Map Display View */}
                   {showMap && (
-                    <div className="space-y-1">
+                    <div className="space-y-2">
+                      {/* Dynamic Address & Landmark Search */}
+                      <div className="relative z-20 space-y-1">
+                        <div className="flex space-x-1.5">
+                          <input
+                            type="text"
+                            placeholder="🔍 Type address (e.g. Danavaipeta)..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={(e) => { if (e.key === 'Enter') handleAddressSearch(); }}
+                            className={`flex-1 px-3 py-1.5 text-xs rounded-xl border focus:outline-none focus:border-purple-600 transition-colors ${
+                              isLight ? 'bg-purple-50/50 border-purple-200 text-slate-900' : 'bg-slate-900 border-slate-800 text-white'
+                            }`}
+                          />
+                          <button
+                            onClick={handleAddressSearch}
+                            disabled={searchLoading}
+                            className="px-3 py-1.5 bg-gradient-to-r from-purple-700 to-fuchsia-600 text-white font-bold text-xs rounded-xl shadow-sm hover:opacity-90 active:scale-95 transition shrink-0"
+                          >
+                            {searchLoading ? 'Searching...' : 'Search'}
+                          </button>
+                        </div>
+
+                        {/* Search Results Dropdown List */}
+                        {searchResults.length > 0 && (
+                          <div className={`absolute left-0 right-0 mt-1 border rounded-xl shadow-xl overflow-hidden max-h-40 overflow-y-auto z-30 text-[10px] ${
+                            isLight ? 'bg-white border-purple-100 text-slate-800' : 'bg-slate-950 border-slate-900 text-slate-200'
+                          }`}>
+                            {searchResults.map((res: any, idx: number) => (
+                              <button
+                                key={idx}
+                                onClick={() => handleSelectSearchResult(res)}
+                                className={`w-full text-left px-3 py-2 border-b last:border-0 transition-colors ${
+                                  isLight ? 'hover:bg-purple-50/50 border-purple-50' : 'hover:bg-slate-900 border-slate-900/50'
+                                }`}
+                              >
+                                {res.display_name}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
                       <div 
                         id="leaflet-map" 
                         className="border border-purple-300 rounded-2xl overflow-hidden shadow-md h-[180px] w-full"
                         style={{ zIndex: 1 }}
                       ></div>
                       <span className="text-[8px] font-black text-slate-500 block text-center animate-pulse">
-                        🎯 Drag map pin to set exact coordinates manually!
+                        🎯 Drag map pin or search address to locate yourself!
                       </span>
                     </div>
                   )}
